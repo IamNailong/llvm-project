@@ -290,6 +290,101 @@ FallThroughWarningPass::getLiveSet(cir::FuncOp cfg) {
   return liveSet;
 }
 
+//===----------------------------------------------------------------------===//
+// Switch/Case Analysis Helpers
+//===----------------------------------------------------------------------===//
+
+/// Check if a case region terminates with a return (not break/yield).
+/// Returns true if the case ends with cir.return or never falls through.
+///
+/// \param caseOp The case operation to check
+/// \return true if the case returns (doesn't break or yield)
+static bool caseTerminatesWithReturn(cir::CaseOp caseOp);
+
+/// Check if a switch operation returns on all code paths.
+/// Returns true if:
+/// - Switch is in simple form AND
+/// - Has a default case that returns
+///
+/// \param switchOp The switch operation to analyze
+/// \return true if all paths through the switch return a value
+static bool switchAllPathsReturn(cir::SwitchOp switchOp) {
+  llvm::SmallVector<cir::CaseOp> cases;
+
+  // Check if switch is in simple form
+  if (!switchOp.isSimpleForm(cases)) {
+    // Non-simple form: conservatively assume may fall through
+    return false;
+  }
+
+  if (cases.empty()) {
+    // Empty switch falls through
+    return false;
+  }
+
+  // Find default case and check if it returns
+  for (auto caseOp : cases) {
+    if (caseOp.getKind() == cir::CaseOpKind::Default) {
+      // If default returns, all unhandled case values are covered
+      return caseTerminatesWithReturn(caseOp);
+    }
+  }
+
+  // No default case: not all paths covered
+  return false;
+}
+
+static bool caseTerminatesWithReturn(cir::CaseOp caseOp) {
+  // Get the case region
+  mlir::Region &region = caseOp.getCaseRegion();
+
+  if (region.empty()) {
+    return false;
+  }
+
+  // Check all exit blocks in the case region
+  // (blocks with no successors within the region)
+  for (mlir::Block &block : region.getBlocks()) {
+    if (!block.hasNoSuccessors()) {
+      continue;
+    }
+
+    if (!block.mightHaveTerminator()) {
+      return false;
+    }
+
+    mlir::Operation *terminator = block.getTerminator();
+
+    // Return operations mean this path returns
+    if (isa<cir::ReturnOp>(terminator)) {
+      return true;
+    }
+
+    // Break or yield means this case doesn't return
+    if (isa<cir::BreakOp>(terminator) || isa<cir::YieldOp>(terminator)) {
+      return false;
+    }
+
+    // Recursively check nested switches
+    if (auto nestedSwitch = dyn_cast<cir::SwitchOp>(terminator)) {
+      if (!switchAllPathsReturn(nestedSwitch)) {
+        return false;
+      }
+      // If nested switch returns, continue checking other blocks
+      continue;
+    }
+
+    // Try operations are abnormal flow
+    if (isa<cir::TryOp>(terminator)) {
+      // Conservative: assume try doesn't guarantee return
+      return false;
+    }
+  }
+
+  // If we found no explicit return, the case doesn't return
+  return false;
+}
+
 ControlFlowKind FallThroughWarningPass::checkFallThrough(cir::FuncOp cfg) {
 
   assert(cfg && "there can't be a null func op");
@@ -351,6 +446,17 @@ ControlFlowKind FallThroughWarningPass::checkFallThrough(cir::FuncOp cfg) {
     }
     if (isa<cir::TryOp>(term)) {
       hasLiveReturn = true;
+      continue;
+    }
+
+    // Handle switch statements
+    if (auto switchOp = dyn_cast<cir::SwitchOp>(term)) {
+      if (switchAllPathsReturn(switchOp)) {
+        hasLiveReturn = true;
+        continue;
+      }
+      // Switch may fall through
+      hasPlainEdge = true;
       continue;
     }
 

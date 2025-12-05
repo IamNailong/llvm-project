@@ -1,6 +1,4 @@
-// REQUIRES: false
-
-// RUN: %clang_cc1 -triple x86_64-unknown-linux-gnu %s -fclangir-analysis="fallthrough" -w
+// RUN: %clang_cc1 -triple x86_64-unknown-linux-gnu %s -fclangir-analysis="fallthrough" -verify
 // INFO: These test cases are derived from clang/test/Sema/return.c
 
 int test1(void) {
