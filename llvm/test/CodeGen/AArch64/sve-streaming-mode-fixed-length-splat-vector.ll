@@ -595,8 +595,8 @@ define void @splat_imm_v32i8(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: splat_imm_v32i8:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI24_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI24_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI24_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI24_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <32 x i8> splat (i8 1), ptr %a
@@ -612,8 +612,8 @@ define void @splat_imm_v16i16(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: splat_imm_v16i16:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI25_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI25_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI25_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI25_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <16 x i16> splat (i16 2), ptr %a
@@ -629,8 +629,8 @@ define void @splat_imm_v8i32(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: splat_imm_v8i32:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI26_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI26_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI26_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI26_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <8 x i32> splat (i32 3), ptr %a
@@ -646,8 +646,8 @@ define void @splat_imm_v4i64(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: splat_imm_v4i64:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI27_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI27_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI27_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI27_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <4 x i64> splat (i64 4), ptr %a
@@ -667,8 +667,8 @@ define void @splat_imm_v16f16(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: splat_imm_v16f16:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI28_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI28_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI28_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI28_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <16 x half> splat (half 5.0), ptr %a
@@ -684,8 +684,8 @@ define void @splat_imm_v8f32(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: splat_imm_v8f32:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI29_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI29_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI29_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI29_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <8 x float> splat (float 6.0), ptr %a
@@ -701,8 +701,8 @@ define void @splat_imm_v4f64(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: splat_imm_v4f64:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI30_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI30_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI30_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI30_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <4 x double> splat (double 7.0), ptr %a

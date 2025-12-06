@@ -1466,6 +1466,20 @@ def : Pat<(AArch64LOADgot texternalsym:$addr),
 def : Pat<(AArch64LOADgot tconstpool:$addr),
           (LOADgot tconstpool:$addr)>;
 
+// Rematerializable load from constant pool.
+// This pseudo combines ADRP + LDR into a single rematerializable instruction,
+// avoiding the need to spill constants that are already in the constant pool.
+// X16 is used as scratch for the ADRP result (implicitly defined and killed).
+// Using an implicit def rather than explicit output allows rematerialization,
+// since isReMaterializableImpl requires only one virtual register def.
+let isReMaterializable = 1, isCodeGenOnly = 1, mayLoad = 1,
+    hasSideEffects = 0, Size = 8, Defs = [X16] in {
+def LOADcpQ : Pseudo<(outs FPR128:$dst),
+                      (ins i64imm:$label),
+                      []>,
+              Sched<[]>;
+}
+
 // In general these get lowered into a sequence of three 4-byte instructions.
 // 32-bit jump table destination is actually only 2 instructions since we can
 // use the table itself as a PC-relative base. But optimization occurs after

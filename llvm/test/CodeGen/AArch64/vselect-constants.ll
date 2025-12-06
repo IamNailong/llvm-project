@@ -11,11 +11,11 @@ define <4 x i32> @sel_C1_or_C2_vec(<4 x i1> %cond) {
 ; CHECK-LABEL: sel_C1_or_C2_vec:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ushll v0.4s, v0.4h, #0
-; CHECK-NEXT:    adrp x8, .LCPI0_0
-; CHECK-NEXT:    adrp x9, .LCPI0_1
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI0_0]
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI0_1]
+; CHECK-NEXT:    adrp x16, .LCPI0_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI0_0]
+; CHECK-NEXT:    adrp x16, .LCPI0_1
 ; CHECK-NEXT:    shl v0.4s, v0.4s, #31
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI0_1]
 ; CHECK-NEXT:    cmlt v0.4s, v0.4s, #0
 ; CHECK-NEXT:    bsl v0.16b, v2.16b, v1.16b
 ; CHECK-NEXT:    ret
@@ -26,12 +26,12 @@ define <4 x i32> @sel_C1_or_C2_vec(<4 x i1> %cond) {
 define <4 x i32> @cmp_sel_C1_or_C2_vec(<4 x i32> %x, <4 x i32> %y) {
 ; CHECK-LABEL: cmp_sel_C1_or_C2_vec:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI1_0
+; CHECK-NEXT:    adrp x16, .LCPI1_0
 ; CHECK-NEXT:    cmeq v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    adrp x9, .LCPI1_1
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI1_1]
-; CHECK-NEXT:    bsl v0.16b, v2.16b, v1.16b
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI1_0]
+; CHECK-NEXT:    adrp x16, .LCPI1_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI1_1]
+; CHECK-NEXT:    bsl v0.16b, v1.16b, v2.16b
 ; CHECK-NEXT:    ret
   %cond = icmp eq <4 x i32> %x, %y
   %add = select <4 x i1> %cond, <4 x i32> <i32 3000, i32 1, i32 -1, i32 0>, <4 x i32> <i32 42, i32 0, i32 -2, i32 -1>
@@ -42,11 +42,11 @@ define <4 x i32> @sel_Cplus1_or_C_vec(<4 x i1> %cond) {
 ; CHECK-LABEL: sel_Cplus1_or_C_vec:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ushll v0.4s, v0.4h, #0
-; CHECK-NEXT:    adrp x8, .LCPI2_0
-; CHECK-NEXT:    adrp x9, .LCPI2_1
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI2_0]
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI2_1]
+; CHECK-NEXT:    adrp x16, .LCPI2_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI2_0]
+; CHECK-NEXT:    adrp x16, .LCPI2_1
 ; CHECK-NEXT:    shl v0.4s, v0.4s, #31
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI2_1]
 ; CHECK-NEXT:    cmlt v0.4s, v0.4s, #0
 ; CHECK-NEXT:    bsl v0.16b, v2.16b, v1.16b
 ; CHECK-NEXT:    ret
@@ -57,12 +57,12 @@ define <4 x i32> @sel_Cplus1_or_C_vec(<4 x i1> %cond) {
 define <4 x i32> @cmp_sel_Cplus1_or_C_vec(<4 x i32> %x, <4 x i32> %y) {
 ; CHECK-LABEL: cmp_sel_Cplus1_or_C_vec:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI3_0
+; CHECK-NEXT:    adrp x16, .LCPI3_0
 ; CHECK-NEXT:    cmeq v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    adrp x9, .LCPI3_1
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI3_0]
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI3_1]
-; CHECK-NEXT:    bsl v0.16b, v2.16b, v1.16b
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI3_0]
+; CHECK-NEXT:    adrp x16, .LCPI3_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI3_1]
+; CHECK-NEXT:    bsl v0.16b, v1.16b, v2.16b
 ; CHECK-NEXT:    ret
   %cond = icmp eq <4 x i32> %x, %y
   %add = select <4 x i1> %cond, <4 x i32> <i32 43, i32 1, i32 -1, i32 0>, <4 x i32> <i32 42, i32 0, i32 -2, i32 -1>
@@ -73,11 +73,11 @@ define <4 x i32> @sel_Cminus1_or_C_vec(<4 x i1> %cond) {
 ; CHECK-LABEL: sel_Cminus1_or_C_vec:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ushll v0.4s, v0.4h, #0
-; CHECK-NEXT:    adrp x8, .LCPI4_0
-; CHECK-NEXT:    adrp x9, .LCPI4_1
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI4_0]
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI4_1]
+; CHECK-NEXT:    adrp x16, .LCPI4_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI4_0]
+; CHECK-NEXT:    adrp x16, .LCPI4_1
 ; CHECK-NEXT:    shl v0.4s, v0.4s, #31
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI4_1]
 ; CHECK-NEXT:    cmlt v0.4s, v0.4s, #0
 ; CHECK-NEXT:    bsl v0.16b, v2.16b, v1.16b
 ; CHECK-NEXT:    ret
@@ -88,12 +88,12 @@ define <4 x i32> @sel_Cminus1_or_C_vec(<4 x i1> %cond) {
 define <4 x i32> @cmp_sel_Cminus1_or_C_vec(<4 x i32> %x, <4 x i32> %y) {
 ; CHECK-LABEL: cmp_sel_Cminus1_or_C_vec:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI5_0
+; CHECK-NEXT:    adrp x16, .LCPI5_0
 ; CHECK-NEXT:    cmeq v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    adrp x9, .LCPI5_1
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI5_0]
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI5_1]
-; CHECK-NEXT:    bsl v0.16b, v2.16b, v1.16b
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI5_0]
+; CHECK-NEXT:    adrp x16, .LCPI5_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI5_1]
+; CHECK-NEXT:    bsl v0.16b, v1.16b, v2.16b
 ; CHECK-NEXT:    ret
   %cond = icmp eq <4 x i32> %x, %y
   %add = select <4 x i1> %cond, <4 x i32> <i32 43, i32 1, i32 -1, i32 0>, <4 x i32> <i32 44, i32 2, i32 0, i32 1>

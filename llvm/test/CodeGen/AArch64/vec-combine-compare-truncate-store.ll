@@ -6,10 +6,10 @@ define void @store_16_elements(<16 x i8> %vec, ptr %out) {
 ; CHECK-LABEL: store_16_elements:
 ; CHECK:       ; %bb.0:
 ; CHECK-NEXT:  Lloh0:
-; CHECK-NEXT:    adrp x8, lCPI0_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI0_0@PAGE
 ; CHECK-NEXT:    cmeq.16b v0, v0, #0
 ; CHECK-NEXT:  Lloh1:
-; CHECK-NEXT:    ldr q1, [x8, lCPI0_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI0_0@PAGEOFF]
 ; CHECK-NEXT:    bic.16b v0, v1, v0
 ; CHECK-NEXT:    ext.16b v1, v0, v0, #8
 ; CHECK-NEXT:    zip1.16b v0, v0, v1
@@ -29,10 +29,10 @@ define void @store_8_elements(<8 x i16> %vec, ptr %out) {
 ; CHECK-LABEL: store_8_elements:
 ; CHECK:       ; %bb.0:
 ; CHECK-NEXT:  Lloh2:
-; CHECK-NEXT:    adrp x8, lCPI1_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI1_0@PAGE
 ; CHECK-NEXT:    cmeq.8h v0, v0, #0
 ; CHECK-NEXT:  Lloh3:
-; CHECK-NEXT:    ldr q1, [x8, lCPI1_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI1_0@PAGEOFF]
 ; CHECK-NEXT:    bic.16b v0, v1, v0
 ; CHECK-NEXT:    addv.8h h0, v0
 ; CHECK-NEXT:    str b0, [x0]
@@ -49,10 +49,10 @@ define void @store_4_elements(<4 x i32> %vec, ptr %out) {
 ; CHECK-LABEL: store_4_elements:
 ; CHECK:       ; %bb.0:
 ; CHECK-NEXT:  Lloh4:
-; CHECK-NEXT:    adrp x8, lCPI2_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI2_0@PAGE
 ; CHECK-NEXT:    cmeq.4s v0, v0, #0
 ; CHECK-NEXT:  Lloh5:
-; CHECK-NEXT:    ldr q1, [x8, lCPI2_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI2_0@PAGEOFF]
 ; CHECK-NEXT:    bic.16b v0, v1, v0
 ; CHECK-NEXT:    addv.4s s0, v0
 ; CHECK-NEXT:    str b0, [x0]
@@ -69,10 +69,10 @@ define void @store_2_elements(<2 x i64> %vec, ptr %out) {
 ; CHECK-LABEL: store_2_elements:
 ; CHECK:       ; %bb.0:
 ; CHECK-NEXT:  Lloh6:
-; CHECK-NEXT:    adrp x8, lCPI3_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI3_0@PAGE
 ; CHECK-NEXT:    cmeq.2d v0, v0, #0
 ; CHECK-NEXT:  Lloh7:
-; CHECK-NEXT:    ldr q1, [x8, lCPI3_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI3_0@PAGEOFF]
 ; CHECK-NEXT:    bic.16b v0, v1, v0
 ; CHECK-NEXT:    addp.2d d0, v0
 ; CHECK-NEXT:    str b0, [x0]
@@ -90,9 +90,9 @@ define void @add_trunc_compare_before_store(<4 x i32> %vec, ptr %out) {
 ; CHECK:       ; %bb.0:
 ; CHECK-NEXT:    shl.4s v0, v0, #31
 ; CHECK-NEXT:  Lloh8:
-; CHECK-NEXT:    adrp x8, lCPI4_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI4_0@PAGE
 ; CHECK-NEXT:  Lloh9:
-; CHECK-NEXT:    ldr q1, [x8, lCPI4_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI4_0@PAGEOFF]
 ; CHECK-NEXT:    cmlt.4s v0, v0, #0
 ; CHECK-NEXT:    and.16b v0, v0, v1
 ; CHECK-NEXT:    addv.4s s0, v0

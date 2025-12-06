@@ -137,8 +137,8 @@ define dso_local <2 x i64> @constpool() {
 ; PIC-NEXT:    .type .Lconstpool$local,@function
 ; PIC-NEXT:    .cfi_startproc
 ; PIC-NEXT:  // %bb.0:
-; PIC-NEXT:    adrp x8, .LCPI5_0
-; PIC-NEXT:    ldr q0, [x8, :lo12:.LCPI5_0]
+; PIC-NEXT:    adrp x16, .LCPI5_0
+; PIC-NEXT:    ldr q0, [x16, :lo12:.LCPI5_0]
 ; PIC-NEXT:    ret
   ret <2 x i64> <i64 123456789, i64 987654321100>
 }

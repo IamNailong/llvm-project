@@ -48,9 +48,9 @@ define <16 x i8> @insert_v16i8_4_15(float %tmp, <16 x i8> %b, <16 x i8> %a) {
 ; CHECK-LABEL: insert_v16i8_4_15:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    // kill: def $q2 killed $q2 def $q2_q3
-; CHECK-NEXT:    adrp x8, .LCPI4_0
+; CHECK-NEXT:    adrp x16, .LCPI4_0
 ; CHECK-NEXT:    mov v3.16b, v1.16b
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI4_0]
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI4_0]
 ; CHECK-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECK-NEXT:    ret
   %s2 = shufflevector <16 x i8> %a, <16 x i8> %b, <16 x i32> <i32 16, i32 17, i32 0, i32 1, i32 2, i32 3, i32 22, i32 23, i32 24, i32 25, i32 26, i32 27, i32 28, i32 29, i32 30, i32 31>
@@ -143,9 +143,9 @@ define <8 x i16> @insert_v8i16_2_15(float %tmp, <8 x i16> %b, <8 x i16> %a) {
 ; CHECK-LABEL: insert_v8i16_2_15:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    // kill: def $q2 killed $q2 def $q2_q3
-; CHECK-NEXT:    adrp x8, .LCPI13_0
+; CHECK-NEXT:    adrp x16, .LCPI13_0
 ; CHECK-NEXT:    mov v3.16b, v1.16b
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI13_0]
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI13_0]
 ; CHECK-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECK-NEXT:    ret
   %s2 = shufflevector <8 x i16> %a, <8 x i16> %b, <8 x i32> <i32 8, i32 0, i32 1, i32 11, i32 12, i32 13, i32 14, i32 15>
@@ -264,9 +264,9 @@ define <16 x i8> @load_v16i8_4_15(float %tmp, <16 x i8> %b, ptr %a) {
 ; CHECK-LABEL: load_v16i8_4_15:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 def $q0_q1
-; CHECK-NEXT:    adrp x8, .LCPI24_0
+; CHECK-NEXT:    adrp x16, .LCPI24_0
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI24_0]
 ; CHECK-NEXT:    ldr s0, [x0]
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI24_0]
 ; CHECK-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-NEXT:    ret
   %l = load <4 x i8>, ptr %a
@@ -481,9 +481,9 @@ define <8 x i16> @load_v8i16_2_15(float %tmp, <8 x i16> %b, ptr %a) {
 ; CHECK-LABEL: load_v8i16_2_15:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 def $q0_q1
-; CHECK-NEXT:    adrp x8, .LCPI40_0
+; CHECK-NEXT:    adrp x16, .LCPI40_0
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI40_0]
 ; CHECK-NEXT:    ldr s0, [x0]
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI40_0]
 ; CHECK-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-NEXT:    ret
   %l = load <2 x i16>, ptr %a

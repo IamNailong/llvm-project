@@ -16,9 +16,9 @@ define i16 @convert_to_bitmask16(<16 x i8> %vec) {
 ; Bits used in mask
 ; CHECK-SD-LABEL: convert_to_bitmask16:
 ; CHECK-SD:       ; %bb.0:
-; CHECK-SD-NEXT:    adrp x8, lCPI0_0@PAGE
+; CHECK-SD-NEXT:    adrp x16, lCPI0_0@PAGE
 ; CHECK-SD-NEXT:    cmeq.16b v0, v0, #0
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI0_0@PAGEOFF]
+; CHECK-SD-NEXT:    ldr q1, [x16, lCPI0_0@PAGEOFF]
 ; CHECK-SD-NEXT:    bic.16b v0, v1, v0
 ; CHECK-SD-NEXT:    ext.16b v1, v0, v0, #8
 ; CHECK-SD-NEXT:    zip1.16b v0, v0, v1
@@ -92,9 +92,9 @@ define i16 @convert_to_bitmask16(<16 x i8> %vec) {
 define i16 @convert_to_bitmask8(<8 x i16> %vec) {
 ; CHECK-SD-LABEL: convert_to_bitmask8:
 ; CHECK-SD:       ; %bb.0:
-; CHECK-SD-NEXT:    adrp x8, lCPI1_0@PAGE
+; CHECK-SD-NEXT:    adrp x16, lCPI1_0@PAGE
 ; CHECK-SD-NEXT:    cmeq.8h v0, v0, #0
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI1_0@PAGEOFF]
+; CHECK-SD-NEXT:    ldr q1, [x16, lCPI1_0@PAGEOFF]
 ; CHECK-SD-NEXT:    bic.16b v0, v1, v0
 ; CHECK-SD-NEXT:    addv.8h h0, v0
 ; CHECK-SD-NEXT:    fmov w8, s0
@@ -144,9 +144,9 @@ define i16 @convert_to_bitmask8(<8 x i16> %vec) {
 define i4 @convert_to_bitmask4(<4 x i32> %vec) {
 ; CHECK-SD-LABEL: convert_to_bitmask4:
 ; CHECK-SD:       ; %bb.0:
-; CHECK-SD-NEXT:    adrp x8, lCPI2_0@PAGE
+; CHECK-SD-NEXT:    adrp x16, lCPI2_0@PAGE
 ; CHECK-SD-NEXT:    cmeq.4s v0, v0, #0
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI2_0@PAGEOFF]
+; CHECK-SD-NEXT:    ldr q1, [x16, lCPI2_0@PAGEOFF]
 ; CHECK-SD-NEXT:    bic.16b v0, v1, v0
 ; CHECK-SD-NEXT:    addv.4s s0, v0
 ; CHECK-SD-NEXT:    fmov w0, s0
@@ -181,9 +181,9 @@ define i4 @convert_to_bitmask4(<4 x i32> %vec) {
 define i8 @convert_to_bitmask2(<2 x i64> %vec) {
 ; CHECK-LABEL: convert_to_bitmask2:
 ; CHECK:       ; %bb.0:
-; CHECK-NEXT:    adrp x8, lCPI3_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI3_0@PAGE
 ; CHECK-NEXT:    cmeq.2d v0, v0, #0
-; CHECK-NEXT:    ldr q1, [x8, lCPI3_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI3_0@PAGEOFF]
 ; CHECK-NEXT:    bic.16b v0, v1, v0
 ; CHECK-NEXT:    addp.2d d0, v0
 ; CHECK-NEXT:    fmov w8, s0
@@ -201,9 +201,9 @@ define i8 @convert_to_bitmask2(<2 x i64> %vec) {
 define i8 @clang_builtins_undef_concat_convert_to_bitmask4(<4 x i32> %vec) {
 ; CHECK-LABEL: clang_builtins_undef_concat_convert_to_bitmask4:
 ; CHECK:       ; %bb.0:
-; CHECK-NEXT:    adrp x8, lCPI4_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI4_0@PAGE
 ; CHECK-NEXT:    cmeq.4s v0, v0, #0
-; CHECK-NEXT:    ldr q1, [x8, lCPI4_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI4_0@PAGEOFF]
 ; CHECK-NEXT:    bic.16b v0, v1, v0
 ; CHECK-NEXT:    addv.4s s0, v0
 ; CHECK-NEXT:    fmov w0, s0
@@ -221,11 +221,11 @@ define i4 @convert_to_bitmask_no_compare(<4 x i32> %vec1, <4 x i32> %vec2) {
 ; CHECK-SD-LABEL: convert_to_bitmask_no_compare:
 ; CHECK-SD:       ; %bb.0:
 ; CHECK-SD-NEXT:    and.16b v0, v0, v1
-; CHECK-SD-NEXT:    adrp x8, lCPI5_0@PAGE
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI5_0@PAGEOFF]
+; CHECK-SD-NEXT:    adrp x16, lCPI5_0@PAGE
+; CHECK-SD-NEXT:    ldr q2, [x16, lCPI5_0@PAGEOFF]
 ; CHECK-SD-NEXT:    shl.4s v0, v0, #31
 ; CHECK-SD-NEXT:    cmlt.4s v0, v0, #0
-; CHECK-SD-NEXT:    and.16b v0, v0, v1
+; CHECK-SD-NEXT:    and.16b v0, v0, v2
 ; CHECK-SD-NEXT:    addv.4s s0, v0
 ; CHECK-SD-NEXT:    fmov w0, s0
 ; CHECK-SD-NEXT:    ret
@@ -260,12 +260,12 @@ define i4 @convert_to_bitmask_no_compare(<4 x i32> %vec1, <4 x i32> %vec2) {
 define i4 @convert_to_bitmask_with_compare_chain(<4 x i32> %vec1, <4 x i32> %vec2) {
 ; CHECK-SD-LABEL: convert_to_bitmask_with_compare_chain:
 ; CHECK-SD:       ; %bb.0:
-; CHECK-SD-NEXT:    cmeq.4s v2, v0, #0
+; CHECK-SD-NEXT:    cmeq.4s v3, v0, #0
 ; CHECK-SD-NEXT:    cmeq.4s v0, v0, v1
-; CHECK-SD-NEXT:    adrp x8, lCPI6_0@PAGE
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI6_0@PAGEOFF]
-; CHECK-SD-NEXT:    bic.16b v0, v0, v2
-; CHECK-SD-NEXT:    and.16b v0, v0, v1
+; CHECK-SD-NEXT:    adrp x16, lCPI6_0@PAGE
+; CHECK-SD-NEXT:    ldr q2, [x16, lCPI6_0@PAGEOFF]
+; CHECK-SD-NEXT:    bic.16b v0, v0, v3
+; CHECK-SD-NEXT:    and.16b v0, v0, v2
 ; CHECK-SD-NEXT:    addv.4s s0, v0
 ; CHECK-SD-NEXT:    fmov w0, s0
 ; CHECK-SD-NEXT:    ret
@@ -304,12 +304,12 @@ define i4 @convert_to_bitmask_with_trunc_in_chain(<4 x i32> %vec1, <4 x i32> %ve
 ; CHECK-SD-LABEL: convert_to_bitmask_with_trunc_in_chain:
 ; CHECK-SD:       ; %bb.0:
 ; CHECK-SD-NEXT:    cmeq.4s v0, v0, #0
-; CHECK-SD-NEXT:    adrp x8, lCPI7_0@PAGE
+; CHECK-SD-NEXT:    adrp x16, lCPI7_0@PAGE
+; CHECK-SD-NEXT:    ldr q2, [x16, lCPI7_0@PAGEOFF]
 ; CHECK-SD-NEXT:    bic.16b v0, v1, v0
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI7_0@PAGEOFF]
 ; CHECK-SD-NEXT:    shl.4s v0, v0, #31
 ; CHECK-SD-NEXT:    cmlt.4s v0, v0, #0
-; CHECK-SD-NEXT:    and.16b v0, v0, v1
+; CHECK-SD-NEXT:    and.16b v0, v0, v2
 ; CHECK-SD-NEXT:    addv.4s s0, v0
 ; CHECK-SD-NEXT:    fmov w0, s0
 ; CHECK-SD-NEXT:    ret
@@ -487,8 +487,8 @@ define i16 @convert_to_bitmask_without_knowing_type(<16 x i1> %vec) {
 ; CHECK-SD-LABEL: convert_to_bitmask_without_knowing_type:
 ; CHECK-SD:       ; %bb.0:
 ; CHECK-SD-NEXT:    shl.16b v0, v0, #7
-; CHECK-SD-NEXT:    adrp x8, lCPI10_0@PAGE
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI10_0@PAGEOFF]
+; CHECK-SD-NEXT:    adrp x16, lCPI10_0@PAGE
+; CHECK-SD-NEXT:    ldr q1, [x16, lCPI10_0@PAGEOFF]
 ; CHECK-SD-NEXT:    cmlt.16b v0, v0, #0
 ; CHECK-SD-NEXT:    and.16b v0, v0, v1
 ; CHECK-SD-NEXT:    ext.16b v1, v0, v0, #8
@@ -637,11 +637,11 @@ define i8 @convert_to_bitmask_8xi2(<8 x i2> %vec) {
 define i4 @convert_to_bitmask_float(<4 x float> %vec) {
 ; CHECK-SD-LABEL: convert_to_bitmask_float:
 ; CHECK-SD:       ; %bb.0:
-; CHECK-SD-NEXT:    fcmgt.4s v1, v0, #0.0
+; CHECK-SD-NEXT:    fcmgt.4s v2, v0, #0.0
 ; CHECK-SD-NEXT:    fcmlt.4s v0, v0, #0.0
-; CHECK-SD-NEXT:    adrp x8, lCPI14_0@PAGE
-; CHECK-SD-NEXT:    orr.16b v0, v0, v1
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI14_0@PAGEOFF]
+; CHECK-SD-NEXT:    adrp x16, lCPI14_0@PAGE
+; CHECK-SD-NEXT:    ldr q1, [x16, lCPI14_0@PAGEOFF]
+; CHECK-SD-NEXT:    orr.16b v0, v0, v2
 ; CHECK-SD-NEXT:    and.16b v0, v0, v1
 ; CHECK-SD-NEXT:    addv.4s s0, v0
 ; CHECK-SD-NEXT:    fmov w0, s0
@@ -684,9 +684,9 @@ define i8 @convert_large_vector(<8 x i32> %vec) {
 ; CHECK-SD-NEXT:    .cfi_def_cfa_offset 16
 ; CHECK-SD-NEXT:    cmeq.4s v1, v1, #0
 ; CHECK-SD-NEXT:    cmeq.4s v0, v0, #0
-; CHECK-SD-NEXT:    adrp x8, lCPI15_0@PAGE
+; CHECK-SD-NEXT:    adrp x16, lCPI15_0@PAGE
 ; CHECK-SD-NEXT:    uzp1.8h v0, v0, v1
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI15_0@PAGEOFF]
+; CHECK-SD-NEXT:    ldr q1, [x16, lCPI15_0@PAGEOFF]
 ; CHECK-SD-NEXT:    bic.16b v0, v1, v0
 ; CHECK-SD-NEXT:    addv.8h h0, v0
 ; CHECK-SD-NEXT:    fmov w8, s0
@@ -894,8 +894,8 @@ define <2 x i8> @vector_to_vector_cast(<16 x i1> %arg) nounwind {
 ; CHECK-SD:       ; %bb.0:
 ; CHECK-SD-NEXT:    sub sp, sp, #16
 ; CHECK-SD-NEXT:    shl.16b v0, v0, #7
-; CHECK-SD-NEXT:    adrp x8, lCPI20_0@PAGE
-; CHECK-SD-NEXT:    ldr q1, [x8, lCPI20_0@PAGEOFF]
+; CHECK-SD-NEXT:    adrp x16, lCPI20_0@PAGE
+; CHECK-SD-NEXT:    ldr q1, [x16, lCPI20_0@PAGEOFF]
 ; CHECK-SD-NEXT:    cmlt.16b v0, v0, #0
 ; CHECK-SD-NEXT:    and.16b v0, v0, v1
 ; CHECK-SD-NEXT:    ext.16b v1, v0, v0, #8

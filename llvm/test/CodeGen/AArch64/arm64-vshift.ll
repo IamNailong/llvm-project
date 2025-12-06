@@ -2409,8 +2409,8 @@ define <4 x i32> @neon_ushll4s_neg_constant_shift(ptr %A) nounwind {
 define <4 x i32> @neon_ushll4s_constant_fold() nounwind {
 ; CHECK-SD-LABEL: neon_ushll4s_constant_fold:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI160_0
-; CHECK-SD-NEXT:    ldr q0, [x8, :lo12:.LCPI160_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI160_0
+; CHECK-SD-NEXT:    ldr q0, [x16, :lo12:.LCPI160_0]
 ; CHECK-SD-NEXT:    add v0.4s, v0.4s, v0.4s
 ; CHECK-SD-NEXT:    ret
 ;
@@ -2526,10 +2526,10 @@ define <16 x i8> @neon_sshl16b_constant_shift(ptr %A) nounwind {
 define <16 x i8> @neon_sshl16b_non_splat_constant_shift(ptr %A) nounwind {
 ; CHECK-SD-LABEL: neon_sshl16b_non_splat_constant_shift:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI167_0
-; CHECK-SD-NEXT:    ldr q0, [x0]
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI167_0]
-; CHECK-SD-NEXT:    sshl v0.16b, v0.16b, v1.16b
+; CHECK-SD-NEXT:    adrp x16, .LCPI167_0
+; CHECK-SD-NEXT:    ldr q0, [x16, :lo12:.LCPI167_0]
+; CHECK-SD-NEXT:    ldr q1, [x0]
+; CHECK-SD-NEXT:    sshl v0.16b, v1.16b, v0.16b
 ; CHECK-SD-NEXT:    ret
 ;
 ; CHECK-GI-LABEL: neon_sshl16b_non_splat_constant_shift:
@@ -2665,8 +2665,8 @@ define <4 x i32> @neon_sshll4s_neg_constant_shift(ptr %A) nounwind {
 define <4 x i32> @neon_sshl4s_constant_fold() nounwind {
 ; CHECK-SD-LABEL: neon_sshl4s_constant_fold:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI173_0
-; CHECK-SD-NEXT:    ldr q0, [x8, :lo12:.LCPI173_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI173_0
+; CHECK-SD-NEXT:    ldr q0, [x16, :lo12:.LCPI173_0]
 ; CHECK-SD-NEXT:    shl v0.4s, v0.4s, #2
 ; CHECK-SD-NEXT:    ret
 ;
@@ -2766,8 +2766,8 @@ define i64 @neon_sshll_scalar_constant_shift_m1(ptr %A) nounwind {
 define <2 x i64> @neon_sshl2d_constant_fold() nounwind {
 ; CHECK-SD-LABEL: neon_sshl2d_constant_fold:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI179_0
-; CHECK-SD-NEXT:    ldr q0, [x8, :lo12:.LCPI179_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI179_0
+; CHECK-SD-NEXT:    ldr q0, [x16, :lo12:.LCPI179_0]
 ; CHECK-SD-NEXT:    add v0.2d, v0.2d, v0.2d
 ; CHECK-SD-NEXT:    ret
 ;

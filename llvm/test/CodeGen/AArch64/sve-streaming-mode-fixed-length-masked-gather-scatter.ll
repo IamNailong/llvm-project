@@ -29,8 +29,8 @@ define <2 x i64> @masked_gather_v2i64(ptr %a, ptr %b) vscale_range(2, 2) {
 ; CHECK-NEXT:    tbnz w8, #1, .LBB0_3
 ; CHECK-NEXT:    b .LBB0_4
 ; CHECK-NEXT:  .LBB0_2:
-; CHECK-NEXT:    adrp x9, .LCPI0_0
-; CHECK-NEXT:    ldr q0, [x9, :lo12:.LCPI0_0]
+; CHECK-NEXT:    adrp x16, .LCPI0_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI0_0]
 ; CHECK-NEXT:    tbz w8, #1, .LBB0_4
 ; CHECK-NEXT:  .LBB0_3: // %cond.load1
 ; CHECK-NEXT:    mov w8, #1 // =0x1
@@ -72,8 +72,8 @@ define <2 x i64> @masked_gather_v2i64(ptr %a, ptr %b) vscale_range(2, 2) {
 ; NONEON-NOSVE-NEXT:    tbnz w8, #1, .LBB0_3
 ; NONEON-NOSVE-NEXT:    b .LBB0_4
 ; NONEON-NOSVE-NEXT:  .LBB0_2:
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI0_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x9, :lo12:.LCPI0_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI0_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI0_0]
 ; NONEON-NOSVE-NEXT:    tbz w8, #1, .LBB0_4
 ; NONEON-NOSVE-NEXT:  .LBB0_3: // %cond.load1
 ; NONEON-NOSVE-NEXT:    str q1, [sp, #64]

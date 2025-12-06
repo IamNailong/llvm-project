@@ -7,8 +7,8 @@ define void @foo_st2_v16i8(<16 x i1> %mask, <16 x i8> %val1, <16 x i8> %val2, pt
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    zip2 v3.16b, v0.16b, v0.16b
 ; CHECK-NEXT:    zip1 v0.16b, v0.16b, v0.16b
-; CHECK-NEXT:    adrp x8, .LCPI0_0
-; CHECK-NEXT:    ldr q4, [x8, :lo12:.LCPI0_0]
+; CHECK-NEXT:    adrp x16, .LCPI0_0
+; CHECK-NEXT:    ldr q4, [x16, :lo12:.LCPI0_0]
 ; CHECK-NEXT:    shl v3.16b, v3.16b, #7
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
 ; CHECK-NEXT:    cmlt v3.16b, v3.16b, #0
@@ -228,9 +228,9 @@ define void @foo_st2_v8i16(<8 x i1> %mask, <8 x i16> %val1, <8 x i16> %val2, ptr
 ; CHECK-LABEL: foo_st2_v8i16:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    // kill: def $d0 killed $d0 def $q0
-; CHECK-NEXT:    adrp x8, .LCPI1_0
+; CHECK-NEXT:    adrp x16, .LCPI1_0
 ; CHECK-NEXT:    zip1 v0.16b, v0.16b, v0.16b
-; CHECK-NEXT:    ldr q3, [x8, :lo12:.LCPI1_0]
+; CHECK-NEXT:    ldr q3, [x16, :lo12:.LCPI1_0]
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
 ; CHECK-NEXT:    cmlt v0.16b, v0.16b, #0
 ; CHECK-NEXT:    and v0.16b, v0.16b, v3.16b

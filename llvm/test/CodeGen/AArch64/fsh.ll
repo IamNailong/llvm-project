@@ -3291,10 +3291,10 @@ entry:
 define <7 x i16> @rotl_v7i16_c(<7 x i16> %a) {
 ; CHECK-SD-LABEL: rotl_v7i16_c:
 ; CHECK-SD:       // %bb.0: // %entry
-; CHECK-SD-NEXT:    adrp x8, .LCPI98_0
-; CHECK-SD-NEXT:    adrp x9, .LCPI98_1
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI98_0]
-; CHECK-SD-NEXT:    ldr q2, [x9, :lo12:.LCPI98_1]
+; CHECK-SD-NEXT:    adrp x16, .LCPI98_0
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI98_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI98_1
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI98_1]
 ; CHECK-SD-NEXT:    ushl v1.8h, v0.8h, v1.8h
 ; CHECK-SD-NEXT:    ushl v0.8h, v0.8h, v2.8h
 ; CHECK-SD-NEXT:    orr v0.16b, v0.16b, v1.16b
@@ -3331,10 +3331,10 @@ entry:
 define <7 x i16> @rotr_v7i16_c(<7 x i16> %a) {
 ; CHECK-SD-LABEL: rotr_v7i16_c:
 ; CHECK-SD:       // %bb.0: // %entry
-; CHECK-SD-NEXT:    adrp x8, .LCPI99_0
-; CHECK-SD-NEXT:    adrp x9, .LCPI99_1
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI99_0]
-; CHECK-SD-NEXT:    ldr q2, [x9, :lo12:.LCPI99_1]
+; CHECK-SD-NEXT:    adrp x16, .LCPI99_0
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI99_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI99_1
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI99_1]
 ; CHECK-SD-NEXT:    ushl v1.8h, v0.8h, v1.8h
 ; CHECK-SD-NEXT:    ushl v0.8h, v0.8h, v2.8h
 ; CHECK-SD-NEXT:    orr v0.16b, v0.16b, v1.16b
@@ -3933,10 +3933,10 @@ entry:
 define <7 x i16> @fshl_v7i16_c(<7 x i16> %a, <7 x i16> %b) {
 ; CHECK-SD-LABEL: fshl_v7i16_c:
 ; CHECK-SD:       // %bb.0: // %entry
-; CHECK-SD-NEXT:    adrp x8, .LCPI124_0
-; CHECK-SD-NEXT:    adrp x9, .LCPI124_1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI124_0]
-; CHECK-SD-NEXT:    ldr q3, [x9, :lo12:.LCPI124_1]
+; CHECK-SD-NEXT:    adrp x16, .LCPI124_0
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI124_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI124_1
+; CHECK-SD-NEXT:    ldr q3, [x16, :lo12:.LCPI124_1]
 ; CHECK-SD-NEXT:    ushl v1.8h, v1.8h, v2.8h
 ; CHECK-SD-NEXT:    ushl v0.8h, v0.8h, v3.8h
 ; CHECK-SD-NEXT:    orr v0.16b, v0.16b, v1.16b
@@ -3973,10 +3973,10 @@ entry:
 define <7 x i16> @fshr_v7i16_c(<7 x i16> %a, <7 x i16> %b) {
 ; CHECK-SD-LABEL: fshr_v7i16_c:
 ; CHECK-SD:       // %bb.0: // %entry
-; CHECK-SD-NEXT:    adrp x8, .LCPI125_0
-; CHECK-SD-NEXT:    adrp x9, .LCPI125_1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI125_0]
-; CHECK-SD-NEXT:    ldr q3, [x9, :lo12:.LCPI125_1]
+; CHECK-SD-NEXT:    adrp x16, .LCPI125_0
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI125_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI125_1
+; CHECK-SD-NEXT:    ldr q3, [x16, :lo12:.LCPI125_1]
 ; CHECK-SD-NEXT:    ushl v1.8h, v1.8h, v2.8h
 ; CHECK-SD-NEXT:    ushl v0.8h, v0.8h, v3.8h
 ; CHECK-SD-NEXT:    orr v0.16b, v0.16b, v1.16b

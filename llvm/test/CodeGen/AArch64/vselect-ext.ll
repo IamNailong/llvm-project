@@ -572,22 +572,22 @@ define void @extension_in_loop_v16i8_to_v16i32(ptr %src, ptr %dst) {
 ; CHECK-LABEL: extension_in_loop_v16i8_to_v16i32:
 ; CHECK:       ; %bb.0: ; %entry
 ; CHECK-NEXT:  Lloh2:
-; CHECK-NEXT:    adrp x8, lCPI24_0@PAGE
-; CHECK-NEXT:  Lloh3:
-; CHECK-NEXT:    adrp x9, lCPI24_1@PAGE
-; CHECK-NEXT:  Lloh4:
-; CHECK-NEXT:    adrp x10, lCPI24_2@PAGE
-; CHECK-NEXT:  Lloh5:
-; CHECK-NEXT:    ldr q0, [x8, lCPI24_0@PAGEOFF]
-; CHECK-NEXT:  Lloh6:
-; CHECK-NEXT:    adrp x8, lCPI24_3@PAGE
-; CHECK-NEXT:  Lloh7:
-; CHECK-NEXT:    ldr q1, [x9, lCPI24_1@PAGEOFF]
-; CHECK-NEXT:  Lloh8:
-; CHECK-NEXT:    ldr q2, [x10, lCPI24_2@PAGEOFF]
-; CHECK-NEXT:  Lloh9:
-; CHECK-NEXT:    ldr q3, [x8, lCPI24_3@PAGEOFF]
+; CHECK-NEXT:    adrp x16, lCPI24_0@PAGE
 ; CHECK-NEXT:    mov x8, xzr
+; CHECK-NEXT:  Lloh3:
+; CHECK-NEXT:    ldr q0, [x16, lCPI24_0@PAGEOFF]
+; CHECK-NEXT:  Lloh4:
+; CHECK-NEXT:    adrp x16, lCPI24_1@PAGE
+; CHECK-NEXT:  Lloh5:
+; CHECK-NEXT:    ldr q1, [x16, lCPI24_1@PAGEOFF]
+; CHECK-NEXT:  Lloh6:
+; CHECK-NEXT:    adrp x16, lCPI24_2@PAGE
+; CHECK-NEXT:  Lloh7:
+; CHECK-NEXT:    ldr q2, [x16, lCPI24_2@PAGEOFF]
+; CHECK-NEXT:  Lloh8:
+; CHECK-NEXT:    adrp x16, lCPI24_3@PAGE
+; CHECK-NEXT:  Lloh9:
+; CHECK-NEXT:    ldr q3, [x16, lCPI24_3@PAGEOFF]
 ; CHECK-NEXT:  LBB24_1: ; %loop
 ; CHECK-NEXT:    ; =>This Inner Loop Header: Depth=1
 ; CHECK-NEXT:    ldr q4, [x0, x8]
@@ -613,11 +613,10 @@ define void @extension_in_loop_v16i8_to_v16i32(ptr %src, ptr %dst) {
 ; CHECK-NEXT:    b.ne LBB24_1
 ; CHECK-NEXT:  ; %bb.2: ; %exit
 ; CHECK-NEXT:    ret
-; CHECK-NEXT:    .loh AdrpLdr Lloh6, Lloh9
-; CHECK-NEXT:    .loh AdrpLdr Lloh4, Lloh8
-; CHECK-NEXT:    .loh AdrpLdr Lloh3, Lloh7
-; CHECK-NEXT:    .loh AdrpAdrp Lloh2, Lloh6
-; CHECK-NEXT:    .loh AdrpLdr Lloh2, Lloh5
+; CHECK-NEXT:    .loh AdrpLdr Lloh8, Lloh9
+; CHECK-NEXT:    .loh AdrpLdr Lloh6, Lloh7
+; CHECK-NEXT:    .loh AdrpLdr Lloh4, Lloh5
+; CHECK-NEXT:    .loh AdrpLdr Lloh2, Lloh3
 entry:
   br label %loop
 
@@ -642,22 +641,22 @@ define void @extension_in_loop_as_shuffle_v16i8_to_v16i32(ptr %src, ptr %dst) {
 ; CHECK-LABEL: extension_in_loop_as_shuffle_v16i8_to_v16i32:
 ; CHECK:       ; %bb.0: ; %entry
 ; CHECK-NEXT:  Lloh10:
-; CHECK-NEXT:    adrp x8, lCPI25_0@PAGE
-; CHECK-NEXT:  Lloh11:
-; CHECK-NEXT:    adrp x9, lCPI25_1@PAGE
-; CHECK-NEXT:  Lloh12:
-; CHECK-NEXT:    adrp x10, lCPI25_2@PAGE
-; CHECK-NEXT:  Lloh13:
-; CHECK-NEXT:    ldr q0, [x8, lCPI25_0@PAGEOFF]
-; CHECK-NEXT:  Lloh14:
-; CHECK-NEXT:    adrp x8, lCPI25_3@PAGE
-; CHECK-NEXT:  Lloh15:
-; CHECK-NEXT:    ldr q1, [x9, lCPI25_1@PAGEOFF]
-; CHECK-NEXT:  Lloh16:
-; CHECK-NEXT:    ldr q2, [x10, lCPI25_2@PAGEOFF]
-; CHECK-NEXT:  Lloh17:
-; CHECK-NEXT:    ldr q3, [x8, lCPI25_3@PAGEOFF]
+; CHECK-NEXT:    adrp x16, lCPI25_0@PAGE
 ; CHECK-NEXT:    mov x8, xzr
+; CHECK-NEXT:  Lloh11:
+; CHECK-NEXT:    ldr q0, [x16, lCPI25_0@PAGEOFF]
+; CHECK-NEXT:  Lloh12:
+; CHECK-NEXT:    adrp x16, lCPI25_1@PAGE
+; CHECK-NEXT:  Lloh13:
+; CHECK-NEXT:    ldr q1, [x16, lCPI25_1@PAGEOFF]
+; CHECK-NEXT:  Lloh14:
+; CHECK-NEXT:    adrp x16, lCPI25_2@PAGE
+; CHECK-NEXT:  Lloh15:
+; CHECK-NEXT:    ldr q2, [x16, lCPI25_2@PAGEOFF]
+; CHECK-NEXT:  Lloh16:
+; CHECK-NEXT:    adrp x16, lCPI25_3@PAGE
+; CHECK-NEXT:  Lloh17:
+; CHECK-NEXT:    ldr q3, [x16, lCPI25_3@PAGEOFF]
 ; CHECK-NEXT:  LBB25_1: ; %loop
 ; CHECK-NEXT:    ; =>This Inner Loop Header: Depth=1
 ; CHECK-NEXT:    ldr q4, [x0, x8]
@@ -683,11 +682,10 @@ define void @extension_in_loop_as_shuffle_v16i8_to_v16i32(ptr %src, ptr %dst) {
 ; CHECK-NEXT:    b.ne LBB25_1
 ; CHECK-NEXT:  ; %bb.2: ; %exit
 ; CHECK-NEXT:    ret
-; CHECK-NEXT:    .loh AdrpLdr Lloh14, Lloh17
-; CHECK-NEXT:    .loh AdrpLdr Lloh12, Lloh16
-; CHECK-NEXT:    .loh AdrpLdr Lloh11, Lloh15
-; CHECK-NEXT:    .loh AdrpAdrp Lloh10, Lloh14
-; CHECK-NEXT:    .loh AdrpLdr Lloh10, Lloh13
+; CHECK-NEXT:    .loh AdrpLdr Lloh16, Lloh17
+; CHECK-NEXT:    .loh AdrpLdr Lloh14, Lloh15
+; CHECK-NEXT:    .loh AdrpLdr Lloh12, Lloh13
+; CHECK-NEXT:    .loh AdrpLdr Lloh10, Lloh11
 entry:
   br label %loop
 
@@ -713,22 +711,22 @@ define void @shuffle_in_loop_is_no_extend_v16i8_to_v16i32(ptr %src, ptr %dst) {
 ; CHECK-LABEL: shuffle_in_loop_is_no_extend_v16i8_to_v16i32:
 ; CHECK:       ; %bb.0: ; %entry
 ; CHECK-NEXT:  Lloh18:
-; CHECK-NEXT:    adrp x8, lCPI26_0@PAGE
-; CHECK-NEXT:  Lloh19:
-; CHECK-NEXT:    adrp x9, lCPI26_1@PAGE
-; CHECK-NEXT:  Lloh20:
-; CHECK-NEXT:    adrp x10, lCPI26_2@PAGE
-; CHECK-NEXT:  Lloh21:
-; CHECK-NEXT:    ldr q0, [x8, lCPI26_0@PAGEOFF]
-; CHECK-NEXT:  Lloh22:
-; CHECK-NEXT:    adrp x8, lCPI26_3@PAGE
-; CHECK-NEXT:  Lloh23:
-; CHECK-NEXT:    ldr q1, [x9, lCPI26_1@PAGEOFF]
-; CHECK-NEXT:  Lloh24:
-; CHECK-NEXT:    ldr q2, [x10, lCPI26_2@PAGEOFF]
-; CHECK-NEXT:  Lloh25:
-; CHECK-NEXT:    ldr q3, [x8, lCPI26_3@PAGEOFF]
+; CHECK-NEXT:    adrp x16, lCPI26_0@PAGE
 ; CHECK-NEXT:    mov x8, xzr
+; CHECK-NEXT:  Lloh19:
+; CHECK-NEXT:    ldr q0, [x16, lCPI26_0@PAGEOFF]
+; CHECK-NEXT:  Lloh20:
+; CHECK-NEXT:    adrp x16, lCPI26_1@PAGE
+; CHECK-NEXT:  Lloh21:
+; CHECK-NEXT:    ldr q1, [x16, lCPI26_1@PAGEOFF]
+; CHECK-NEXT:  Lloh22:
+; CHECK-NEXT:    adrp x16, lCPI26_2@PAGE
+; CHECK-NEXT:  Lloh23:
+; CHECK-NEXT:    ldr q2, [x16, lCPI26_2@PAGEOFF]
+; CHECK-NEXT:  Lloh24:
+; CHECK-NEXT:    adrp x16, lCPI26_3@PAGE
+; CHECK-NEXT:  Lloh25:
+; CHECK-NEXT:    ldr q3, [x16, lCPI26_3@PAGEOFF]
 ; CHECK-NEXT:  LBB26_1: ; %loop
 ; CHECK-NEXT:    ; =>This Inner Loop Header: Depth=1
 ; CHECK-NEXT:    ldr q4, [x0, x8]
@@ -754,11 +752,10 @@ define void @shuffle_in_loop_is_no_extend_v16i8_to_v16i32(ptr %src, ptr %dst) {
 ; CHECK-NEXT:    b.ne LBB26_1
 ; CHECK-NEXT:  ; %bb.2: ; %exit
 ; CHECK-NEXT:    ret
-; CHECK-NEXT:    .loh AdrpLdr Lloh22, Lloh25
-; CHECK-NEXT:    .loh AdrpLdr Lloh20, Lloh24
-; CHECK-NEXT:    .loh AdrpLdr Lloh19, Lloh23
-; CHECK-NEXT:    .loh AdrpAdrp Lloh18, Lloh22
-; CHECK-NEXT:    .loh AdrpLdr Lloh18, Lloh21
+; CHECK-NEXT:    .loh AdrpLdr Lloh24, Lloh25
+; CHECK-NEXT:    .loh AdrpLdr Lloh22, Lloh23
+; CHECK-NEXT:    .loh AdrpLdr Lloh20, Lloh21
+; CHECK-NEXT:    .loh AdrpLdr Lloh18, Lloh19
 entry:
   br label %loop
 

@@ -364,6 +364,8 @@ public:
 
   bool tryIndexedLoad(SDNode *N);
 
+  bool tryConstantPoolLoad(SDNode *N);
+
   void SelectPtrauthAuth(SDNode *N);
   void SelectPtrauthResign(SDNode *N);
 
@@ -1747,6 +1749,73 @@ bool AArch64DAGToDAGISel::tryIndexedLoad(SDNode *N) {
   ReplaceUses(SDValue(N, 0), LoadedVal);
   ReplaceUses(SDValue(N, 1), SDValue(Res, 0));
   ReplaceUses(SDValue(N, 2), SDValue(Res, 2));
+  CurDAG->RemoveDeadNode(N);
+  return true;
+}
+
+/// Try to select a constant pool load as a rematerializable pseudo.
+/// This combines ADRP + LDR into a single instruction that can be
+/// rematerialized instead of spilled.
+bool AArch64DAGToDAGISel::tryConstantPoolLoad(SDNode *N) {
+  LoadSDNode *LD = cast<LoadSDNode>(N);
+
+  // Only handle simple unindexed loads.
+  if (!LD->isUnindexed() || LD->isVolatile())
+    return false;
+
+  // Only handle non-extending loads.
+  if (LD->getExtensionType() != ISD::NON_EXTLOAD)
+    return false;
+
+  SDValue Addr = LD->getBasePtr();
+
+  // We're looking for (load (AArch64ISD::ADDlow (AArch64ISD::ADRP tconstpool), tconstpool))
+  if (Addr.getOpcode() != AArch64ISD::ADDlow)
+    return false;
+
+  SDValue ADRP = Addr.getOperand(0);
+  SDValue Lo = Addr.getOperand(1);
+
+  if (ADRP.getOpcode() != AArch64ISD::ADRP)
+    return false;
+
+  // Check if this is a constant pool reference.
+  auto *CPN = dyn_cast<ConstantPoolSDNode>(Lo);
+  if (!CPN)
+    return false;
+
+  EVT VT = LD->getValueType(0);
+  SDLoc DL(N);
+
+  // For now, only handle 128-bit vector loads.
+  if (!VT.is128BitVector())
+    return false;
+
+  // Create the constant pool operand with the appropriate target flags.
+  SDValue CPAddr = CurDAG->getTargetConstantPool(
+      CPN->getConstVal(), TLI->getPointerTy(CurDAG->getDataLayout()),
+      CPN->getAlign(), CPN->getOffset(), AArch64II::MO_PAGE);
+
+  SDValue Chain = LD->getChain();
+  SDValue Ops[] = {CPAddr, Chain};
+
+  // Create the LOADcpQ pseudo instruction.
+  // Result 0: loaded FPR128 value
+  // Result 1: output chain
+  // X16 is implicitly defined and used as scratch for ADRP.
+  // Use the actual VT for the loaded value - all 128-bit vector types
+  // use FPR128 register class, so bitcasts are no-ops at the machine level.
+  SDNode *Res = CurDAG->getMachineNode(AArch64::LOADcpQ, DL,
+                                       VT,          // loaded value in actual type
+                                       MVT::Other,  // chain
+                                       Ops);
+
+  // Transfer memory operand.
+  MachineMemOperand *MemOp = LD->getMemOperand();
+  CurDAG->setNodeMemRefs(cast<MachineSDNode>(Res), {MemOp});
+
+  ReplaceUses(SDValue(N, 0), SDValue(Res, 0));
+  ReplaceUses(SDValue(N, 1), SDValue(Res, 1)); // chain
   CurDAG->RemoveDeadNode(N);
   return true;
 }
@@ -4839,6 +4908,9 @@ void AArch64DAGToDAGISel::Select(SDNode *Node) {
     // Try to select as an indexed load. Fall through to normal processing
     // if we can't.
     if (tryIndexedLoad(Node))
+      return;
+    // Try to select constant pool loads as rematerializable pseudos.
+    if (tryConstantPoolLoad(Node))
       return;
     break;
   }

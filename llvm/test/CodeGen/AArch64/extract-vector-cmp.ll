@@ -181,9 +181,9 @@ define i1 @extract_icmp_v4i32_splat_rhs_mul_use(<4 x i32> %a, ptr %p) {
 ; CHECK-LABEL: extract_icmp_v4i32_splat_rhs_mul_use:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    movi v1.4s, #235
-; CHECK-NEXT:    adrp x8, .LCPI8_0
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI8_0]
+; CHECK-NEXT:    adrp x16, .LCPI8_0
 ; CHECK-NEXT:    mov x8, x0
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI8_0]
 ; CHECK-NEXT:    cmhi v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    xtn v1.4h, v0.4s
 ; CHECK-NEXT:    and v0.16b, v0.16b, v2.16b

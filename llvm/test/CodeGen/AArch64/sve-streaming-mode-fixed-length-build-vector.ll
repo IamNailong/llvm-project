@@ -33,10 +33,10 @@ define void @build_vector_7_inc1_v32i8(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: build_vector_7_inc1_v32i8:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI1_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI1_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI1_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI1_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI1_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI1_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI1_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI1_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <32 x i8> <i8 7, i8 8, i8 9, i8 10, i8 11, i8 12, i8 13, i8 14, i8 15, i8 16, i8 17, i8 18, i8 19, i8 20, i8 21, i8 22, i8 23, i8 24, i8 25, i8 26, i8 27, i8 28, i8 29, i8 30, i8 31, i8 32, i8 33, i8 34, i8 35, i8 36, i8 37, i8 38>, ptr %a, align 1
@@ -54,10 +54,10 @@ define void @build_vector_0_inc2_v16i16(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: build_vector_0_inc2_v16i16:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI2_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI2_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI2_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI2_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI2_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI2_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI2_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI2_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <16 x i16> <i16 0, i16 2, i16 4, i16 6, i16 8, i16 10, i16 12, i16 14, i16 16, i16 18, i16 20, i16 22, i16 24, i16 26, i16 28, i16 30>, ptr %a, align 2
@@ -76,10 +76,10 @@ define void @build_vector_0_dec3_v8i32(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: build_vector_0_dec3_v8i32:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI3_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI3_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI3_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI3_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI3_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI3_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI3_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI3_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <8 x i32> <i32 0, i32 -3, i32 -6, i32 -9, i32 -12, i32 -15, i32 -18, i32 -21>, ptr %a, align 4
@@ -100,10 +100,10 @@ define void @build_vector_minus2_dec32_v4i64(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: build_vector_minus2_dec32_v4i64:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI4_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI4_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI4_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI4_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI4_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI4_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI4_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI4_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <4 x i64> <i64 -2, i64 -34, i64 -66, i64 -98>, ptr %a, align 8
@@ -121,10 +121,10 @@ define void @build_vector_no_stride_v4i64(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: build_vector_no_stride_v4i64:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI5_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI5_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI5_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI5_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI5_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI5_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI5_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI5_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <4 x i64> <i64 0, i64 4, i64 1, i64 8>, ptr %a, align 8
@@ -134,19 +134,19 @@ define void @build_vector_no_stride_v4i64(ptr %a) {
 define void @build_vector_0_inc2_v16f16(ptr %a) {
 ; CHECK-LABEL: build_vector_0_inc2_v16f16:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI6_0
-; CHECK-NEXT:    adrp x9, .LCPI6_1
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI6_0]
-; CHECK-NEXT:    ldr q1, [x9, :lo12:.LCPI6_1]
+; CHECK-NEXT:    adrp x16, .LCPI6_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI6_0]
+; CHECK-NEXT:    adrp x16, .LCPI6_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI6_1]
 ; CHECK-NEXT:    stp q1, q0, [x0]
 ; CHECK-NEXT:    ret
 ;
 ; NONEON-NOSVE-LABEL: build_vector_0_inc2_v16f16:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI6_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI6_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI6_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI6_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI6_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI6_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI6_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI6_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <16 x half> <half 0.0, half 2.0, half 4.0, half 6.0, half 8.0, half 10.0, half 12.0, half 14.0, half 16.0, half 18.0, half 20.0, half 22.0, half 24.0, half 26.0, half 28.0, half 30.0>, ptr %a, align 2
@@ -157,19 +157,19 @@ define void @build_vector_0_inc2_v16f16(ptr %a) {
 define void @build_vector_0_dec3_v8f32(ptr %a) {
 ; CHECK-LABEL: build_vector_0_dec3_v8f32:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI7_0
-; CHECK-NEXT:    adrp x9, .LCPI7_1
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI7_0]
-; CHECK-NEXT:    ldr q1, [x9, :lo12:.LCPI7_1]
+; CHECK-NEXT:    adrp x16, .LCPI7_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI7_0]
+; CHECK-NEXT:    adrp x16, .LCPI7_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI7_1]
 ; CHECK-NEXT:    stp q1, q0, [x0]
 ; CHECK-NEXT:    ret
 ;
 ; NONEON-NOSVE-LABEL: build_vector_0_dec3_v8f32:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI7_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI7_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI7_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI7_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI7_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI7_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI7_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI7_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <8 x float> <float 0.0, float -3.0, float -6.0, float -9.0, float -12.0, float -15.0, float -18.0, float -21.0>, ptr %a, align 4
@@ -180,19 +180,19 @@ define void @build_vector_0_dec3_v8f32(ptr %a) {
 define void @build_vector_minus2_dec32_v4f64(ptr %a) {
 ; CHECK-LABEL: build_vector_minus2_dec32_v4f64:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI8_0
-; CHECK-NEXT:    adrp x9, .LCPI8_1
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI8_0]
-; CHECK-NEXT:    ldr q1, [x9, :lo12:.LCPI8_1]
+; CHECK-NEXT:    adrp x16, .LCPI8_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI8_0]
+; CHECK-NEXT:    adrp x16, .LCPI8_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI8_1]
 ; CHECK-NEXT:    stp q1, q0, [x0]
 ; CHECK-NEXT:    ret
 ;
 ; NONEON-NOSVE-LABEL: build_vector_minus2_dec32_v4f64:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI8_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI8_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI8_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI8_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI8_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI8_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI8_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI8_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <4 x double> <double -2.0, double -34.0, double -66.0, double -98.0>, ptr %a, align 8
@@ -203,19 +203,19 @@ define void @build_vector_minus2_dec32_v4f64(ptr %a) {
 define void @build_vector_no_stride_v4f64(ptr %a) {
 ; CHECK-LABEL: build_vector_no_stride_v4f64:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI9_0
-; CHECK-NEXT:    adrp x9, .LCPI9_1
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI9_0]
-; CHECK-NEXT:    ldr q1, [x9, :lo12:.LCPI9_1]
+; CHECK-NEXT:    adrp x16, .LCPI9_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI9_0]
+; CHECK-NEXT:    adrp x16, .LCPI9_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI9_1]
 ; CHECK-NEXT:    stp q1, q0, [x0]
 ; CHECK-NEXT:    ret
 ;
 ; NONEON-NOSVE-LABEL: build_vector_no_stride_v4f64:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI9_0
-; NONEON-NOSVE-NEXT:    adrp x9, .LCPI9_1
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI9_0]
-; NONEON-NOSVE-NEXT:    ldr q1, [x9, :lo12:.LCPI9_1]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI9_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI9_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI9_1
+; NONEON-NOSVE-NEXT:    ldr q1, [x16, :lo12:.LCPI9_1]
 ; NONEON-NOSVE-NEXT:    stp q1, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <4 x double> <double 0.0, double 4.0, double 1.0, double 8.0>, ptr %a, align 8

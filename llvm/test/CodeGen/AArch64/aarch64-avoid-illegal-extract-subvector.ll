@@ -20,8 +20,8 @@ define <2 x i64> @test1(<4 x i32> %x) #0 {
 define <4 x i64> @test2(<4 x i32> %0) {
 ; CHECK-LABEL: test2:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI1_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
+; CHECK-NEXT:    adrp x16, .LCPI1_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI1_0]
 ; CHECK-NEXT:    add v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    mov w8, v0.s[1]
 ; CHECK-NEXT:    mov w9, v0.s[2]

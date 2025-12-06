@@ -12,10 +12,10 @@ define <2 x ptr> @vector_gep(<2 x ptr> %0) {
 ; CHECK-LABEL: vector_gep:
 ; CHECK:       ; %bb.0: ; %entry
 ; CHECK-NEXT:  Lloh0:
-; CHECK-NEXT:    adrp x8, lCPI0_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI0_0@PAGE
 ; CHECK-NEXT:    movi v2.2d, #0x000000ffffffff
 ; CHECK-NEXT:  Lloh1:
-; CHECK-NEXT:    ldr q1, [x8, lCPI0_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI0_0@PAGEOFF]
 ; CHECK-NEXT:    add v0.2d, v0.2d, v1.2d
 ; CHECK-NEXT:    and v0.16b, v0.16b, v2.16b
 ; CHECK-NEXT:    ret

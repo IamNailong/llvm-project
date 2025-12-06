@@ -102,10 +102,10 @@ define <32 x i1> @whilewr_8_split(ptr %a, ptr %b) {
 ; CHECK:       // %bb.0: // %entry
 ; CHECK-NEXT:    add x9, x0, #16
 ; CHECK-NEXT:    whilewr p0.b, x0, x1
+; CHECK-NEXT:    adrp x16, .LCPI8_0
 ; CHECK-NEXT:    whilewr p1.b, x9, x1
-; CHECK-NEXT:    adrp x9, .LCPI8_0
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI8_0]
 ; CHECK-NEXT:    mov z0.b, p0/z, #-1 // =0xffffffffffffffff
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI8_0]
 ; CHECK-NEXT:    mov z1.b, p1/z, #-1 // =0xffffffffffffffff
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
 ; CHECK-NEXT:    shl v1.16b, v1.16b, #7
@@ -135,12 +135,12 @@ define <64 x i1> @whilewr_8_split2(ptr %a, ptr %b) {
 ; CHECK-NEXT:    add x10, x0, #16
 ; CHECK-NEXT:    whilewr p1.b, x9, x1
 ; CHECK-NEXT:    add x9, x0, #32
+; CHECK-NEXT:    adrp x16, .LCPI9_0
 ; CHECK-NEXT:    mov z0.b, p0/z, #-1 // =0xffffffffffffffff
 ; CHECK-NEXT:    whilewr p0.b, x9, x1
-; CHECK-NEXT:    adrp x9, .LCPI9_0
+; CHECK-NEXT:    ldr q4, [x16, :lo12:.LCPI9_0]
 ; CHECK-NEXT:    mov z1.b, p1/z, #-1 // =0xffffffffffffffff
 ; CHECK-NEXT:    whilewr p1.b, x10, x1
-; CHECK-NEXT:    ldr q4, [x9, :lo12:.LCPI9_0]
 ; CHECK-NEXT:    mov z2.b, p0/z, #-1 // =0xffffffffffffffff
 ; CHECK-NEXT:    mov z3.b, p1/z, #-1 // =0xffffffffffffffff
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
@@ -229,6 +229,7 @@ define <32 x i1> @whilewr_16_expand2(ptr %a, ptr %b) {
 ; CHECK:       // %bb.0: // %entry
 ; CHECK-NEXT:    sub x9, x1, x0
 ; CHECK-NEXT:    index z0.d, #0, #1
+; CHECK-NEXT:    adrp x16, .LCPI11_0
 ; CHECK-NEXT:    sub x10, x9, #32
 ; CHECK-NEXT:    add x9, x9, x9, lsr #63
 ; CHECK-NEXT:    add x10, x10, x10, lsr #63
@@ -282,12 +283,11 @@ define <32 x i1> @whilewr_16_expand2(ptr %a, ptr %b) {
 ; CHECK-NEXT:    uzp1 v4.8h, v5.8h, v4.8h
 ; CHECK-NEXT:    uzp1 v0.8h, v2.8h, v0.8h
 ; CHECK-NEXT:    dup v2.16b, w9
-; CHECK-NEXT:    adrp x9, .LCPI11_0
 ; CHECK-NEXT:    uzp1 v1.16b, v1.16b, v3.16b
 ; CHECK-NEXT:    dup v3.16b, w10
 ; CHECK-NEXT:    uzp1 v0.16b, v4.16b, v0.16b
 ; CHECK-NEXT:    orr v1.16b, v1.16b, v2.16b
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI11_0]
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI11_0]
 ; CHECK-NEXT:    orr v0.16b, v0.16b, v3.16b
 ; CHECK-NEXT:    shl v1.16b, v1.16b, #7
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
@@ -395,6 +395,7 @@ define <32 x i1> @whilewr_32_expand3(ptr %a, ptr %b) {
 ; CHECK:       // %bb.0: // %entry
 ; CHECK-NEXT:    sub x10, x1, x0
 ; CHECK-NEXT:    index z0.d, #0, #1
+; CHECK-NEXT:    adrp x16, .LCPI14_0
 ; CHECK-NEXT:    sub x9, x10, #61
 ; CHECK-NEXT:    subs x11, x10, #64
 ; CHECK-NEXT:    add x12, x10, #3
@@ -454,10 +455,9 @@ define <32 x i1> @whilewr_32_expand3(ptr %a, ptr %b) {
 ; CHECK-NEXT:    uzp1 v0.16b, v2.16b, v0.16b
 ; CHECK-NEXT:    dup v3.16b, w10
 ; CHECK-NEXT:    dup v2.16b, w9
-; CHECK-NEXT:    adrp x9, .LCPI14_0
 ; CHECK-NEXT:    orr v1.16b, v1.16b, v3.16b
 ; CHECK-NEXT:    orr v0.16b, v0.16b, v2.16b
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI14_0]
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI14_0]
 ; CHECK-NEXT:    shl v1.16b, v1.16b, #7
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
 ; CHECK-NEXT:    cmlt v1.16b, v1.16b, #0
@@ -589,6 +589,7 @@ define <32 x i1> @whilewr_64_expand4(ptr %a, ptr %b) {
 ; CHECK:       // %bb.0: // %entry
 ; CHECK-NEXT:    sub x10, x1, x0
 ; CHECK-NEXT:    index z0.d, #0, #1
+; CHECK-NEXT:    adrp x16, .LCPI18_0
 ; CHECK-NEXT:    sub x9, x10, #121
 ; CHECK-NEXT:    subs x11, x10, #128
 ; CHECK-NEXT:    add x12, x10, #7
@@ -648,10 +649,9 @@ define <32 x i1> @whilewr_64_expand4(ptr %a, ptr %b) {
 ; CHECK-NEXT:    uzp1 v0.16b, v2.16b, v0.16b
 ; CHECK-NEXT:    dup v3.16b, w10
 ; CHECK-NEXT:    dup v2.16b, w9
-; CHECK-NEXT:    adrp x9, .LCPI18_0
 ; CHECK-NEXT:    orr v1.16b, v1.16b, v3.16b
 ; CHECK-NEXT:    orr v0.16b, v0.16b, v2.16b
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI18_0]
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI18_0]
 ; CHECK-NEXT:    shl v1.16b, v1.16b, #7
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
 ; CHECK-NEXT:    cmlt v1.16b, v1.16b, #0

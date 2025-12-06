@@ -620,14 +620,14 @@ define void @zip_v4i32(ptr %a, ptr %b) {
 define void @zip1_v8i32_undef(ptr %a) {
 ; CHECK-LABEL: zip1_v8i32_undef:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI6_0
-; CHECK-NEXT:    ldr q0, [x0, #16]
-; CHECK-NEXT:    ldr q0, [x0]
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI6_0]
-; CHECK-NEXT:    tbl z1.s, { z0.s }, z1.s
-; CHECK-NEXT:    zip1 z0.s, z0.s, z0.s
-; CHECK-NEXT:    str q1, [x0, #16]
-; CHECK-NEXT:    str q0, [x0]
+; CHECK-NEXT:    adrp x16, .LCPI6_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI6_0]
+; CHECK-NEXT:    ldr q1, [x0, #16]
+; CHECK-NEXT:    ldr q1, [x0]
+; CHECK-NEXT:    tbl z0.s, { z1.s }, z0.s
+; CHECK-NEXT:    zip1 z1.s, z1.s, z1.s
+; CHECK-NEXT:    str q0, [x0, #16]
+; CHECK-NEXT:    str q1, [x0]
 ; CHECK-NEXT:    ret
 ;
 ; NONEON-NOSVE-LABEL: zip1_v8i32_undef:
@@ -809,14 +809,14 @@ define void @trn_v32i8(ptr %a, ptr %b) {
 define void @trn_v8i16(ptr %a, ptr %b) {
 ; CHECK-LABEL: trn_v8i16:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI8_0
-; CHECK-NEXT:    adrp x9, .LCPI8_1
-; CHECK-NEXT:    ldr q0, [x0]
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI8_0]
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI8_1]
-; CHECK-NEXT:    tbl z1.h, { z0.h }, z1.h
-; CHECK-NEXT:    tbl z0.h, { z0.h }, z2.h
-; CHECK-NEXT:    add z0.h, z1.h, z0.h
+; CHECK-NEXT:    adrp x16, .LCPI8_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI8_0]
+; CHECK-NEXT:    adrp x16, .LCPI8_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI8_1]
+; CHECK-NEXT:    ldr q2, [x0]
+; CHECK-NEXT:    tbl z0.h, { z2.h }, z0.h
+; CHECK-NEXT:    tbl z1.h, { z2.h }, z1.h
+; CHECK-NEXT:    add z0.h, z0.h, z1.h
 ; CHECK-NEXT:    str q0, [x0]
 ; CHECK-NEXT:    ret
 ;
@@ -1393,14 +1393,14 @@ define void @zip2_v8i32(ptr %a, ptr %b) #0{
 define void @zip2_v8i32_undef(ptr %a) #0{
 ; CHECK-LABEL: zip2_v8i32_undef:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI17_0
-; CHECK-NEXT:    ldr q0, [x0]
-; CHECK-NEXT:    ldr q0, [x0, #16]
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI17_0]
-; CHECK-NEXT:    tbl z1.s, { z0.s }, z1.s
-; CHECK-NEXT:    zip1 z0.s, z0.s, z0.s
-; CHECK-NEXT:    str q1, [x0, #16]
-; CHECK-NEXT:    str q0, [x0]
+; CHECK-NEXT:    adrp x16, .LCPI17_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI17_0]
+; CHECK-NEXT:    ldr q1, [x0]
+; CHECK-NEXT:    ldr q1, [x0, #16]
+; CHECK-NEXT:    tbl z0.s, { z1.s }, z0.s
+; CHECK-NEXT:    zip1 z1.s, z1.s, z1.s
+; CHECK-NEXT:    str q0, [x0, #16]
+; CHECK-NEXT:    str q1, [x0]
 ; CHECK-NEXT:    ret
 ;
 ; NONEON-NOSVE-LABEL: zip2_v8i32_undef:
@@ -1706,14 +1706,14 @@ define void @uzp_v32i8(ptr %a, ptr %b) #0{
 define void @uzp_v4i16(ptr %a, ptr %b) #0{
 ; CHECK-LABEL: uzp_v4i16:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI19_0
-; CHECK-NEXT:    adrp x9, .LCPI19_1
-; CHECK-NEXT:    ldr d0, [x0]
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI19_0]
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI19_1]
-; CHECK-NEXT:    tbl z1.h, { z0.h }, z1.h
-; CHECK-NEXT:    tbl z0.h, { z0.h }, z2.h
-; CHECK-NEXT:    add z0.h, z1.h, z0.h
+; CHECK-NEXT:    adrp x16, .LCPI19_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI19_0]
+; CHECK-NEXT:    adrp x16, .LCPI19_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI19_1]
+; CHECK-NEXT:    ldr d2, [x0]
+; CHECK-NEXT:    tbl z0.h, { z2.h }, z0.h
+; CHECK-NEXT:    tbl z1.h, { z2.h }, z1.h
+; CHECK-NEXT:    add z0.h, z0.h, z1.h
 ; CHECK-NEXT:    str d0, [x0]
 ; CHECK-NEXT:    ret
 ;
@@ -1903,28 +1903,28 @@ define void @uzp_v16i16(ptr %a, ptr %b) #0{
 define void @uzp_v8f32(ptr %a, ptr %b) #0{
 ; CHECK-LABEL: uzp_v8f32:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    ldp q6, q0, [x0]
-; CHECK-NEXT:    adrp x8, .LCPI21_0
-; CHECK-NEXT:    ldp q1, q2, [x1]
+; CHECK-NEXT:    adrp x16, .LCPI21_0
 ; CHECK-NEXT:    ptrue p0.s, vl4
-; CHECK-NEXT:    mov z3.s, z0.s[2]
-; CHECK-NEXT:    mov z4.s, z0.s[3]
-; CHECK-NEXT:    mov z5.s, z0.s[1]
-; CHECK-NEXT:    mov z7.s, z2.s[2]
-; CHECK-NEXT:    mov z16.s, z1.s[2]
-; CHECK-NEXT:    zip1 z0.s, z0.s, z3.s
-; CHECK-NEXT:    zip1 z3.s, z5.s, z4.s
-; CHECK-NEXT:    mov z4.s, z6.s[1]
-; CHECK-NEXT:    zip1 z2.s, z2.s, z7.s
-; CHECK-NEXT:    ldr q5, [x8, :lo12:.LCPI21_0]
-; CHECK-NEXT:    zip1 z7.s, z0.s, z16.s
-; CHECK-NEXT:    tbl z1.s, { z1.s }, z5.s
-; CHECK-NEXT:    zip1 z0.d, z6.d, z0.d
-; CHECK-NEXT:    zip1 z3.d, z4.d, z3.d
-; CHECK-NEXT:    zip1 z2.d, z7.d, z2.d
-; CHECK-NEXT:    fadd z0.s, p0/m, z0.s, z3.s
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI21_0]
+; CHECK-NEXT:    ldp q7, q1, [x0]
+; CHECK-NEXT:    ldp q2, q3, [x1]
+; CHECK-NEXT:    mov z4.s, z1.s[2]
+; CHECK-NEXT:    mov z5.s, z1.s[3]
+; CHECK-NEXT:    mov z6.s, z1.s[1]
+; CHECK-NEXT:    mov z16.s, z3.s[2]
+; CHECK-NEXT:    mov z17.s, z2.s[2]
+; CHECK-NEXT:    zip1 z1.s, z1.s, z4.s
+; CHECK-NEXT:    zip1 z4.s, z6.s, z5.s
+; CHECK-NEXT:    mov z5.s, z7.s[1]
+; CHECK-NEXT:    zip1 z3.s, z3.s, z16.s
+; CHECK-NEXT:    zip1 z6.s, z0.s, z17.s
+; CHECK-NEXT:    tbl z0.s, { z2.s }, z0.s
+; CHECK-NEXT:    zip1 z1.d, z7.d, z1.d
+; CHECK-NEXT:    zip1 z2.d, z5.d, z4.d
+; CHECK-NEXT:    zip1 z3.d, z6.d, z3.d
 ; CHECK-NEXT:    fadd z1.s, p0/m, z1.s, z2.s
-; CHECK-NEXT:    stp q0, q1, [x0]
+; CHECK-NEXT:    fadd z0.s, p0/m, z0.s, z3.s
+; CHECK-NEXT:    stp q1, q0, [x0]
 ; CHECK-NEXT:    ret
 ;
 ; NONEON-NOSVE-LABEL: uzp_v8f32:

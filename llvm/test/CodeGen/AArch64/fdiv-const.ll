@@ -130,8 +130,8 @@ define <4 x float> @divv4f32_3_arcp(<4 x float> %a) nounwind {
 define <4 x float> @divv4f32_24816(<4 x float> %a) nounwind {
 ; CHECK-LABEL: divv4f32_24816:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI12_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI12_0]
+; CHECK-NEXT:    adrp x16, .LCPI12_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI12_0]
 ; CHECK-NEXT:    fdiv v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    ret
   %r = fdiv <4 x float> %a, <float 2.0, float 4.0, float 8.0, float 16.0>

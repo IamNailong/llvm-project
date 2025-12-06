@@ -16,9 +16,9 @@ define <8 x half> @interleave2_v8f16(<4 x half> %vec0, <4 x half> %vec1) {
 ; CHECK-SD:       // %bb.0:
 ; CHECK-SD-NEXT:    // kill: def $d0 killed $d0 def $q0
 ; CHECK-SD-NEXT:    // kill: def $d1 killed $d1 def $q1
-; CHECK-SD-NEXT:    adrp x8, .LCPI1_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI1_0
 ; CHECK-SD-NEXT:    mov v0.d[1], v1.d[0]
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI1_0]
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
 ; CHECK-SD-NEXT:    ret
 ;

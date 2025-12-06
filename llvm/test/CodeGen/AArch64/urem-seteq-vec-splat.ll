@@ -51,12 +51,12 @@ define <4 x i32> @test_urem_even_100(<4 x i32> %X) nounwind {
 define <4 x i32> @test_urem_odd_neg25(<4 x i32> %X) nounwind {
 ; CHECK-LABEL: test_urem_odd_neg25:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI2_0
+; CHECK-NEXT:    adrp x16, .LCPI2_0
 ; CHECK-NEXT:    movi v2.4s, #1
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI2_0]
-; CHECK-NEXT:    adrp x8, .LCPI2_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI2_0]
+; CHECK-NEXT:    adrp x16, .LCPI2_1
 ; CHECK-NEXT:    mul v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI2_1]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI2_1]
 ; CHECK-NEXT:    cmhs v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    and v0.16b, v0.16b, v2.16b
 ; CHECK-NEXT:    ret
@@ -70,14 +70,14 @@ define <4 x i32> @test_urem_odd_neg25(<4 x i32> %X) nounwind {
 define <4 x i32> @test_urem_even_neg100(<4 x i32> %X) nounwind {
 ; CHECK-LABEL: test_urem_even_neg100:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI3_0
+; CHECK-NEXT:    adrp x16, .LCPI3_0
 ; CHECK-NEXT:    movi v2.4s, #1
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI3_0]
-; CHECK-NEXT:    adrp x8, .LCPI3_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI3_0]
+; CHECK-NEXT:    adrp x16, .LCPI3_1
 ; CHECK-NEXT:    mul v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    shl v1.4s, v0.4s, #30
 ; CHECK-NEXT:    usra v1.4s, v0.4s, #2
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI3_1]
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI3_1]
 ; CHECK-NEXT:    cmhs v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    and v0.16b, v0.16b, v2.16b
 ; CHECK-NEXT:    ret

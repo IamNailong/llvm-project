@@ -44,72 +44,114 @@
 %struct.float64x1x4_t = type { [4 x <1 x double>] }
 
 define <16 x i8> @test_ld_from_poll_v16i8(<16 x i8> %a) {
-; CHECK-LABEL: test_ld_from_poll_v16i8:
-; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI0_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI0_0]
-; CHECK-NEXT:    add v0.16b, v0.16b, v1.16b
-; CHECK-NEXT:    ret
+; CHECK-GI-LABEL: test_ld_from_poll_v16i8:
+; CHECK-GI:       // %bb.0: // %entry
+; CHECK-GI-NEXT:    adrp x16, .LCPI0_0
+; CHECK-GI-NEXT:    ldr q1, [x16, :lo12:.LCPI0_0]
+; CHECK-GI-NEXT:    add v0.16b, v0.16b, v1.16b
+; CHECK-GI-NEXT:    ret
+;
+; CHECK-SD-LABEL: test_ld_from_poll_v16i8:
+; CHECK-SD:       // %bb.0: // %entry
+; CHECK-SD-NEXT:    adrp x8, .LCPI0_0
+; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI0_0]
+; CHECK-SD-NEXT:    add v0.16b, v0.16b, v1.16b
+; CHECK-SD-NEXT:    ret
 entry:
   %b = add <16 x i8> %a, <i8 1, i8 2, i8 3, i8 4, i8 5, i8 6, i8 7, i8 8, i8 9, i8 10, i8 11, i8 2, i8 13, i8 14, i8 15, i8 16>
   ret <16 x i8> %b
 }
 
 define <8 x i16> @test_ld_from_poll_v8i16(<8 x i16> %a) {
-; CHECK-LABEL: test_ld_from_poll_v8i16:
-; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI1_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
-; CHECK-NEXT:    add v0.8h, v0.8h, v1.8h
-; CHECK-NEXT:    ret
+; CHECK-GI-LABEL: test_ld_from_poll_v8i16:
+; CHECK-GI:       // %bb.0: // %entry
+; CHECK-GI-NEXT:    adrp x16, .LCPI1_0
+; CHECK-GI-NEXT:    ldr q1, [x16, :lo12:.LCPI1_0]
+; CHECK-GI-NEXT:    add v0.8h, v0.8h, v1.8h
+; CHECK-GI-NEXT:    ret
+;
+; CHECK-SD-LABEL: test_ld_from_poll_v8i16:
+; CHECK-SD:       // %bb.0: // %entry
+; CHECK-SD-NEXT:    adrp x8, .LCPI1_0
+; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
+; CHECK-SD-NEXT:    add v0.8h, v0.8h, v1.8h
+; CHECK-SD-NEXT:    ret
 entry:
   %b = add <8 x i16> %a, <i16 1, i16 2, i16 3, i16 4, i16 5, i16 6, i16 7, i16 8>
   ret <8 x i16> %b
 }
 
 define <4 x i32> @test_ld_from_poll_v4i32(<4 x i32> %a) {
-; CHECK-LABEL: test_ld_from_poll_v4i32:
-; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI2_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI2_0]
-; CHECK-NEXT:    add v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    ret
+; CHECK-GI-LABEL: test_ld_from_poll_v4i32:
+; CHECK-GI:       // %bb.0: // %entry
+; CHECK-GI-NEXT:    adrp x16, .LCPI2_0
+; CHECK-GI-NEXT:    ldr q1, [x16, :lo12:.LCPI2_0]
+; CHECK-GI-NEXT:    add v0.4s, v0.4s, v1.4s
+; CHECK-GI-NEXT:    ret
+;
+; CHECK-SD-LABEL: test_ld_from_poll_v4i32:
+; CHECK-SD:       // %bb.0: // %entry
+; CHECK-SD-NEXT:    adrp x8, .LCPI2_0
+; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI2_0]
+; CHECK-SD-NEXT:    add v0.4s, v0.4s, v1.4s
+; CHECK-SD-NEXT:    ret
 entry:
   %b = add <4 x i32> %a, <i32 1, i32 2, i32 3, i32 4>
   ret <4 x i32> %b
 }
 
 define <2 x i64> @test_ld_from_poll_v2i64(<2 x i64> %a) {
-; CHECK-LABEL: test_ld_from_poll_v2i64:
-; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI3_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI3_0]
-; CHECK-NEXT:    add v0.2d, v0.2d, v1.2d
-; CHECK-NEXT:    ret
+; CHECK-GI-LABEL: test_ld_from_poll_v2i64:
+; CHECK-GI:       // %bb.0: // %entry
+; CHECK-GI-NEXT:    adrp x16, .LCPI3_0
+; CHECK-GI-NEXT:    ldr q1, [x16, :lo12:.LCPI3_0]
+; CHECK-GI-NEXT:    add v0.2d, v0.2d, v1.2d
+; CHECK-GI-NEXT:    ret
+;
+; CHECK-SD-LABEL: test_ld_from_poll_v2i64:
+; CHECK-SD:       // %bb.0: // %entry
+; CHECK-SD-NEXT:    adrp x8, .LCPI3_0
+; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI3_0]
+; CHECK-SD-NEXT:    add v0.2d, v0.2d, v1.2d
+; CHECK-SD-NEXT:    ret
 entry:
   %b = add <2 x i64> %a, <i64 1, i64 2>
   ret <2 x i64> %b
 }
 
 define <4 x float> @test_ld_from_poll_v4f32(<4 x float> %a) {
-; CHECK-LABEL: test_ld_from_poll_v4f32:
-; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI4_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI4_0]
-; CHECK-NEXT:    fadd v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    ret
+; CHECK-GI-LABEL: test_ld_from_poll_v4f32:
+; CHECK-GI:       // %bb.0: // %entry
+; CHECK-GI-NEXT:    adrp x16, .LCPI4_0
+; CHECK-GI-NEXT:    ldr q1, [x16, :lo12:.LCPI4_0]
+; CHECK-GI-NEXT:    fadd v0.4s, v0.4s, v1.4s
+; CHECK-GI-NEXT:    ret
+;
+; CHECK-SD-LABEL: test_ld_from_poll_v4f32:
+; CHECK-SD:       // %bb.0: // %entry
+; CHECK-SD-NEXT:    adrp x8, .LCPI4_0
+; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI4_0]
+; CHECK-SD-NEXT:    fadd v0.4s, v0.4s, v1.4s
+; CHECK-SD-NEXT:    ret
 entry:
   %b = fadd <4 x float> %a, <float 1.0, float 2.0, float 3.0, float 4.0>
   ret <4 x float> %b
 }
 
 define <2 x double> @test_ld_from_poll_v2f64(<2 x double> %a) {
-; CHECK-LABEL: test_ld_from_poll_v2f64:
-; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI5_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI5_0]
-; CHECK-NEXT:    fadd v0.2d, v0.2d, v1.2d
-; CHECK-NEXT:    ret
+; CHECK-GI-LABEL: test_ld_from_poll_v2f64:
+; CHECK-GI:       // %bb.0: // %entry
+; CHECK-GI-NEXT:    adrp x16, .LCPI5_0
+; CHECK-GI-NEXT:    ldr q1, [x16, :lo12:.LCPI5_0]
+; CHECK-GI-NEXT:    fadd v0.2d, v0.2d, v1.2d
+; CHECK-GI-NEXT:    ret
+;
+; CHECK-SD-LABEL: test_ld_from_poll_v2f64:
+; CHECK-SD:       // %bb.0: // %entry
+; CHECK-SD-NEXT:    adrp x8, .LCPI5_0
+; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI5_0]
+; CHECK-SD-NEXT:    fadd v0.2d, v0.2d, v1.2d
+; CHECK-SD-NEXT:    ret
 entry:
   %b = fadd <2 x double> %a, <double 1.0, double 2.0>
   ret <2 x double> %b

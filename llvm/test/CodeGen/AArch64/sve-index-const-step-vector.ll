@@ -128,8 +128,8 @@ define <4 x i32> @v4i32_out_range_start_step() #0 {
 define <4 x i32> @v4i32_non_sequential() #0 {
 ; CHECK-LABEL: v4i32_non_sequential:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI12_0
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI12_0]
+; CHECK-NEXT:    adrp x16, .LCPI12_0
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI12_0]
 ; CHECK-NEXT:    ret
   ret <4 x i32> <i32 0, i32 2, i32 2, i32 3>
 }

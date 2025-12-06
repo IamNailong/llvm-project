@@ -381,10 +381,10 @@ define <4 x i32> @knownbits_mask_and_shuffle_lshr(<4 x i32> %a0, <4 x i32> %a1) 
 define <4 x i32> @test_sabd_knownbits_vec4i32(<4 x i32> %lhs, <4 x i32> %rhs) {
 ; CHECK-SD-LABEL: test_sabd_knownbits_vec4i32:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI31_0
-; CHECK-SD-NEXT:    adrp x9, .LCPI31_1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI31_0]
-; CHECK-SD-NEXT:    ldr q3, [x9, :lo12:.LCPI31_1]
+; CHECK-SD-NEXT:    adrp x16, .LCPI31_0
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI31_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI31_1
+; CHECK-SD-NEXT:    ldr q3, [x16, :lo12:.LCPI31_1]
 ; CHECK-SD-NEXT:    and v0.16b, v0.16b, v2.16b
 ; CHECK-SD-NEXT:    and v1.16b, v1.16b, v3.16b
 ; CHECK-SD-NEXT:    sabd v0.4s, v0.4s, v1.4s
@@ -420,8 +420,8 @@ define <4 x i32> @test_sabd_knownbits_vec4i32(<4 x i32> %lhs, <4 x i32> %rhs) {
 define <4 x i32> @knownbits_sabd_and_mask(<4 x i32> %a0, <4 x i32> %a1) {
 ; CHECK-SD-LABEL: knownbits_sabd_and_mask:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI32_0
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI32_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI32_0
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI32_0]
 ; CHECK-SD-NEXT:    and v0.16b, v0.16b, v2.16b
 ; CHECK-SD-NEXT:    and v1.16b, v1.16b, v2.16b
 ; CHECK-SD-NEXT:    sabd v0.4s, v0.4s, v1.4s
@@ -478,9 +478,9 @@ define <4 x i32> @knownbits_sabd_and_or_mask(<4 x i32> %a0, <4 x i32> %a1) {
 define <4 x i32> @knownbits_sabd_and_xor_mask(<4 x i32> %a0, <4 x i32> %a1) {
 ; CHECK-SD-LABEL: knownbits_sabd_and_xor_mask:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI34_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI34_0
 ; CHECK-SD-NEXT:    movi v3.2d, #0x00ffff0000ffff
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI34_0]
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI34_0]
 ; CHECK-SD-NEXT:    and v0.16b, v0.16b, v2.16b
 ; CHECK-SD-NEXT:    and v1.16b, v1.16b, v2.16b
 ; CHECK-SD-NEXT:    eor v0.16b, v0.16b, v3.16b
@@ -543,8 +543,8 @@ define <4 x i32> @knownbits_sabd_and_shl_mask(<4 x i32> %a0, <4 x i32> %a1) {
 define <4 x i32> @knownbits_sabd_and_mul_mask(<4 x i32> %a0, <4 x i32> %a1) {
 ; CHECK-SD-LABEL: knownbits_sabd_and_mul_mask:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI36_0
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI36_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI36_0
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI36_0]
 ; CHECK-SD-NEXT:    and v3.16b, v0.16b, v2.16b
 ; CHECK-SD-NEXT:    and v2.16b, v1.16b, v2.16b
 ; CHECK-SD-NEXT:    mul v0.4s, v0.4s, v3.4s

@@ -48,8 +48,8 @@ define void @store_v16i8(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v16i8:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI2_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI2_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI2_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI2_0]
 ; NONEON-NOSVE-NEXT:    str q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <16 x i8> zeroinitializer, ptr %a
@@ -65,8 +65,8 @@ define void @store_v32i8(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v32i8:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI3_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI3_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI3_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI3_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <32 x i8> zeroinitializer, ptr %a
@@ -154,8 +154,8 @@ define void @store_v8i16(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v8i16:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI8_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI8_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI8_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI8_0]
 ; NONEON-NOSVE-NEXT:    str q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <8 x i16> zeroinitializer, ptr %a
@@ -171,8 +171,8 @@ define void @store_v8f16(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v8f16:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI9_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI9_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI9_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI9_0]
 ; NONEON-NOSVE-NEXT:    str q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <8 x half> zeroinitializer, ptr %a
@@ -188,8 +188,8 @@ define void @store_v16i16(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v16i16:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI10_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI10_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI10_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI10_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <16 x i16> zeroinitializer, ptr %a
@@ -205,8 +205,8 @@ define void @store_v16f16(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v16f16:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI11_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI11_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI11_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI11_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <16 x half> zeroinitializer, ptr %a
@@ -278,8 +278,8 @@ define void @store_v8i32(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v8i32:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI16_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI16_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI16_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI16_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <8 x i32> zeroinitializer, ptr %a
@@ -295,8 +295,8 @@ define void @store_v8f32(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v8f32:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI17_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI17_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI17_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI17_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <8 x float> zeroinitializer, ptr %a
@@ -380,8 +380,8 @@ define void @store_v4i64(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v4i64:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI22_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI22_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI22_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI22_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <4 x i64> zeroinitializer, ptr %a
@@ -397,8 +397,8 @@ define void @store_v4f64(ptr %a) {
 ;
 ; NONEON-NOSVE-LABEL: store_v4f64:
 ; NONEON-NOSVE:       // %bb.0:
-; NONEON-NOSVE-NEXT:    adrp x8, .LCPI23_0
-; NONEON-NOSVE-NEXT:    ldr q0, [x8, :lo12:.LCPI23_0]
+; NONEON-NOSVE-NEXT:    adrp x16, .LCPI23_0
+; NONEON-NOSVE-NEXT:    ldr q0, [x16, :lo12:.LCPI23_0]
 ; NONEON-NOSVE-NEXT:    stp q0, q0, [x0]
 ; NONEON-NOSVE-NEXT:    ret
   store <4 x double> zeroinitializer, ptr %a

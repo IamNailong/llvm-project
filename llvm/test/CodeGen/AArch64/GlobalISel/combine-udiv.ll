@@ -34,23 +34,23 @@ define <8 x i16> @combine_vec_udiv_uniform(<8 x i16> %x) {
 define <8 x i16> @combine_vec_udiv_nonuniform(<8 x i16> %x) {
 ; SDAG-LABEL: combine_vec_udiv_nonuniform:
 ; SDAG:       // %bb.0:
-; SDAG-NEXT:    adrp x8, .LCPI1_0
-; SDAG-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
-; SDAG-NEXT:    adrp x8, .LCPI1_1
-; SDAG-NEXT:    ldr q2, [x8, :lo12:.LCPI1_1]
-; SDAG-NEXT:    adrp x8, .LCPI1_2
+; SDAG-NEXT:    adrp x16, .LCPI1_0
+; SDAG-NEXT:    ldr q1, [x16, :lo12:.LCPI1_0]
+; SDAG-NEXT:    adrp x16, .LCPI1_1
 ; SDAG-NEXT:    ushl v1.8h, v0.8h, v1.8h
+; SDAG-NEXT:    ldr q2, [x16, :lo12:.LCPI1_1]
+; SDAG-NEXT:    adrp x16, .LCPI1_2
 ; SDAG-NEXT:    umull2 v3.4s, v1.8h, v2.8h
 ; SDAG-NEXT:    umull v1.4s, v1.4h, v2.4h
-; SDAG-NEXT:    ldr q2, [x8, :lo12:.LCPI1_2]
-; SDAG-NEXT:    adrp x8, .LCPI1_3
+; SDAG-NEXT:    ldr q2, [x16, :lo12:.LCPI1_2]
+; SDAG-NEXT:    adrp x16, .LCPI1_3
 ; SDAG-NEXT:    uzp2 v1.8h, v1.8h, v3.8h
 ; SDAG-NEXT:    sub v0.8h, v0.8h, v1.8h
 ; SDAG-NEXT:    umull2 v3.4s, v0.8h, v2.8h
 ; SDAG-NEXT:    umull v0.4s, v0.4h, v2.4h
 ; SDAG-NEXT:    uzp2 v0.8h, v0.8h, v3.8h
 ; SDAG-NEXT:    add v0.8h, v0.8h, v1.8h
-; SDAG-NEXT:    ldr q1, [x8, :lo12:.LCPI1_3]
+; SDAG-NEXT:    ldr q1, [x16, :lo12:.LCPI1_3]
 ; SDAG-NEXT:    ushl v0.8h, v0.8h, v1.8h
 ; SDAG-NEXT:    ret
 ;
@@ -84,15 +84,15 @@ define <8 x i16> @combine_vec_udiv_nonuniform(<8 x i16> %x) {
 define <8 x i16> @combine_vec_udiv_nonuniform2(<8 x i16> %x) {
 ; SDAG-LABEL: combine_vec_udiv_nonuniform2:
 ; SDAG:       // %bb.0:
-; SDAG-NEXT:    adrp x8, .LCPI2_0
-; SDAG-NEXT:    ldr q1, [x8, :lo12:.LCPI2_0]
-; SDAG-NEXT:    adrp x8, .LCPI2_1
+; SDAG-NEXT:    adrp x16, .LCPI2_0
+; SDAG-NEXT:    ldr q1, [x16, :lo12:.LCPI2_0]
+; SDAG-NEXT:    adrp x16, .LCPI2_1
 ; SDAG-NEXT:    ushl v0.8h, v0.8h, v1.8h
-; SDAG-NEXT:    ldr q1, [x8, :lo12:.LCPI2_1]
-; SDAG-NEXT:    adrp x8, .LCPI2_2
+; SDAG-NEXT:    ldr q1, [x16, :lo12:.LCPI2_1]
+; SDAG-NEXT:    adrp x16, .LCPI2_2
 ; SDAG-NEXT:    umull2 v2.4s, v0.8h, v1.8h
 ; SDAG-NEXT:    umull v0.4s, v0.4h, v1.4h
-; SDAG-NEXT:    ldr q1, [x8, :lo12:.LCPI2_2]
+; SDAG-NEXT:    ldr q1, [x16, :lo12:.LCPI2_2]
 ; SDAG-NEXT:    uzp2 v0.8h, v0.8h, v2.8h
 ; SDAG-NEXT:    ushl v0.8h, v0.8h, v1.8h
 ; SDAG-NEXT:    ret
@@ -120,15 +120,15 @@ define <8 x i16> @combine_vec_udiv_nonuniform2(<8 x i16> %x) {
 define <8 x i16> @combine_vec_udiv_nonuniform3(<8 x i16> %x) {
 ; SDAG-LABEL: combine_vec_udiv_nonuniform3:
 ; SDAG:       // %bb.0:
-; SDAG-NEXT:    adrp x8, .LCPI3_0
-; SDAG-NEXT:    ldr q1, [x8, :lo12:.LCPI3_0]
-; SDAG-NEXT:    adrp x8, .LCPI3_1
+; SDAG-NEXT:    adrp x16, .LCPI3_0
+; SDAG-NEXT:    ldr q1, [x16, :lo12:.LCPI3_0]
+; SDAG-NEXT:    adrp x16, .LCPI3_1
 ; SDAG-NEXT:    umull2 v2.4s, v0.8h, v1.8h
 ; SDAG-NEXT:    umull v1.4s, v0.4h, v1.4h
 ; SDAG-NEXT:    uzp2 v1.8h, v1.8h, v2.8h
 ; SDAG-NEXT:    sub v0.8h, v0.8h, v1.8h
 ; SDAG-NEXT:    usra v1.8h, v0.8h, #1
-; SDAG-NEXT:    ldr q0, [x8, :lo12:.LCPI3_1]
+; SDAG-NEXT:    ldr q0, [x16, :lo12:.LCPI3_1]
 ; SDAG-NEXT:    ushl v0.8h, v1.8h, v0.8h
 ; SDAG-NEXT:    ret
 ;
@@ -154,11 +154,11 @@ define <16 x i8> @combine_vec_udiv_nonuniform4(<16 x i8> %x) {
 ; SDAG-LABEL: combine_vec_udiv_nonuniform4:
 ; SDAG:       // %bb.0:
 ; SDAG-NEXT:    movi v1.16b, #171
-; SDAG-NEXT:    adrp x8, .LCPI4_0
+; SDAG-NEXT:    adrp x16, .LCPI4_0
 ; SDAG-NEXT:    umull2 v2.8h, v0.16b, v1.16b
 ; SDAG-NEXT:    umull v1.8h, v0.8b, v1.8b
 ; SDAG-NEXT:    uzp2 v1.16b, v1.16b, v2.16b
-; SDAG-NEXT:    ldr q2, [x8, :lo12:.LCPI4_0]
+; SDAG-NEXT:    ldr q2, [x16, :lo12:.LCPI4_0]
 ; SDAG-NEXT:    ushr v1.16b, v1.16b, #7
 ; SDAG-NEXT:    bif v0.16b, v1.16b, v2.16b
 ; SDAG-NEXT:    ret
@@ -187,23 +187,23 @@ define <16 x i8> @combine_vec_udiv_nonuniform4(<16 x i8> %x) {
 define <8 x i16> @pr38477(<8 x i16> %a0) {
 ; SDAG-LABEL: pr38477:
 ; SDAG:       // %bb.0:
-; SDAG-NEXT:    adrp x8, .LCPI5_0
-; SDAG-NEXT:    ldr q1, [x8, :lo12:.LCPI5_0]
-; SDAG-NEXT:    adrp x8, .LCPI5_1
-; SDAG-NEXT:    ldr q3, [x8, :lo12:.LCPI5_1]
-; SDAG-NEXT:    adrp x8, .LCPI5_2
+; SDAG-NEXT:    adrp x16, .LCPI5_0
+; SDAG-NEXT:    ldr q1, [x16, :lo12:.LCPI5_0]
+; SDAG-NEXT:    adrp x16, .LCPI5_1
 ; SDAG-NEXT:    umull2 v2.4s, v0.8h, v1.8h
 ; SDAG-NEXT:    umull v1.4s, v0.4h, v1.4h
+; SDAG-NEXT:    ldr q3, [x16, :lo12:.LCPI5_1]
+; SDAG-NEXT:    adrp x16, .LCPI5_2
 ; SDAG-NEXT:    uzp2 v1.8h, v1.8h, v2.8h
 ; SDAG-NEXT:    sub v2.8h, v0.8h, v1.8h
 ; SDAG-NEXT:    umull2 v4.4s, v2.8h, v3.8h
 ; SDAG-NEXT:    umull v2.4s, v2.4h, v3.4h
 ; SDAG-NEXT:    uzp2 v2.8h, v2.8h, v4.8h
 ; SDAG-NEXT:    add v1.8h, v2.8h, v1.8h
-; SDAG-NEXT:    ldr q2, [x8, :lo12:.LCPI5_2]
-; SDAG-NEXT:    adrp x8, .LCPI5_3
+; SDAG-NEXT:    ldr q2, [x16, :lo12:.LCPI5_2]
+; SDAG-NEXT:    adrp x16, .LCPI5_3
 ; SDAG-NEXT:    ushl v1.8h, v1.8h, v2.8h
-; SDAG-NEXT:    ldr q2, [x8, :lo12:.LCPI5_3]
+; SDAG-NEXT:    ldr q2, [x16, :lo12:.LCPI5_3]
 ; SDAG-NEXT:    bif v0.16b, v1.16b, v2.16b
 ; SDAG-NEXT:    ret
 ;
@@ -286,9 +286,9 @@ define i32 @udiv_div_by_180_exact(i32 %x)
 define <4 x i32> @udiv_div_by_104_exact(<4 x i32> %x)
 ; SDAG-LABEL: udiv_div_by_104_exact:
 ; SDAG:       // %bb.0:
-; SDAG-NEXT:    adrp x8, .LCPI8_0
+; SDAG-NEXT:    adrp x16, .LCPI8_0
 ; SDAG-NEXT:    ushr v0.4s, v0.4s, #3
-; SDAG-NEXT:    ldr q1, [x8, :lo12:.LCPI8_0]
+; SDAG-NEXT:    ldr q1, [x16, :lo12:.LCPI8_0]
 ; SDAG-NEXT:    mul v0.4s, v0.4s, v1.4s
 ; SDAG-NEXT:    ret
 ;

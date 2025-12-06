@@ -359,10 +359,10 @@ define <2 x double> @fmul_pow_shl_cnt_vec_non_splat_todo(<2 x i64> %cnt) nounwin
 ; CHECK-NEON-LABEL: fmul_pow_shl_cnt_vec_non_splat_todo:
 ; CHECK-NEON:       // %bb.0:
 ; CHECK-NEON-NEXT:    mov w8, #2 // =0x2
+; CHECK-NEON-NEXT:    adrp x16, .LCPI12_0
 ; CHECK-NEON-NEXT:    dup v1.2d, x8
-; CHECK-NEON-NEXT:    adrp x8, .LCPI12_0
 ; CHECK-NEON-NEXT:    ushl v0.2d, v1.2d, v0.2d
-; CHECK-NEON-NEXT:    ldr q1, [x8, :lo12:.LCPI12_0]
+; CHECK-NEON-NEXT:    ldr q1, [x16, :lo12:.LCPI12_0]
 ; CHECK-NEON-NEXT:    ucvtf v0.2d, v0.2d
 ; CHECK-NEON-NEXT:    fmul v0.2d, v0.2d, v1.2d
 ; CHECK-NEON-NEXT:    ret
@@ -388,8 +388,8 @@ define <2 x double> @fmul_pow_shl_cnt_vec_non_splat_todo(<2 x i64> %cnt) nounwin
 define <2 x double> @fmul_pow_shl_cnt_vec_non_splat2_todo(<2 x i64> %cnt) nounwind {
 ; CHECK-NEON-LABEL: fmul_pow_shl_cnt_vec_non_splat2_todo:
 ; CHECK-NEON:       // %bb.0:
-; CHECK-NEON-NEXT:    adrp x8, .LCPI13_0
-; CHECK-NEON-NEXT:    ldr q1, [x8, :lo12:.LCPI13_0]
+; CHECK-NEON-NEXT:    adrp x16, .LCPI13_0
+; CHECK-NEON-NEXT:    ldr q1, [x16, :lo12:.LCPI13_0]
 ; CHECK-NEON-NEXT:    ushl v0.2d, v1.2d, v0.2d
 ; CHECK-NEON-NEXT:    fmov v1.2d, #15.00000000
 ; CHECK-NEON-NEXT:    ucvtf v0.2d, v0.2d

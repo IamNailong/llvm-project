@@ -1143,8 +1143,8 @@ define <4 x i16> @vselect_constant_cond_zero_v4i16(<4 x i16> %a) {
 define <4 x i32> @vselect_constant_cond_zero_v4i32(<4 x i32> %a) {
 ; CHECK-SD-LABEL: vselect_constant_cond_zero_v4i32:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI85_0
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI85_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI85_0
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI85_0]
 ; CHECK-SD-NEXT:    and v0.16b, v0.16b, v1.16b
 ; CHECK-SD-NEXT:    ret
 ;
@@ -1209,8 +1209,8 @@ define <4 x i16> @vselect_constant_cond_v4i16(<4 x i16> %a, <4 x i16> %b) {
 define <4 x i32> @vselect_constant_cond_v4i32(<4 x i32> %a, <4 x i32> %b) {
 ; CHECK-SD-LABEL: vselect_constant_cond_v4i32:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI88_0
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI88_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI88_0
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI88_0]
 ; CHECK-SD-NEXT:    bif v0.16b, v1.16b, v2.16b
 ; CHECK-SD-NEXT:    ret
 ;
@@ -1337,9 +1337,9 @@ define <8 x i8> @vselect_equivalent_shuffle_v8i8_zeroswap(<8 x i8> %a) {
 define <8 x i16> @vselect_equivalent_shuffle_v8i16(<8 x i16> %a, <8 x i16> %b) {
 ; CHECK-SD-LABEL: vselect_equivalent_shuffle_v8i16:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI92_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI92_0
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI92_0]
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI92_0]
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-SD-NEXT:    ret
@@ -1368,8 +1368,8 @@ define <8 x i16> @vselect_equivalent_shuffle_v8i16(<8 x i16> %a, <8 x i16> %b) {
 define <8 x i16> @vselect_equivalent_shuffle_v8i16_zero(<8 x i16> %a) {
 ; CHECK-SD-LABEL: vselect_equivalent_shuffle_v8i16_zero:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI93_0
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI93_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI93_0
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI93_0]
 ; CHECK-SD-NEXT:    and v0.16b, v0.16b, v1.16b
 ; CHECK-SD-NEXT:    ret
 ;
@@ -1404,8 +1404,8 @@ define <8 x i16> @vselect_equivalent_shuffle_v8i16_zero(<8 x i16> %a) {
 define <8 x i16> @vselect_equivalent_shuffle_v8i16_zeroswap(<8 x i16> %a) {
 ; CHECK-SD-LABEL: vselect_equivalent_shuffle_v8i16_zeroswap:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI94_0
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI94_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI94_0
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI94_0]
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
 ; CHECK-SD-NEXT:    ret
 ;

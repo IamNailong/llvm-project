@@ -646,8 +646,8 @@ define <4 x i32> @isUndefDeInterleave_t3(<8 x i16> %a) {
 define <4 x i32> @isUndefDeInterleave_b0_bad(<8 x i16> %a, <8 x i16> %b) {
 ; CHECK-LABEL: isUndefDeInterleave_b0_bad:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI40_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI40_0]
+; CHECK-NEXT:    adrp x16, .LCPI40_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI40_0]
 ; CHECK-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
 ; CHECK-NEXT:    ushll v0.4s, v0.4h, #0
 ; CHECK-NEXT:    ret
@@ -660,8 +660,8 @@ define <4 x i32> @isUndefDeInterleave_b0_bad(<8 x i16> %a, <8 x i16> %b) {
 define <4 x i32> @isUndefDeInterleave_t1_bad(<8 x i16> %a) {
 ; CHECK-LABEL: isUndefDeInterleave_t1_bad:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI41_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI41_0]
+; CHECK-NEXT:    adrp x16, .LCPI41_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI41_0]
 ; CHECK-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
 ; CHECK-NEXT:    ushll2 v0.4s, v0.8h, #0
 ; CHECK-NEXT:    ret

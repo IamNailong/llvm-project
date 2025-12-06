@@ -4,15 +4,15 @@
 define <4 x i1> @t32_3(<4 x i32> %X) nounwind {
 ; CHECK-LABEL: t32_3:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI0_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI0_0]
+; CHECK-NEXT:    adrp x16, .LCPI0_0
 ; CHECK-NEXT:    mov w8, #43691 // =0xaaab
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI0_0]
 ; CHECK-NEXT:    movk w8, #43690, lsl #16
+; CHECK-NEXT:    adrp x16, .LCPI0_1
 ; CHECK-NEXT:    sub v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    dup v1.4s, w8
-; CHECK-NEXT:    adrp x8, .LCPI0_1
 ; CHECK-NEXT:    mul v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI0_1]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI0_1]
 ; CHECK-NEXT:    cmhs v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    xtn v0.4h, v0.4s
 ; CHECK-NEXT:    ret
@@ -24,9 +24,9 @@ define <4 x i1> @t32_3(<4 x i32> %X) nounwind {
 define <4 x i1> @t32_5(<4 x i32> %X) nounwind {
 ; CHECK-LABEL: t32_5:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI1_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
+; CHECK-NEXT:    adrp x16, .LCPI1_0
 ; CHECK-NEXT:    mov w8, #52429 // =0xcccd
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI1_0]
 ; CHECK-NEXT:    movk w8, #52428, lsl #16
 ; CHECK-NEXT:    sub v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    dup v1.4s, w8
@@ -45,9 +45,9 @@ define <4 x i1> @t32_5(<4 x i32> %X) nounwind {
 define <4 x i1> @t32_6_part0(<4 x i32> %X) nounwind {
 ; CHECK-LABEL: t32_6_part0:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI2_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI2_0]
+; CHECK-NEXT:    adrp x16, .LCPI2_0
 ; CHECK-NEXT:    mov w8, #43691 // =0xaaab
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI2_0]
 ; CHECK-NEXT:    movk w8, #43690, lsl #16
 ; CHECK-NEXT:    sub v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    dup v1.4s, w8
@@ -67,17 +67,17 @@ define <4 x i1> @t32_6_part0(<4 x i32> %X) nounwind {
 define <4 x i1> @t32_6_part1(<4 x i32> %X) nounwind {
 ; CHECK-LABEL: t32_6_part1:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI3_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI3_0]
+; CHECK-NEXT:    adrp x16, .LCPI3_0
 ; CHECK-NEXT:    mov w8, #43691 // =0xaaab
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI3_0]
 ; CHECK-NEXT:    movk w8, #43690, lsl #16
+; CHECK-NEXT:    adrp x16, .LCPI3_1
 ; CHECK-NEXT:    sub v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    dup v1.4s, w8
-; CHECK-NEXT:    adrp x8, .LCPI3_1
 ; CHECK-NEXT:    mul v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    shl v1.4s, v0.4s, #31
 ; CHECK-NEXT:    usra v1.4s, v0.4s, #1
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI3_1]
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI3_1]
 ; CHECK-NEXT:    cmhs v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    xtn v0.4h, v0.4s
 ; CHECK-NEXT:    ret
@@ -89,15 +89,15 @@ define <4 x i1> @t32_6_part1(<4 x i32> %X) nounwind {
 define <4 x i1> @t32_tautological(<4 x i32> %X) nounwind {
 ; CHECK-LABEL: t32_tautological:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI4_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI4_0]
+; CHECK-NEXT:    adrp x16, .LCPI4_0
 ; CHECK-NEXT:    mov w8, #43691 // =0xaaab
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI4_0]
 ; CHECK-NEXT:    movk w8, #43690, lsl #16
+; CHECK-NEXT:    adrp x16, .LCPI4_1
 ; CHECK-NEXT:    sub v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    dup v1.4s, w8
-; CHECK-NEXT:    adrp x8, .LCPI4_1
 ; CHECK-NEXT:    mul v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI4_1]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI4_1]
 ; CHECK-NEXT:    cmhs v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    movi d1, #0x00ffffffff0000
 ; CHECK-NEXT:    xtn v0.4h, v0.4s

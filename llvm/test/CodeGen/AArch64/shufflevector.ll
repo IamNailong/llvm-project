@@ -32,9 +32,9 @@ define <8 x i8> @shufflevector_v8i8(<8 x i8> %a, <8 x i8> %b) {
 define <16 x i8> @shufflevector_v16i8(<16 x i8> %a, <16 x i8> %b) {
 ; CHECK-SD-LABEL: shufflevector_v16i8:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI1_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI1_0
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI1_0]
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI1_0]
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-SD-NEXT:    ret
@@ -63,9 +63,9 @@ define <4 x i16> @shufflevector_v4i16(<4 x i16> %a, <4 x i16> %b) {
 define <8 x i16> @shufflevector_v8i16(<8 x i16> %a, <8 x i16> %b) {
 ; CHECK-SD-LABEL: shufflevector_v8i16:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI3_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI3_0
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI3_0]
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI3_0]
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-SD-NEXT:    ret
@@ -256,12 +256,12 @@ define i32 @shufflevector_v4i8(<4 x i8> %a, <4 x i8> %b){
 define <32 x i8> @shufflevector_v32i8(<32 x i8> %a, <32 x i8> %b){
 ; CHECK-SD-LABEL: shufflevector_v32i8:
 ; CHECK-SD:       // %bb.0:
+; CHECK-SD-NEXT:    adrp x16, .LCPI18_0
 ; CHECK-SD-NEXT:    // kill: def $q2 killed $q2 def $q1_q2
-; CHECK-SD-NEXT:    adrp x8, .LCPI18_0
-; CHECK-SD-NEXT:    adrp x9, .LCPI18_1
+; CHECK-SD-NEXT:    ldr q3, [x16, :lo12:.LCPI18_0]
 ; CHECK-SD-NEXT:    mov v1.16b, v0.16b
-; CHECK-SD-NEXT:    ldr q3, [x8, :lo12:.LCPI18_0]
-; CHECK-SD-NEXT:    ldr q4, [x9, :lo12:.LCPI18_1]
+; CHECK-SD-NEXT:    adrp x16, .LCPI18_1
+; CHECK-SD-NEXT:    ldr q4, [x16, :lo12:.LCPI18_1]
 ; CHECK-SD-NEXT:    tbl v0.16b, { v1.16b, v2.16b }, v3.16b
 ; CHECK-SD-NEXT:    tbl v1.16b, { v1.16b, v2.16b }, v4.16b
 ; CHECK-SD-NEXT:    ret
@@ -312,12 +312,12 @@ define i32 @shufflevector_v2i16(<2 x i16> %a, <2 x i16> %b){
 define <16 x i16> @shufflevector_v16i16(<16 x i16> %a, <16 x i16> %b){
 ; CHECK-SD-LABEL: shufflevector_v16i16:
 ; CHECK-SD:       // %bb.0:
+; CHECK-SD-NEXT:    adrp x16, .LCPI20_0
 ; CHECK-SD-NEXT:    // kill: def $q2 killed $q2 def $q1_q2
-; CHECK-SD-NEXT:    adrp x8, .LCPI20_0
-; CHECK-SD-NEXT:    adrp x9, .LCPI20_1
+; CHECK-SD-NEXT:    ldr q3, [x16, :lo12:.LCPI20_0]
 ; CHECK-SD-NEXT:    mov v1.16b, v0.16b
-; CHECK-SD-NEXT:    ldr q3, [x8, :lo12:.LCPI20_0]
-; CHECK-SD-NEXT:    ldr q4, [x9, :lo12:.LCPI20_1]
+; CHECK-SD-NEXT:    adrp x16, .LCPI20_1
+; CHECK-SD-NEXT:    ldr q4, [x16, :lo12:.LCPI20_1]
 ; CHECK-SD-NEXT:    tbl v0.16b, { v1.16b, v2.16b }, v3.16b
 ; CHECK-SD-NEXT:    tbl v1.16b, { v1.16b, v2.16b }, v4.16b
 ; CHECK-SD-NEXT:    ret
@@ -637,9 +637,9 @@ define <3 x i16> @shufflevector_v3i16(<3 x i16> %a, <3 x i16> %b) {
 define <7 x i16> @shufflevector_v7i16(<7 x i16> %a, <7 x i16> %b) {
 ; CHECK-SD-LABEL: shufflevector_v7i16:
 ; CHECK-SD:       // %bb.0:
-; CHECK-SD-NEXT:    adrp x8, .LCPI38_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI38_0
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI38_0]
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI38_0]
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-SD-NEXT:    ret

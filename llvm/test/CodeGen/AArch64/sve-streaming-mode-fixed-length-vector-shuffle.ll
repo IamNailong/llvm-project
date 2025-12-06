@@ -9,9 +9,9 @@ target triple = "aarch64-unknown-linux-gnu"
 define <4 x i8> @shuffle_ext_byone_v4i8(<4 x i8> %op1, <4 x i8> %op2) {
 ; CHECK-LABEL: shuffle_ext_byone_v4i8:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI0_0
+; CHECK-NEXT:    adrp x16, .LCPI0_0
 ; CHECK-NEXT:    // kill: def $d0 killed $d0 def $z0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI0_0]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI0_0]
 ; CHECK-NEXT:    tbl z0.h, { z0.h }, z1.h
 ; CHECK-NEXT:    // kill: def $d0 killed $d0 killed $z0
 ; CHECK-NEXT:    ret

@@ -583,6 +583,9 @@ protected:
   std::optional<DestSourcePair>
   isCopyLikeInstrImpl(const MachineInstr &MI) const override;
 
+  /// Override to handle LOADcpQ which uses X16 as an implicit scratch register.
+  bool isReMaterializableImpl(const MachineInstr &MI) const override;
+
 private:
   unsigned getInstBundleLength(const MachineInstr &MI) const;
 

@@ -263,9 +263,9 @@ define <16 x i8> @shuffled_tbl2_to_tbl4(<16 x i8> %a, <16 x i8> %b, <16 x i8> %c
 ; CHECK-SD-LABEL: shuffled_tbl2_to_tbl4:
 ; CHECK-SD:       // %bb.0:
 ; CHECK-SD-NEXT:    // kill: def $q3 killed $q3 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    adrp x8, .LCPI9_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI9_0
 ; CHECK-SD-NEXT:    // kill: def $q2 killed $q2 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    ldr q4, [x8, :lo12:.LCPI9_0]
+; CHECK-SD-NEXT:    ldr q4, [x16, :lo12:.LCPI9_0]
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    tbl.16b v0, { v0, v1, v2, v3 }, v4
@@ -594,10 +594,10 @@ define <16 x i8> @shuffled_tbl2_to_tbl4_nonconst_second_mask(<16 x i8> %a, <16 x
 ; CHECK-SD-LABEL: shuffled_tbl2_to_tbl4_nonconst_second_mask:
 ; CHECK-SD:       // %bb.0:
 ; CHECK-SD-NEXT:    movi.2d v4, #0xffffffffffffffff
-; CHECK-SD-NEXT:    adrp x8, .LCPI12_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI12_0
 ; CHECK-SD-NEXT:    // kill: def $q3 killed $q3 killed $q2_q3 def $q2_q3
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
-; CHECK-SD-NEXT:    ldr q5, [x8, :lo12:.LCPI12_0]
+; CHECK-SD-NEXT:    ldr q5, [x16, :lo12:.LCPI12_0]
 ; CHECK-SD-NEXT:    // kill: def $q2 killed $q2 killed $q2_q3 def $q2_q3
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
 ; CHECK-SD-NEXT:    tbl.16b v2, { v2, v3 }, v5
@@ -742,22 +742,22 @@ define <16 x i8> @shuffled_tbl2_to_tbl4_nonconst_second_mask2(<16 x i8> %a, <16 
 ; CHECK-SD:       // %bb.0:
 ; CHECK-SD-NEXT:    dup.16b v4, w0
 ; CHECK-SD-NEXT:    mov w8, #255 // =0xff
+; CHECK-SD-NEXT:    adrp x16, .LCPI13_0
+; CHECK-SD-NEXT:    ldr q5, [x16, :lo12:.LCPI13_0]
 ; CHECK-SD-NEXT:    // kill: def $q3 killed $q3 killed $q2_q3 def $q2_q3
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
 ; CHECK-SD-NEXT:    // kill: def $q2 killed $q2 killed $q2_q3 def $q2_q3
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
+; CHECK-SD-NEXT:    adrp x16, .LCPI13_1
 ; CHECK-SD-NEXT:    mov.b v4[8], w8
+; CHECK-SD-NEXT:    tbl.16b v2, { v2, v3 }, v5
 ; CHECK-SD-NEXT:    mov.b v4[9], w8
 ; CHECK-SD-NEXT:    mov.b v4[10], w8
 ; CHECK-SD-NEXT:    mov.b v4[11], w8
 ; CHECK-SD-NEXT:    mov.b v4[12], w8
 ; CHECK-SD-NEXT:    mov.b v4[13], w8
-; CHECK-SD-NEXT:    adrp x8, .LCPI13_0
-; CHECK-SD-NEXT:    ldr q5, [x8, :lo12:.LCPI13_0]
-; CHECK-SD-NEXT:    adrp x8, .LCPI13_1
-; CHECK-SD-NEXT:    tbl.16b v2, { v2, v3 }, v5
 ; CHECK-SD-NEXT:    tbl.16b v3, { v0, v1 }, v4
-; CHECK-SD-NEXT:    ldr q0, [x8, :lo12:.LCPI13_1]
+; CHECK-SD-NEXT:    ldr q0, [x16, :lo12:.LCPI13_1]
 ; CHECK-SD-NEXT:    tbl.16b v0, { v2, v3 }, v0
 ; CHECK-SD-NEXT:    ret
 ;
@@ -871,9 +871,9 @@ define <16 x i8> @shuffled_tbl2_to_tbl4_mixed_shuffle(<16 x i8> %a, <16 x i8> %b
 ; CHECK-SD-LABEL: shuffled_tbl2_to_tbl4_mixed_shuffle:
 ; CHECK-SD:       // %bb.0:
 ; CHECK-SD-NEXT:    // kill: def $q3 killed $q3 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    adrp x8, .LCPI14_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI14_0
 ; CHECK-SD-NEXT:    // kill: def $q2 killed $q2 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    ldr q4, [x8, :lo12:.LCPI14_0]
+; CHECK-SD-NEXT:    ldr q4, [x16, :lo12:.LCPI14_0]
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    tbl.16b v0, { v0, v1, v2, v3 }, v4
@@ -973,9 +973,9 @@ define <16 x i8> @shuffled_tbl2_to_tbl4_mixed_tbl2_mask1(<16 x i8> %a, <16 x i8>
 ; CHECK-SD-LABEL: shuffled_tbl2_to_tbl4_mixed_tbl2_mask1:
 ; CHECK-SD:       // %bb.0:
 ; CHECK-SD-NEXT:    // kill: def $q3 killed $q3 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    adrp x8, .LCPI15_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI15_0
 ; CHECK-SD-NEXT:    // kill: def $q2 killed $q2 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    ldr q4, [x8, :lo12:.LCPI15_0]
+; CHECK-SD-NEXT:    ldr q4, [x16, :lo12:.LCPI15_0]
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    tbl.16b v0, { v0, v1, v2, v3 }, v4
@@ -1077,9 +1077,9 @@ define <16 x i8> @shuffled_tbl2_to_tbl4_mixed_tbl2_mask2(<16 x i8> %a, <16 x i8>
 ; CHECK-SD-LABEL: shuffled_tbl2_to_tbl4_mixed_tbl2_mask2:
 ; CHECK-SD:       // %bb.0:
 ; CHECK-SD-NEXT:    // kill: def $q3 killed $q3 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    adrp x8, .LCPI16_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI16_0
 ; CHECK-SD-NEXT:    // kill: def $q2 killed $q2 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    ldr q4, [x8, :lo12:.LCPI16_0]
+; CHECK-SD-NEXT:    ldr q4, [x16, :lo12:.LCPI16_0]
 ; CHECK-SD-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    tbl.16b v0, { v0, v1, v2, v3 }, v4

@@ -41,11 +41,11 @@ target triple = "aarch64-linux"
 define void @sitofp_v8i8_to_v8f32(ptr %src, ptr %dst) {
 ; CHECK-LABEL: sitofp_v8i8_to_v8f32:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI0_0
-; CHECK-NEXT:    adrp x9, .LCPI0_1
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI0_0]
-; CHECK-NEXT:    ldr q1, [x9, :lo12:.LCPI0_1]
+; CHECK-NEXT:    adrp x16, .LCPI0_0
 ; CHECK-NEXT:    mov x8, xzr
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI0_0]
+; CHECK-NEXT:    adrp x16, .LCPI0_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI0_1]
 ; CHECK-NEXT:  .LBB0_1: // %loop
 ; CHECK-NEXT:    // =>This Inner Loop Header: Depth=1
 ; CHECK-NEXT:    ldr d2, [x0, x8, lsl #3]
@@ -150,15 +150,15 @@ exit:
 define void @sitofp_v16i8_to_v16f32(ptr %src, ptr %dst) {
 ; CHECK-LABEL: sitofp_v16i8_to_v16f32:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI1_0
-; CHECK-NEXT:    adrp x9, .LCPI1_1
-; CHECK-NEXT:    adrp x10, .LCPI1_2
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI1_0]
-; CHECK-NEXT:    adrp x8, .LCPI1_3
-; CHECK-NEXT:    ldr q1, [x9, :lo12:.LCPI1_1]
-; CHECK-NEXT:    ldr q2, [x10, :lo12:.LCPI1_2]
-; CHECK-NEXT:    ldr q3, [x8, :lo12:.LCPI1_3]
+; CHECK-NEXT:    adrp x16, .LCPI1_0
 ; CHECK-NEXT:    mov x8, xzr
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI1_0]
+; CHECK-NEXT:    adrp x16, .LCPI1_1
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI1_1]
+; CHECK-NEXT:    adrp x16, .LCPI1_2
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI1_2]
+; CHECK-NEXT:    adrp x16, .LCPI1_3
+; CHECK-NEXT:    ldr q3, [x16, :lo12:.LCPI1_3]
 ; CHECK-NEXT:  .LBB1_1: // %loop
 ; CHECK-NEXT:    // =>This Inner Loop Header: Depth=1
 ; CHECK-NEXT:    ldr q4, [x0, x8, lsl #4]

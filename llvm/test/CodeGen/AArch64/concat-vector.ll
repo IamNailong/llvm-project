@@ -236,9 +236,9 @@ define <8 x i16> @concat_v8s16_v2s16_reg(<2 x i16> %A, <2 x i16> %B, <2 x i16> %
 ; CHECK-SD-LABEL: concat_v8s16_v2s16_reg:
 ; CHECK-SD:       // %bb.0:
 ; CHECK-SD-NEXT:    // kill: def $d3 killed $d3 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    adrp x8, .LCPI15_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI15_0
 ; CHECK-SD-NEXT:    // kill: def $d2 killed $d2 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
-; CHECK-SD-NEXT:    ldr q4, [x8, :lo12:.LCPI15_0]
+; CHECK-SD-NEXT:    ldr q4, [x16, :lo12:.LCPI15_0]
 ; CHECK-SD-NEXT:    // kill: def $d1 killed $d1 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    // kill: def $d0 killed $d0 killed $q0_q1_q2_q3 def $q0_q1_q2_q3
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b, v1.16b, v2.16b, v3.16b }, v4.16b

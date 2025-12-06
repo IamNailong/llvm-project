@@ -143,10 +143,10 @@ define i64 @extract_v2i64_extract_build_vector_opaque(<2 x i64> %a, i32 %c) {
 ; CHECK-SD:       // %bb.0: // %entry
 ; CHECK-SD-NEXT:    sub sp, sp, #16
 ; CHECK-SD-NEXT:    .cfi_def_cfa_offset 16
-; CHECK-SD-NEXT:    adrp x8, .LCPI8_0
-; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
-; CHECK-SD-NEXT:    ldr q0, [x8, :lo12:.LCPI8_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI8_0
 ; CHECK-SD-NEXT:    mov x8, sp
+; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
+; CHECK-SD-NEXT:    ldr q0, [x16, :lo12:.LCPI8_0]
 ; CHECK-SD-NEXT:    bfi x8, x0, #3, #1
 ; CHECK-SD-NEXT:    str q0, [sp]
 ; CHECK-SD-NEXT:    ldr x0, [x8]
@@ -273,10 +273,10 @@ define i32 @extract_v4i32_add(<4 x i32> %a, <4 x i32> %b, i32 %c) {
 ; CHECK-SD:       // %bb.0: // %entry
 ; CHECK-SD-NEXT:    sub sp, sp, #16
 ; CHECK-SD-NEXT:    .cfi_def_cfa_offset 16
-; CHECK-SD-NEXT:    adrp x8, .LCPI12_0
-; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI12_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI12_0
 ; CHECK-SD-NEXT:    mov x8, sp
+; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI12_0]
 ; CHECK-SD-NEXT:    bfi x8, x0, #2, #2
 ; CHECK-SD-NEXT:    add v0.4s, v0.4s, v1.4s
 ; CHECK-SD-NEXT:    str q0, [sp]
@@ -341,10 +341,10 @@ define float @extract_v4i32_minimum_build_vector(<4 x float> %a, <4 x float> %b,
 ; CHECK-SD:       // %bb.0: // %entry
 ; CHECK-SD-NEXT:    sub sp, sp, #16
 ; CHECK-SD-NEXT:    .cfi_def_cfa_offset 16
-; CHECK-SD-NEXT:    adrp x8, .LCPI14_0
-; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI14_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI14_0
 ; CHECK-SD-NEXT:    mov x8, sp
+; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI14_0]
 ; CHECK-SD-NEXT:    bfi x8, x0, #2, #2
 ; CHECK-SD-NEXT:    fmin v0.4s, v0.4s, v1.4s
 ; CHECK-SD-NEXT:    str q0, [sp]
@@ -373,13 +373,21 @@ entry:
 }
 
 define float @extract_v4i32_minimum_build_vector_const(<4 x float> %a, <4 x float> %b, i32 %c) {
-; CHECK-LABEL: extract_v4i32_minimum_build_vector_const:
-; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI15_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI15_0]
-; CHECK-NEXT:    fmin v0.4s, v0.4s, v1.4s
-; CHECK-NEXT:    mov s0, v0.s[1]
-; CHECK-NEXT:    ret
+; CHECK-SD-LABEL: extract_v4i32_minimum_build_vector_const:
+; CHECK-SD:       // %bb.0: // %entry
+; CHECK-SD-NEXT:    adrp x16, .LCPI15_0
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI15_0]
+; CHECK-SD-NEXT:    fmin v0.4s, v0.4s, v1.4s
+; CHECK-SD-NEXT:    mov s0, v0.s[1]
+; CHECK-SD-NEXT:    ret
+;
+; CHECK-GI-LABEL: extract_v4i32_minimum_build_vector_const:
+; CHECK-GI:       // %bb.0: // %entry
+; CHECK-GI-NEXT:    adrp x8, .LCPI15_0
+; CHECK-GI-NEXT:    ldr q1, [x8, :lo12:.LCPI15_0]
+; CHECK-GI-NEXT:    fmin v0.4s, v0.4s, v1.4s
+; CHECK-GI-NEXT:    mov s0, v0.s[1]
+; CHECK-GI-NEXT:    ret
 entry:
   %vector = call <4 x float> @llvm.minimum.v4f32(<4 x float> %a, <4 x float> <float 42.0, float 11.0, float 17.0, float 6.0>)
   %d = extractelement <4 x float> %vector, i32 1
@@ -444,11 +452,11 @@ define i32 @extract_v4i32_icmp(<4 x i32> %a, <4 x i32> %b, i32 %c) {
 ; CHECK-SD:       // %bb.0: // %entry
 ; CHECK-SD-NEXT:    sub sp, sp, #16
 ; CHECK-SD-NEXT:    .cfi_def_cfa_offset 16
-; CHECK-SD-NEXT:    adrp x8, .LCPI18_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI18_0
 ; CHECK-SD-NEXT:    movi v2.4s, #1
-; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI18_0]
 ; CHECK-SD-NEXT:    mov x8, sp
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI18_0]
+; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
 ; CHECK-SD-NEXT:    bfi x8, x0, #2, #2
 ; CHECK-SD-NEXT:    cmge v0.4s, v1.4s, v0.4s
 ; CHECK-SD-NEXT:    and v0.16b, v0.16b, v2.16b
@@ -483,9 +491,9 @@ entry:
 define i32 @extract_v4i32_icmp_const(<4 x i32> %a, <4 x i32> %b, i32 %c) {
 ; CHECK-SD-LABEL: extract_v4i32_icmp_const:
 ; CHECK-SD:       // %bb.0: // %entry
-; CHECK-SD-NEXT:    adrp x8, .LCPI19_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI19_0
 ; CHECK-SD-NEXT:    movi v2.4s, #1
-; CHECK-SD-NEXT:    ldr q1, [x8, :lo12:.LCPI19_0]
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI19_0]
 ; CHECK-SD-NEXT:    cmge v0.4s, v1.4s, v0.4s
 ; CHECK-SD-NEXT:    and v0.16b, v0.16b, v2.16b
 ; CHECK-SD-NEXT:    mov w0, v0.s[2]
@@ -580,15 +588,15 @@ define i32 @extract_v4i32_select(<4 x i32> %a, <4 x i32> %b, i32 %c, <4 x i1> %c
 ; CHECK-SD:       // %bb.0: // %entry
 ; CHECK-SD-NEXT:    sub sp, sp, #16
 ; CHECK-SD-NEXT:    .cfi_def_cfa_offset 16
-; CHECK-SD-NEXT:    ushll v1.4s, v2.4h, #0
-; CHECK-SD-NEXT:    adrp x8, .LCPI22_0
-; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI22_0]
+; CHECK-SD-NEXT:    ushll v2.4s, v2.4h, #0
+; CHECK-SD-NEXT:    adrp x16, .LCPI22_0
 ; CHECK-SD-NEXT:    mov x8, sp
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI22_0]
+; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
 ; CHECK-SD-NEXT:    bfi x8, x0, #2, #2
-; CHECK-SD-NEXT:    shl v1.4s, v1.4s, #31
-; CHECK-SD-NEXT:    cmlt v1.4s, v1.4s, #0
-; CHECK-SD-NEXT:    bif v0.16b, v2.16b, v1.16b
+; CHECK-SD-NEXT:    shl v2.4s, v2.4s, #31
+; CHECK-SD-NEXT:    cmlt v2.4s, v2.4s, #0
+; CHECK-SD-NEXT:    bif v0.16b, v1.16b, v2.16b
 ; CHECK-SD-NEXT:    str q0, [sp]
 ; CHECK-SD-NEXT:    ldr w0, [x8]
 ; CHECK-SD-NEXT:    add sp, sp, #16
@@ -722,10 +730,10 @@ define i32 @extract_v4i32_abs_half_const(<4 x float> %a, i32 %c) {
 ; CHECK-SD:       // %bb.0: // %entry
 ; CHECK-SD-NEXT:    sub sp, sp, #16
 ; CHECK-SD-NEXT:    .cfi_def_cfa_offset 16
-; CHECK-SD-NEXT:    adrp x8, .LCPI26_0
-; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
-; CHECK-SD-NEXT:    ldr q0, [x8, :lo12:.LCPI26_0]
+; CHECK-SD-NEXT:    adrp x16, .LCPI26_0
 ; CHECK-SD-NEXT:    mov x8, sp
+; CHECK-SD-NEXT:    // kill: def $w0 killed $w0 def $x0
+; CHECK-SD-NEXT:    ldr q0, [x16, :lo12:.LCPI26_0]
 ; CHECK-SD-NEXT:    bfi x8, x0, #2, #2
 ; CHECK-SD-NEXT:    str q0, [sp]
 ; CHECK-SD-NEXT:    ldr w0, [x8]

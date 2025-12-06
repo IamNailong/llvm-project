@@ -5,19 +5,19 @@
 define { <16 x i8>, <16 x i8> } @foo_ld2_v16i8(<16 x i1> %mask, ptr %p) {
 ; CHECK-LABEL: foo_ld2_v16i8:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    zip2 v1.16b, v0.16b, v0.16b
+; CHECK-NEXT:    zip2 v2.16b, v0.16b, v0.16b
 ; CHECK-NEXT:    zip1 v0.16b, v0.16b, v0.16b
-; CHECK-NEXT:    adrp x8, .LCPI0_0
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI0_0]
-; CHECK-NEXT:    shl v1.16b, v1.16b, #7
+; CHECK-NEXT:    adrp x16, .LCPI0_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI0_0]
+; CHECK-NEXT:    shl v2.16b, v2.16b, #7
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
-; CHECK-NEXT:    cmlt v1.16b, v1.16b, #0
+; CHECK-NEXT:    cmlt v2.16b, v2.16b, #0
 ; CHECK-NEXT:    cmlt v0.16b, v0.16b, #0
-; CHECK-NEXT:    and v1.16b, v1.16b, v2.16b
-; CHECK-NEXT:    and v0.16b, v0.16b, v2.16b
-; CHECK-NEXT:    ext v2.16b, v1.16b, v1.16b, #8
+; CHECK-NEXT:    and v2.16b, v2.16b, v1.16b
+; CHECK-NEXT:    and v0.16b, v0.16b, v1.16b
+; CHECK-NEXT:    ext v1.16b, v2.16b, v2.16b, #8
 ; CHECK-NEXT:    ext v3.16b, v0.16b, v0.16b, #8
-; CHECK-NEXT:    zip1 v1.16b, v1.16b, v2.16b
+; CHECK-NEXT:    zip1 v1.16b, v2.16b, v1.16b
 ; CHECK-NEXT:    zip1 v0.16b, v0.16b, v3.16b
 ; CHECK-NEXT:    addv h1, v1.8h
 ; CHECK-NEXT:    addv h0, v0.8h
@@ -230,9 +230,9 @@ define { <8 x i16>, <8 x i16> } @foo_ld2_v8i16(<8 x i1> %mask, ptr %p) {
 ; CHECK-LABEL: foo_ld2_v8i16:
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    // kill: def $d0 killed $d0 def $q0
-; CHECK-NEXT:    adrp x8, .LCPI1_0
+; CHECK-NEXT:    adrp x16, .LCPI1_0
 ; CHECK-NEXT:    zip1 v0.16b, v0.16b, v0.16b
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI1_0]
 ; CHECK-NEXT:    shl v0.16b, v0.16b, #7
 ; CHECK-NEXT:    cmlt v0.16b, v0.16b, #0
 ; CHECK-NEXT:    and v0.16b, v0.16b, v1.16b

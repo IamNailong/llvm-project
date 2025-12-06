@@ -10875,6 +10875,17 @@ AArch64InstrInfo::isCopyLikeInstrImpl(const MachineInstr &MI) const {
   return std::nullopt;
 }
 
+bool AArch64InstrInfo::isReMaterializableImpl(const MachineInstr &MI) const {
+  // LOADcpQ uses X16 as a scratch register (implicit def). The base
+  // implementation rejects any physreg def, but X16 is a call-clobbered
+  // scratch register that's safe to clobber during rematerialization.
+  if (MI.getOpcode() == AArch64::LOADcpQ)
+    return true;
+
+  // Fall back to the default implementation for other instructions.
+  return TargetInstrInfo::isReMaterializableImpl(MI);
+}
+
 std::optional<RegImmPair>
 AArch64InstrInfo::isAddImmediate(const MachineInstr &MI, Register Reg) const {
   int Sign = 1;

@@ -57,9 +57,9 @@ entry:
 define <8 x i16> @v8i16_2(<4 x i16> %a, <4 x i16> %b) {
 ; CHECK-SD-LABEL: v8i16_2:
 ; CHECK-SD:       // %bb.0: // %entry
-; CHECK-SD-NEXT:    adrp x8, .LCPI5_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI5_0
 ; CHECK-SD-NEXT:    // kill: def $d1 killed $d1 killed $q0_q1 def $q0_q1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI5_0]
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI5_0]
 ; CHECK-SD-NEXT:    // kill: def $d0 killed $d0 killed $q0_q1 def $q0_q1
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-SD-NEXT:    ret
@@ -117,9 +117,9 @@ entry:
 define <16 x i8> @v16i8_2(<8 x i8> %a, <8 x i8> %b) {
 ; CHECK-SD-LABEL: v16i8_2:
 ; CHECK-SD:       // %bb.0: // %entry
-; CHECK-SD-NEXT:    adrp x8, .LCPI9_0
+; CHECK-SD-NEXT:    adrp x16, .LCPI9_0
 ; CHECK-SD-NEXT:    // kill: def $d1 killed $d1 killed $q0_q1 def $q0_q1
-; CHECK-SD-NEXT:    ldr q2, [x8, :lo12:.LCPI9_0]
+; CHECK-SD-NEXT:    ldr q2, [x16, :lo12:.LCPI9_0]
 ; CHECK-SD-NEXT:    // kill: def $d0 killed $d0 killed $q0_q1 def $q0_q1
 ; CHECK-SD-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-SD-NEXT:    ret

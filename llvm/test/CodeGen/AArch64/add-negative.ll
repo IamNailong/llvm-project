@@ -4,8 +4,8 @@
 define <8 x i16> @add_to_sub(<8 x i16> %0, <8 x i16> %1) {
 ; CHECK-LABEL: add_to_sub:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI0_0
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI0_0]
+; CHECK-NEXT:    adrp x16, .LCPI0_0
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI0_0]
 ; CHECK-NEXT:    cmhi v0.8h, v2.8h, v0.8h
 ; CHECK-NEXT:    cmhi v1.8h, v2.8h, v1.8h
 ; CHECK-NEXT:    sub v0.8h, v0.8h, v1.8h

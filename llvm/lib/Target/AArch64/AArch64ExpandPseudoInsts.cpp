@@ -1547,6 +1547,32 @@ bool AArch64ExpandPseudo::expandMI(MachineBasicBlock &MBB,
     MI.eraseFromParent();
     return true;
 
+  case AArch64::LOADcpQ: {
+    // Expand into ADRP + LDRQui for loading 128-bit constant from constant pool.
+    // Operand 0: destination FPR128
+    // Operand 1: constant pool address
+    // X16 is implicitly defined and used as scratch for ADRP.
+    Register DstReg = MI.getOperand(0).getReg();
+    const MachineOperand &CPAddr = MI.getOperand(1);
+
+    // Emit ADRP to compute the page address into X16 (scratch register).
+    MachineInstrBuilder MIB1 =
+        BuildMI(MBB, MBBI, MI.getDebugLoc(), TII->get(AArch64::ADRP), AArch64::X16)
+            .addConstantPoolIndex(CPAddr.getIndex(), CPAddr.getOffset(),
+                                  AArch64II::MO_PAGE);
+
+    // Emit LDRQui to load the 128-bit value from the constant pool.
+    MachineInstrBuilder MIB2 =
+        BuildMI(MBB, MBBI, MI.getDebugLoc(), TII->get(AArch64::LDRQui), DstReg)
+            .addReg(AArch64::X16, RegState::Kill)
+            .addConstantPoolIndex(CPAddr.getIndex(), CPAddr.getOffset(),
+                                  AArch64II::MO_PAGEOFF | AArch64II::MO_NC);
+
+    transferImpOps(MI, MIB1, MIB2);
+    MI.eraseFromParent();
+    return true;
+  }
+
   case AArch64::MOVbaseTLS: {
     Register DstReg = MI.getOperand(0).getReg();
     auto SysReg = AArch64SysReg::TPIDR_EL0;

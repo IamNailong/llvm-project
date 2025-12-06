@@ -795,16 +795,16 @@ define void @shift_trunc_volatile_store(ptr %src, ptr %dst) {
 define void @load_v3i8_zext_to_3xi32_add_trunc_store(ptr %src) {
 ; CHECK-LABEL: load_v3i8_zext_to_3xi32_add_trunc_store:
 ; CHECK:       ; %bb.0:
-; CHECK-NEXT:    ldrb w9, [x0, #2]
-; CHECK-NEXT:    ldrh w10, [x0]
 ; CHECK-NEXT:  Lloh4:
-; CHECK-NEXT:    adrp x8, lCPI22_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI22_0@PAGE
 ; CHECK-NEXT:  Lloh5:
-; CHECK-NEXT:    ldr q1, [x8, lCPI22_0@PAGEOFF]
-; CHECK-NEXT:    orr w9, w10, w9, lsl #16
-; CHECK-NEXT:    fmov s0, w9
-; CHECK-NEXT:    zip1.8b v0, v0, v0
-; CHECK-NEXT:    uaddw.4s v0, v1, v0
+; CHECK-NEXT:    ldr q0, [x16, lCPI22_0@PAGEOFF]
+; CHECK-NEXT:    ldrb w8, [x0, #2]
+; CHECK-NEXT:    ldrh w9, [x0]
+; CHECK-NEXT:    orr w8, w9, w8, lsl #16
+; CHECK-NEXT:    fmov s1, w8
+; CHECK-NEXT:    zip1.8b v1, v1, v0
+; CHECK-NEXT:    uaddw.4s v0, v0, v1
 ; CHECK-NEXT:    mov b1, v0[8]
 ; CHECK-NEXT:    mov b2, v0[4]
 ; CHECK-NEXT:    str b0, [x0]
@@ -848,16 +848,16 @@ define void @load_v3i8_zext_to_3xi32_add_trunc_store(ptr %src) {
 define void @load_v3i8_sext_to_3xi32_add_trunc_store(ptr %src) {
 ; CHECK-LABEL: load_v3i8_sext_to_3xi32_add_trunc_store:
 ; CHECK:       ; %bb.0:
-; CHECK-NEXT:    ldrb w9, [x0, #2]
-; CHECK-NEXT:    ldrh w10, [x0]
 ; CHECK-NEXT:  Lloh6:
-; CHECK-NEXT:    adrp x8, lCPI23_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI23_0@PAGE
 ; CHECK-NEXT:  Lloh7:
-; CHECK-NEXT:    ldr q1, [x8, lCPI23_0@PAGEOFF]
-; CHECK-NEXT:    orr w9, w10, w9, lsl #16
-; CHECK-NEXT:    fmov s0, w9
-; CHECK-NEXT:    zip1.8b v0, v0, v0
-; CHECK-NEXT:    uaddw.4s v0, v1, v0
+; CHECK-NEXT:    ldr q0, [x16, lCPI23_0@PAGEOFF]
+; CHECK-NEXT:    ldrb w8, [x0, #2]
+; CHECK-NEXT:    ldrh w9, [x0]
+; CHECK-NEXT:    orr w8, w9, w8, lsl #16
+; CHECK-NEXT:    fmov s1, w8
+; CHECK-NEXT:    zip1.8b v1, v1, v0
+; CHECK-NEXT:    uaddw.4s v0, v0, v1
 ; CHECK-NEXT:    mov b1, v0[8]
 ; CHECK-NEXT:    mov b2, v0[4]
 ; CHECK-NEXT:    str b0, [x0]

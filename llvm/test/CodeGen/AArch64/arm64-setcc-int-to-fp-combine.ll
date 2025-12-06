@@ -42,9 +42,9 @@ define <4 x float> @foo2(<4 x float> %val, <4 x float> %test) nounwind {
 ; CHECK:       ; %bb.0:
 ; CHECK-NEXT:    fcmeq.4s v0, v0, v1
 ; CHECK-NEXT:  Lloh0:
-; CHECK-NEXT:    adrp x8, lCPI2_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI2_0@PAGE
 ; CHECK-NEXT:  Lloh1:
-; CHECK-NEXT:    ldr q1, [x8, lCPI2_0@PAGEOFF]
+; CHECK-NEXT:    ldr q1, [x16, lCPI2_0@PAGEOFF]
 ; CHECK-NEXT:    and.16b v0, v0, v1
 ; CHECK-NEXT:    ret
 ; CHECK-NEXT:    .loh AdrpLdr Lloh0, Lloh1

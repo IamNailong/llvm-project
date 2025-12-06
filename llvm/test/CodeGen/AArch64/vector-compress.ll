@@ -257,9 +257,9 @@ define <4 x i32> @test_compress_all_const() {
 ; CHECK-LABEL: test_compress_all_const:
 ; CHECK:       ; %bb.0:
 ; CHECK-NEXT:  Lloh0:
-; CHECK-NEXT:    adrp x8, lCPI5_0@PAGE
+; CHECK-NEXT:    adrp x16, lCPI5_0@PAGE
 ; CHECK-NEXT:  Lloh1:
-; CHECK-NEXT:    ldr q0, [x8, lCPI5_0@PAGEOFF]
+; CHECK-NEXT:    ldr q0, [x16, lCPI5_0@PAGEOFF]
 ; CHECK-NEXT:    ret
 ; CHECK-NEXT:    .loh AdrpLdr Lloh0, Lloh1
     %out = call <4 x i32> @llvm.experimental.vector.compress(<4 x i32> <i32 3, i32 5, i32 7, i32 9>,

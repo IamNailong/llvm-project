@@ -65,10 +65,13 @@ define <3 x i1> @test_srem_vec(<3 x i33> %X) nounwind {
 ; CHECK-NEXT:    sbfx x12, x2, #0, #33
 ; CHECK-NEXT:    movk x9, #50972, lsl #32
 ; CHECK-NEXT:    movk x13, #29127, lsl #16
+; CHECK-NEXT:    adrp x16, .LCPI3_0
 ; CHECK-NEXT:    movk x9, #7281, lsl #48
 ; CHECK-NEXT:    movk x13, #50972, lsl #32
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI3_0]
 ; CHECK-NEXT:    smulh x11, x8, x9
 ; CHECK-NEXT:    movk x13, #7281, lsl #48
+; CHECK-NEXT:    adrp x16, .LCPI3_1
 ; CHECK-NEXT:    smulh x9, x10, x9
 ; CHECK-NEXT:    smulh x13, x12, x13
 ; CHECK-NEXT:    add x11, x11, x11, lsr #63
@@ -85,14 +88,11 @@ define <3 x i1> @test_srem_vec(<3 x i33> %X) nounwind {
 ; CHECK-NEXT:    mov v0.d[1], x9
 ; CHECK-NEXT:    add x9, x10, x11, lsr #63
 ; CHECK-NEXT:    add x8, x9, x9, lsl #3
-; CHECK-NEXT:    adrp x9, .LCPI3_0
-; CHECK-NEXT:    ldr q2, [x9, :lo12:.LCPI3_0]
 ; CHECK-NEXT:    add x8, x12, x8
 ; CHECK-NEXT:    and v0.16b, v0.16b, v1.16b
 ; CHECK-NEXT:    fmov d3, x8
-; CHECK-NEXT:    adrp x8, .LCPI3_1
 ; CHECK-NEXT:    cmeq v0.2d, v0.2d, v2.2d
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI3_1]
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI3_1]
 ; CHECK-NEXT:    and v1.16b, v3.16b, v1.16b
 ; CHECK-NEXT:    mvn v0.16b, v0.16b
 ; CHECK-NEXT:    cmeq v1.2d, v1.2d, v2.2d

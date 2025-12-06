@@ -67,9 +67,9 @@ define <8 x i8> @vls_sve_and_8xi8(<8 x i8> %b) nounwind {
 define <16 x i8> @vls_sve_and_16xi8(<16 x i8> %b) nounwind {
 ; CHECK-LABEL: vls_sve_and_16xi8:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI2_0
+; CHECK-NEXT:    adrp x16, .LCPI2_0
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 def $z0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI2_0]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI2_0]
 ; CHECK-NEXT:    and z0.d, z0.d, z1.d
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $z0
 ; CHECK-NEXT:    ret
@@ -111,10 +111,10 @@ define <16 x i8> @vls_sve_and_16xi8(<16 x i8> %b) nounwind {
 define <32 x i8> @vls_sve_and_32xi8(<32 x i8> %ap) nounwind {
 ; CHECK-LABEL: vls_sve_and_32xi8:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI3_0
+; CHECK-NEXT:    adrp x16, .LCPI3_0
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 def $z1
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 def $z0
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI3_0]
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI3_0]
 ; CHECK-NEXT:    and z0.d, z0.d, z2.d
 ; CHECK-NEXT:    and z1.d, z1.d, z2.d
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $z0
@@ -232,9 +232,9 @@ define <4 x i16> @vls_sve_and_4xi16(<4 x i16> %b) nounwind {
 define <8 x i16> @vls_sve_and_8xi16(<8 x i16> %b) nounwind {
 ; CHECK-LABEL: vls_sve_and_8xi16:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI6_0
+; CHECK-NEXT:    adrp x16, .LCPI6_0
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 def $z0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI6_0]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI6_0]
 ; CHECK-NEXT:    and z0.d, z0.d, z1.d
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $z0
 ; CHECK-NEXT:    ret
@@ -264,10 +264,10 @@ define <8 x i16> @vls_sve_and_8xi16(<8 x i16> %b) nounwind {
 define <16 x i16> @vls_sve_and_16xi16(<16 x i16> %b) nounwind {
 ; CHECK-LABEL: vls_sve_and_16xi16:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI7_0
+; CHECK-NEXT:    adrp x16, .LCPI7_0
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 def $z1
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 def $z0
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI7_0]
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI7_0]
 ; CHECK-NEXT:    and z0.d, z0.d, z2.d
 ; CHECK-NEXT:    and z1.d, z1.d, z2.d
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $z0
@@ -333,9 +333,9 @@ define <2 x i32> @vls_sve_and_2xi32(<2 x i32> %b) nounwind {
 define <4 x i32> @vls_sve_and_4xi32(<4 x i32> %b) nounwind {
 ; CHECK-LABEL: vls_sve_and_4xi32:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI9_0
+; CHECK-NEXT:    adrp x16, .LCPI9_0
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 def $z0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI9_0]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI9_0]
 ; CHECK-NEXT:    and z0.d, z0.d, z1.d
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $z0
 ; CHECK-NEXT:    ret
@@ -357,10 +357,10 @@ define <4 x i32> @vls_sve_and_4xi32(<4 x i32> %b) nounwind {
 define <8 x i32> @vls_sve_and_8xi32(<8 x i32> %b) nounwind {
 ; CHECK-LABEL: vls_sve_and_8xi32:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI10_0
+; CHECK-NEXT:    adrp x16, .LCPI10_0
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 def $z1
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 def $z0
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI10_0]
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI10_0]
 ; CHECK-NEXT:    and z0.d, z0.d, z2.d
 ; CHECK-NEXT:    and z1.d, z1.d, z2.d
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $z0

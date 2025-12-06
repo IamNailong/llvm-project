@@ -1708,19 +1708,19 @@ for.end12:                                        ; preds = %vector.body
 define noundef <8 x i16> @cmplx_mul_combined_re_im(<8 x i16> noundef %a, i64 %scale.coerce) {
 ; CHECK-SD-LABEL: cmplx_mul_combined_re_im:
 ; CHECK-SD:       // %bb.0: // %entry
-; CHECK-SD-NEXT:    lsr x9, x0, #16
-; CHECK-SD-NEXT:    adrp x8, .LCPI15_0
+; CHECK-SD-NEXT:    lsr x8, x0, #16
+; CHECK-SD-NEXT:    adrp x16, .LCPI15_0
 ; CHECK-SD-NEXT:    dup v4.8h, w0
-; CHECK-SD-NEXT:    ldr q3, [x8, :lo12:.LCPI15_0]
-; CHECK-SD-NEXT:    dup v2.8h, w9
-; CHECK-SD-NEXT:    sqneg v1.8h, v2.8h
-; CHECK-SD-NEXT:    tbl v1.16b, { v1.16b, v2.16b }, v3.16b
-; CHECK-SD-NEXT:    rev32 v2.8h, v0.8h
-; CHECK-SD-NEXT:    sqdmull v3.4s, v0.4h, v4.4h
+; CHECK-SD-NEXT:    ldr q1, [x16, :lo12:.LCPI15_0]
+; CHECK-SD-NEXT:    rev32 v5.8h, v0.8h
+; CHECK-SD-NEXT:    dup v3.8h, w8
+; CHECK-SD-NEXT:    sqneg v2.8h, v3.8h
+; CHECK-SD-NEXT:    tbl v1.16b, { v2.16b, v3.16b }, v1.16b
+; CHECK-SD-NEXT:    sqdmull v2.4s, v0.4h, v4.4h
 ; CHECK-SD-NEXT:    sqdmull2 v0.4s, v0.8h, v4.8h
-; CHECK-SD-NEXT:    sqdmlal v3.4s, v2.4h, v1.4h
-; CHECK-SD-NEXT:    sqdmlal2 v0.4s, v2.8h, v1.8h
-; CHECK-SD-NEXT:    uzp2 v0.8h, v3.8h, v0.8h
+; CHECK-SD-NEXT:    sqdmlal v2.4s, v5.4h, v1.4h
+; CHECK-SD-NEXT:    sqdmlal2 v0.4s, v5.8h, v1.8h
+; CHECK-SD-NEXT:    uzp2 v0.8h, v2.8h, v0.8h
 ; CHECK-SD-NEXT:    ret
 ;
 ; CHECK-GI-LABEL: cmplx_mul_combined_re_im:

@@ -4,8 +4,8 @@
 define <16 x i8> @fn1_vector(<16 x i8> %arg) {
 ; CHECK-LABEL: fn1_vector:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI0_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI0_0]
+; CHECK-NEXT:    adrp x16, .LCPI0_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI0_0]
 ; CHECK-NEXT:    mul v0.16b, v0.16b, v1.16b
 ; CHECK-NEXT:    ret
 entry:
@@ -17,8 +17,8 @@ entry:
 define <16 x i8> @fn2_vector(<16 x i8> %arg) {
 ; CHECK-LABEL: fn2_vector:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI1_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI1_0]
+; CHECK-NEXT:    adrp x16, .LCPI1_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI1_0]
 ; CHECK-NEXT:    mul v0.16b, v0.16b, v1.16b
 ; CHECK-NEXT:    ret
 entry:
@@ -30,8 +30,8 @@ entry:
 define <16 x i8> @fn1_vector_undef(<16 x i8> %arg) {
 ; CHECK-LABEL: fn1_vector_undef:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI2_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI2_0]
+; CHECK-NEXT:    adrp x16, .LCPI2_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI2_0]
 ; CHECK-NEXT:    mul v0.16b, v0.16b, v1.16b
 ; CHECK-NEXT:    ret
 entry:
@@ -43,8 +43,8 @@ entry:
 define <16 x i8> @fn2_vector_undef(<16 x i8> %arg) {
 ; CHECK-LABEL: fn2_vector_undef:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI3_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI3_0]
+; CHECK-NEXT:    adrp x16, .LCPI3_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI3_0]
 ; CHECK-NEXT:    mul v0.16b, v0.16b, v1.16b
 ; CHECK-NEXT:    ret
 entry:
@@ -56,7 +56,7 @@ entry:
 define i32 @fn1_scalar(i32 %arg) {
 ; CHECK-LABEL: fn1_scalar:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    mov w8, #1664
+; CHECK-NEXT:    mov w8, #1664 // =0x680
 ; CHECK-NEXT:    mul w0, w0, w8
 ; CHECK-NEXT:    ret
 entry:
@@ -68,7 +68,7 @@ entry:
 define i32 @fn2_scalar(i32 %arg) {
 ; CHECK-LABEL: fn2_scalar:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    mov w8, #1664
+; CHECK-NEXT:    mov w8, #1664 // =0x680
 ; CHECK-NEXT:    mul w0, w0, w8
 ; CHECK-NEXT:    ret
 entry:
@@ -102,7 +102,7 @@ entry:
 define i32 @fn1_scalar_opaque(i32 %arg) {
 ; CHECK-LABEL: fn1_scalar_opaque:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    mov w8, #13
+; CHECK-NEXT:    mov w8, #13 // =0xd
 ; CHECK-NEXT:    mul w8, w0, w8
 ; CHECK-NEXT:    lsl w0, w8, #7
 ; CHECK-NEXT:    ret
@@ -116,7 +116,7 @@ entry:
 define i32 @fn2_scalar_opaque(i32 %arg) {
 ; CHECK-LABEL: fn2_scalar_opaque:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    mov w8, #13
+; CHECK-NEXT:    mov w8, #13 // =0xd
 ; CHECK-NEXT:    mul w8, w0, w8
 ; CHECK-NEXT:    lsl w0, w8, #7
 ; CHECK-NEXT:    ret

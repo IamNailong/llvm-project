@@ -113,9 +113,9 @@ define <4 x i8> @test_v8i8_v4i16_08(<8 x i8> %a, <8 x i8> %b) {
 define <4 x i16> @test_v8i16_v4i16_08(<8 x i16> %a, <8 x i16> %b) {
 ; CHECK-LABEL: test_v8i16_v4i16_08:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI8_0
+; CHECK-NEXT:    adrp x16, .LCPI8_0
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI8_0]
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI8_0]
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
 ; CHECK-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECK-NEXT:    add v0.4h, v0.4h, v0.4h

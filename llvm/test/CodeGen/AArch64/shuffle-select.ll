@@ -24,8 +24,8 @@ define <16 x i8> @sel_v16i8(<16 x i8> %v0, <16 x i8> %v1) {
 define <16 x i8> @sel_v16i8_poison(<16 x i8> %v0, <16 x i8> %v1) {
 ; CHECK-LABEL: sel_v16i8_poison:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI2_0
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI2_0]
+; CHECK-NEXT:    adrp x16, .LCPI2_0
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI2_0]
 ; CHECK-NEXT:    bif v0.16b, v1.16b, v2.16b
 ; CHECK-NEXT:    ret
   %tmp0 = shufflevector <16 x i8> %v0, <16 x i8> %v1, <16 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 22, i32 23, i32 24, i32 25, i32 26, i32 poison, i32 poison, i32 poison, i32 poison, i32 poison>
@@ -35,8 +35,8 @@ define <16 x i8> @sel_v16i8_poison(<16 x i8> %v0, <16 x i8> %v1) {
 define <16 x i8> @sel_v16i8_unregular(<16 x i8> %v0, <16 x i8> %v1) {
 ; CHECK-LABEL: sel_v16i8_unregular:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI3_0
-; CHECK-NEXT:    ldr q2, [x8, :lo12:.LCPI3_0]
+; CHECK-NEXT:    adrp x16, .LCPI3_0
+; CHECK-NEXT:    ldr q2, [x16, :lo12:.LCPI3_0]
 ; CHECK-NEXT:    bif v0.16b, v1.16b, v2.16b
 ; CHECK-NEXT:    ret
   %tmp0 = shufflevector <16 x i8> %v0, <16 x i8> %v1, <16 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7, i32 8, i32 9, i32 10, i32 27, i32 28, i32 29, i32 30, i32 31>

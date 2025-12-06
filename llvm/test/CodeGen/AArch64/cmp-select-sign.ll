@@ -196,8 +196,8 @@ define <4 x i32> @sign_4xi32_multi_use(<4 x i32> %a) {
 define <4 x i32> @not_sign_4xi32(<4 x i32> %a) {
 ; CHECK-LABEL: not_sign_4xi32:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI16_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI16_0]
+; CHECK-NEXT:    adrp x16, .LCPI16_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI16_0]
 ; CHECK-NEXT:    cmge v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    orr v0.4s, #1
 ; CHECK-NEXT:    ret
@@ -210,9 +210,9 @@ define <4 x i32> @not_sign_4xi32(<4 x i32> %a) {
 define <4 x i32> @not_sign_4xi32_2(<4 x i32> %a) {
 ; CHECK-LABEL: not_sign_4xi32_2:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI17_0
+; CHECK-NEXT:    adrp x16, .LCPI17_0
 ; CHECK-NEXT:    cmlt v0.4s, v0.4s, #0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI17_0]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI17_0]
 ; CHECK-NEXT:    orr v0.16b, v0.16b, v1.16b
 ; CHECK-NEXT:    ret
   %c = icmp sgt <4 x i32> %a, <i32 -1, i32 -1, i32 -1, i32 -1>
@@ -224,9 +224,9 @@ define <4 x i32> @not_sign_4xi32_2(<4 x i32> %a) {
 define <4 x i32> @not_sign_4xi32_3(<4 x i32> %a) {
 ; CHECK-LABEL: not_sign_4xi32_3:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI18_0
+; CHECK-NEXT:    adrp x16, .LCPI18_0
 ; CHECK-NEXT:    cmge v0.4s, v0.4s, #0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI18_0]
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI18_0]
 ; CHECK-NEXT:    bic v1.16b, v1.16b, v0.16b
 ; CHECK-NEXT:    sub v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    ret

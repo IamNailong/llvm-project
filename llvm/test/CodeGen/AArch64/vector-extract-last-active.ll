@@ -8,9 +8,9 @@ define i8 @extract_last_i8(<16 x i8> %data, <16 x i8> %mask, i8 %passthru) {
 ; NEON-FIXED-NEXT:    sub sp, sp, #16
 ; NEON-FIXED-NEXT:    .cfi_def_cfa_offset 16
 ; NEON-FIXED-NEXT:    cmeq v2.16b, v1.16b, #0
-; NEON-FIXED-NEXT:    adrp x8, .LCPI0_0
+; NEON-FIXED-NEXT:    adrp x16, .LCPI0_0
 ; NEON-FIXED-NEXT:    cmtst v1.16b, v1.16b, v1.16b
-; NEON-FIXED-NEXT:    ldr q3, [x8, :lo12:.LCPI0_0]
+; NEON-FIXED-NEXT:    ldr q3, [x16, :lo12:.LCPI0_0]
 ; NEON-FIXED-NEXT:    mov x9, sp
 ; NEON-FIXED-NEXT:    str q0, [sp]
 ; NEON-FIXED-NEXT:    bic v2.16b, v3.16b, v2.16b

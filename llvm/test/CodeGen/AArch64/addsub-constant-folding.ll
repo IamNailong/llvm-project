@@ -72,8 +72,8 @@ define <4 x i32> @vec_add_const_add_const_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_add_const_add_const_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_add_const_add_const_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI4_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI4_0]
+; CHECK-NEXT:    adrp x16, .LCPI4_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI4_0]
 ; CHECK-NEXT:    add v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    ret
   %t0 = add <4 x i32> %arg, <i32 21, i32 undef, i32 8, i32 8>
@@ -149,8 +149,8 @@ define <4 x i32> @vec_add_const_sub_const_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_add_const_sub_const_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_add_const_sub_const_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI9_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI9_0]
+; CHECK-NEXT:    adrp x16, .LCPI9_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI9_0]
 ; CHECK-NEXT:    add v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    ret
   %t0 = add <4 x i32> %arg, <i32 21, i32 undef, i32 8, i32 8>
@@ -228,8 +228,8 @@ define <4 x i32> @vec_add_const_const_sub_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_add_const_const_sub_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_add_const_const_sub_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI14_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI14_0]
+; CHECK-NEXT:    adrp x16, .LCPI14_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI14_0]
 ; CHECK-NEXT:    sub v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    ret
   %t0 = add <4 x i32> %arg, <i32 21, i32 undef, i32 8, i32 8>
@@ -305,8 +305,8 @@ define <4 x i32> @vec_sub_const_add_const_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_sub_const_add_const_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_sub_const_add_const_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI19_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI19_0]
+; CHECK-NEXT:    adrp x16, .LCPI19_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI19_0]
 ; CHECK-NEXT:    add v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    ret
   %t0 = sub <4 x i32> %arg, <i32 21, i32 undef, i32 8, i32 8>
@@ -382,8 +382,8 @@ define <4 x i32> @vec_sub_const_sub_const_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_sub_const_sub_const_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_sub_const_sub_const_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI24_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI24_0]
+; CHECK-NEXT:    adrp x16, .LCPI24_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI24_0]
 ; CHECK-NEXT:    sub v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    ret
   %t0 = sub <4 x i32> %arg, <i32 21, i32 undef, i32 8, i32 8>
@@ -461,8 +461,8 @@ define <4 x i32> @vec_sub_const_const_sub_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_sub_const_const_sub_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_sub_const_const_sub_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI29_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI29_0]
+; CHECK-NEXT:    adrp x16, .LCPI29_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI29_0]
 ; CHECK-NEXT:    sub v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    ret
   %t0 = sub <4 x i32> %arg, <i32 21, i32 undef, i32 8, i32 8>
@@ -541,8 +541,8 @@ define <4 x i32> @vec_const_sub_add_const_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_const_sub_add_const_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_const_sub_add_const_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI34_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI34_0]
+; CHECK-NEXT:    adrp x16, .LCPI34_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI34_0]
 ; CHECK-NEXT:    sub v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    ret
   %t0 = sub <4 x i32> <i32 21, i32 undef, i32 8, i32 8>, %arg
@@ -621,8 +621,8 @@ define <4 x i32> @vec_const_sub_sub_const_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_const_sub_sub_const_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_const_sub_sub_const_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI39_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI39_0]
+; CHECK-NEXT:    adrp x16, .LCPI39_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI39_0]
 ; CHECK-NEXT:    sub v0.4s, v1.4s, v0.4s
 ; CHECK-NEXT:    ret
   %t0 = sub <4 x i32> <i32 21, i32 undef, i32 8, i32 8>, %arg
@@ -700,8 +700,8 @@ define <4 x i32> @vec_const_sub_const_sub_extrause(<4 x i32> %arg) {
 define <4 x i32> @vec_const_sub_const_sub_nonsplat(<4 x i32> %arg) {
 ; CHECK-LABEL: vec_const_sub_const_sub_nonsplat:
 ; CHECK:       // %bb.0:
-; CHECK-NEXT:    adrp x8, .LCPI44_0
-; CHECK-NEXT:    ldr q1, [x8, :lo12:.LCPI44_0]
+; CHECK-NEXT:    adrp x16, .LCPI44_0
+; CHECK-NEXT:    ldr q1, [x16, :lo12:.LCPI44_0]
 ; CHECK-NEXT:    add v0.4s, v0.4s, v1.4s
 ; CHECK-NEXT:    ret
   %t0 = sub <4 x i32> <i32 21, i32 undef, i32 8, i32 8>, %arg

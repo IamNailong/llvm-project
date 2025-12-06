@@ -223,14 +223,14 @@ entry:
 define <8 x bfloat> @shuffle3step0_bf16(<32 x bfloat> %src) {
 ; CHECK-LABEL: shuffle3step0_bf16:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI16_0
+; CHECK-NEXT:    adrp x16, .LCPI16_0
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
 ; CHECK-NEXT:    mov v3.16b, v2.16b
-; CHECK-NEXT:    ldr q4, [x8, :lo12:.LCPI16_0]
+; CHECK-NEXT:    ldr q4, [x16, :lo12:.LCPI16_0]
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
-; CHECK-NEXT:    adrp x8, .LCPI16_1
+; CHECK-NEXT:    adrp x16, .LCPI16_1
 ; CHECK-NEXT:    tbl v2.16b, { v0.16b, v1.16b }, v4.16b
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI16_1]
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI16_1]
 ; CHECK-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECK-NEXT:    ret
 entry:
@@ -241,14 +241,14 @@ entry:
 define <8 x bfloat> @shuffle3step1_bf16(<32 x bfloat> %src) {
 ; CHECK-LABEL: shuffle3step1_bf16:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI17_0
+; CHECK-NEXT:    adrp x16, .LCPI17_0
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
 ; CHECK-NEXT:    mov v3.16b, v2.16b
-; CHECK-NEXT:    ldr q4, [x8, :lo12:.LCPI17_0]
+; CHECK-NEXT:    ldr q4, [x16, :lo12:.LCPI17_0]
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
-; CHECK-NEXT:    adrp x8, .LCPI17_1
+; CHECK-NEXT:    adrp x16, .LCPI17_1
 ; CHECK-NEXT:    tbl v2.16b, { v0.16b, v1.16b }, v4.16b
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI17_1]
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI17_1]
 ; CHECK-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECK-NEXT:    ret
 entry:
@@ -259,14 +259,14 @@ entry:
 define <8 x bfloat> @shuffle3step2_bf16(<32 x bfloat> %src) {
 ; CHECK-LABEL: shuffle3step2_bf16:
 ; CHECK:       // %bb.0: // %entry
-; CHECK-NEXT:    adrp x8, .LCPI18_0
+; CHECK-NEXT:    adrp x16, .LCPI18_0
 ; CHECK-NEXT:    // kill: def $q1 killed $q1 killed $q0_q1 def $q0_q1
 ; CHECK-NEXT:    mov v3.16b, v2.16b
-; CHECK-NEXT:    ldr q4, [x8, :lo12:.LCPI18_0]
+; CHECK-NEXT:    ldr q4, [x16, :lo12:.LCPI18_0]
 ; CHECK-NEXT:    // kill: def $q0 killed $q0 killed $q0_q1 def $q0_q1
-; CHECK-NEXT:    adrp x8, .LCPI18_1
+; CHECK-NEXT:    adrp x16, .LCPI18_1
 ; CHECK-NEXT:    tbl v2.16b, { v0.16b, v1.16b }, v4.16b
-; CHECK-NEXT:    ldr q0, [x8, :lo12:.LCPI18_1]
+; CHECK-NEXT:    ldr q0, [x16, :lo12:.LCPI18_1]
 ; CHECK-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECK-NEXT:    ret
 entry:
