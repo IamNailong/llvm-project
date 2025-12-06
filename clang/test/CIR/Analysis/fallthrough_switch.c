@@ -1,4 +1,4 @@
-// RUN: %clang_cc1 -triple x86_64-unknown-linux-gnu %s -fclangir-analysis="fallthrough" -verify
+// RUN: %clang_cc1 -triple x86_64-unknown-linux-gnu %s -fclangir -fclangir-analysis="fallthrough" -emit-cir -o /dev/null -verify
 // INFO: Switch statement test cases for CIR fallthrough analysis
 // Derived from clang/test/Sema/return.c
 
@@ -27,7 +27,8 @@ int test_enum_cases(enum Cases C) {
   case C4: return 3;
   case C3: return 4;
   }
-} // No warning - enum covers all cases (TODO: CIR may need enum coverage analysis)
+} // expected-warning {{non-void function does not return a value in all control paths}}
+// TODO: Should not warn - enum covers all cases (needs enum coverage analysis)
 
 // ===========================================================================
 // Test cases where switch SHOULD warn

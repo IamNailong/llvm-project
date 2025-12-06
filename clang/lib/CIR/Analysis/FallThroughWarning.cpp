@@ -1,4 +1,5 @@
 #include "clang/CIR/Analysis/FallThroughWarning.h"
+#include "mlir/IR/OpDefinition.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/Basic/DiagnosticSema.h"
 #include "clang/Basic/SourceLocation.h"
@@ -130,7 +131,6 @@ bool isPhonyReturn(cir::ReturnOp returnOp) {
 
   auto returnValue = returnOp.getInput()[0];
 
-  // Check if the return value comes from a load operation
   auto loadOp = returnValue.getDefiningOp<cir::LoadOp>();
   if (!loadOp)
     return false;
@@ -145,19 +145,23 @@ bool isPhonyReturn(cir::ReturnOp returnOp) {
   if (name != "__retval")
     return false;
 
-  // Check if the alloca has any stores to it (if not, it's uninitialized)
-  // We need to search for store operations that write to this alloca
+  // Check if there are ANY stores to __retval in the entire function.
+  // This is intentionally path-INsensitive - if there are stores on some
+  // paths, then this return is considered non-phony.
+  // The control flow analysis (hasLiveReturn + hasPlainEdge) will determine
+  // if all paths return properly.
   mlir::Value allocaResult = allocaOp.getResult();
 
   for (auto *user : allocaResult.getUsers()) {
     if (auto storeOp = dyn_cast<cir::StoreOp>(user)) {
-      // If there's a store to this alloca, it's not phony
-      // (assuming the store happens before the load in control flow)
-      return false;
+      if (storeOp.getAddr() == allocaResult) {
+        // There's a store to __retval somewhere - not a phony return
+        return false;
+      }
     }
   }
 
-  // No stores found to __retval alloca - this is a phony return
+  // No stores to __retval anywhere - this is a phony return (uninitialized)
   return true;
 }
 
@@ -190,8 +194,13 @@ void FallThroughWarningPass::checkFallThroughForFuncBody(
     const CheckFallThroughDiagnostics &cd) {
 
   auto *d = getDeclByName(s.getASTContext(), cfg.getName());
-  auto *body = d->getBody();
   assert(d && "we need non null decl");
+  auto *body = d->getBody();
+
+  // Functions without bodies (declarations only) don't need fall-through
+  // analysis
+  if (!body)
+    return;
 
   bool returnsVoid = false;
   bool hasNoReturn = false;
@@ -283,10 +292,25 @@ FallThroughWarningPass::getLiveSet(cir::FuncOp cfg) {
 
   auto &first = cfg.getBody().getBlocks().front();
 
+  // First pass: normal reachability
   for (auto &block : cfg.getBody()) {
     if (&first == &block || first.isReachable(&block))
       liveSet.insert(&block);
   }
+
+  // Second pass: follow goto operations to find labeled blocks
+  // Goto creates blocks that aren't connected via normal CFG edges
+  cfg.walk([&](cir::GotoOp gotoOp) {
+    auto labelName = gotoOp.getLabel();
+    // Find the block containing the matching label
+    cfg.walk([&](cir::LabelOp labelOp) {
+      if (labelOp.getLabel() == labelName) {
+        mlir::Block *labelBlock = labelOp->getBlock();
+        liveSet.insert(labelBlock);
+      }
+    });
+  });
+
   return liveSet;
 }
 
@@ -322,16 +346,41 @@ static bool switchAllPathsReturn(cir::SwitchOp switchOp) {
     return false;
   }
 
-  // Find default case and check if it returns
+  // Check if there's a default case
+  bool hasDefault = false;
+  bool defaultReturns = false;
+
   for (auto caseOp : cases) {
     if (caseOp.getKind() == cir::CaseOpKind::Default) {
-      // If default returns, all unhandled case values are covered
-      return caseTerminatesWithReturn(caseOp);
+      hasDefault = true;
+      defaultReturns = caseTerminatesWithReturn(caseOp);
+      break;
     }
   }
 
-  // No default case: not all paths covered
-  return false;
+  // If no default, not all paths covered
+  if (!hasDefault) {
+    return false;
+  }
+
+  // If default doesn't return, switch falls through
+  if (!defaultReturns) {
+    return false;
+  }
+
+  // Now check ALL cases (including non-default)
+  // If any case has a break or doesn't return, switch may fall through
+  for (auto caseOp : cases) {
+    if (caseOp.getKind() != cir::CaseOpKind::Default) {
+      if (!caseTerminatesWithReturn(caseOp)) {
+        // This case doesn't return (might have break)
+        return false;
+      }
+    }
+  }
+
+  // All cases return and default returns
+  return true;
 }
 
 static bool caseTerminatesWithReturn(cir::CaseOp caseOp) {
@@ -340,6 +389,54 @@ static bool caseTerminatesWithReturn(cir::CaseOp caseOp) {
 
   if (region.empty()) {
     return false;
+  }
+
+  // First, check if there are nested control flow operations (switch, if)
+  // that return on all paths. If so, any subsequent operations (like yield)
+  // are unreachable, and we should consider this case as terminating with
+  // return.
+  bool foundAllPathsReturn = false;
+
+  region.walk([&](mlir::Operation *op) {
+    // Check for nested switches that return on all paths
+    if (auto nestedSwitch = dyn_cast<cir::SwitchOp>(op)) {
+      if (switchAllPathsReturn(nestedSwitch)) {
+        foundAllPathsReturn = true;
+        return mlir::WalkResult::interrupt();
+      }
+    }
+
+    // Check for nested if operations where both branches return
+    if (auto nestedIf = dyn_cast<cir::IfOp>(op)) {
+      bool thenReturns = false;
+      bool elseReturns = false;
+
+      // Check then region
+      nestedIf.getThenRegion().walk([&](cir::ReturnOp ret) {
+        thenReturns = true;
+        return mlir::WalkResult::interrupt();
+      });
+
+      // Check else region (if it exists)
+      if (!nestedIf.getElseRegion().empty()) {
+        nestedIf.getElseRegion().walk([&](cir::ReturnOp ret) {
+          elseReturns = true;
+          return mlir::WalkResult::interrupt();
+        });
+      }
+
+      // If both branches return, subsequent code is unreachable
+      if (thenReturns && elseReturns) {
+        foundAllPathsReturn = true;
+        return mlir::WalkResult::interrupt();
+      }
+    }
+
+    return mlir::WalkResult::advance();
+  });
+
+  if (foundAllPathsReturn) {
+    return true;
   }
 
   // Check all exit blocks in the case region
@@ -406,68 +503,67 @@ ControlFlowKind FallThroughWarningPass::checkFallThrough(cir::FuncOp cfg) {
   auto &exitBlock = cfg.getBody().back();
   // INFO: in OG clang CFG, they have an empty exit block, so when they query
   // pred of exit OG, they get all exit blocks
-  //
-  // I guess in CIR, we can pretend exit blocks are all blocks that have no
-  // successor?
-  for (mlir::Block &pred : cfg.getBody().getBlocks()) {
-    if (!liveSet.contains(&pred))
-      continue;
 
-    // We consider no predecessors as 'exit blocks'
-    if (!pred.hasNoSuccessors())
-      continue;
+  // Walk all ReturnOp operations to find returns in nested regions
+  cfg.walk([&](cir::ReturnOp returnOp) {
+    mlir::Block *block = returnOp->getBlock();
 
-    if (!pred.mightHaveTerminator())
-      continue;
+    // Check if this block is reachable:
+    // - For top-level blocks (parent is FuncOp): check liveSet
+    // - For nested blocks (parent is if/scope/switch/etc): assume reachable
+    mlir::Operation *parentOp = block->getParentOp();
+    bool isTopLevel = isa<cir::FuncOp>(parentOp);
 
-    mlir::Operation *term = pred.getTerminator();
+    if (isTopLevel && !liveSet.contains(block))
+      return;
 
-    // TODO: hasNoReturnElement() in OG here, not sure how to work it in here
-    // yet
-
-    // INFO: In OG, we'll be looking for destructor since it can appear past
-    // return but i guess not in CIR? In this case we'll only be examining the
-    // terminator
-
-    if (isa<cir::TryOp>(term)) {
-      hasAbnormalEdge = true;
-      continue;
-    }
-
-    // INFO: OG clang has this equals true whenever ri == re, which means this
-    // is true only when a block only has the terminator, or its size is 1.
-    hasPlainEdge = std::distance(pred.begin(), pred.end()) == 1;
-
-    if (auto returnOp = dyn_cast<cir::ReturnOp>(term)) {
-      if (!isPhonyReturn(returnOp)) {
-        hasLiveReturn = true;
-        continue;
-      }
-    }
-    if (isa<cir::TryOp>(term)) {
+    // Check if this is a real return or a phony one
+    if (!isPhonyReturn(returnOp)) {
       hasLiveReturn = true;
-      continue;
+    } else {
+      // Phony return means the function falls through without an explicit
+      // return statement.
+      hasPlainEdge = true;
     }
+  });
 
-    // Handle switch statements
-    if (auto switchOp = dyn_cast<cir::SwitchOp>(term)) {
-      if (switchAllPathsReturn(switchOp)) {
-        hasLiveReturn = true;
-        continue;
-      }
+  // Also walk switch operations to handle their fall-through behavior
+  cfg.walk([&](cir::SwitchOp switchOp) {
+    if (switchAllPathsReturn(switchOp)) {
+      hasLiveReturn = true;
+    } else {
       // Switch may fall through
       hasPlainEdge = true;
-      continue;
+    }
+  });
+
+  // Walk if operations - if they don't cover all paths, they may fall through
+  cfg.walk([&](cir::IfOp ifOp) {
+    // An if statement can fall through if:
+    // 1. It has no else region, or
+    // 2. The else region doesn't return
+    bool thenReturns = false;
+    bool elseReturns = false;
+
+    // Check if then region returns
+    ifOp.getThenRegion().walk([&](cir::ReturnOp ret) { thenReturns = true; });
+
+    // Check if there's an else region and if it returns
+    if (!ifOp.getElseRegion().empty()) {
+      ifOp.getElseRegion().walk([&](cir::ReturnOp ret) { elseReturns = true; });
     }
 
-    // TODO: Maybe one day throw will be terminator?
-    //
-    // TODO: We need to add a microsoft inline assembly enum
+    // If both branches return, mark as liveReturn
+    // Otherwise, it may fall through
+    if (thenReturns && elseReturns) {
+      hasLiveReturn = true;
+    } else {
+      hasPlainEdge = true;
+    }
+  });
 
-    // TODO: We don't concer with try op either since it's not terminator
-
-    hasPlainEdge = true;
-  }
+  // Walk TryOp for abnormal edges
+  cfg.walk([&](cir::TryOp tryOp) { hasAbnormalEdge = true; });
 
   if (!hasPlainEdge) {
     if (hasLiveReturn)
