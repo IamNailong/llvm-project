@@ -325,6 +325,7 @@ enum {
   EM_VE = 251,            // NEC SX-Aurora VE
   EM_CSKY = 252,          // C-SKY 32-bit processor
   EM_LOONGARCH = 258,     // LoongArch
+  EM_TRITON = 259         // triton
 };
 
 // Object file classes.
@@ -1090,6 +1091,11 @@ enum : unsigned {
 // ELF Relocation types for Xtensa
 enum {
 #include "ELFRelocs/Xtensa.def"
+};
+
+// ELF Relocation types for Triton
+enum {
+#include "ELFRelocs/Triton.def"
 };
 
 #undef ELF_RELOC
