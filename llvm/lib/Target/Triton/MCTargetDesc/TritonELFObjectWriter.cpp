@@ -1,4 +1,4 @@
-//===-- XtensaMCObjectWriter.cpp - Xtensa ELF writer ----------------------===//
+//===-- TritonMCObjectWriter.cpp - Triton ELF writer ----------------------===//
 //
 //                     The LLVM Compiler Infrastructure
 //
@@ -8,8 +8,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "MCTargetDesc/XtensaMCAsmInfo.h"
-#include "MCTargetDesc/XtensaMCTargetDesc.h"
+#include "MCTargetDesc/TritonMCAsmInfo.h"
+#include "MCTargetDesc/TritonMCTargetDesc.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/BinaryFormat/ELF.h"
 #include "llvm/MC/MCELFObjectWriter.h"
@@ -24,11 +24,11 @@
 using namespace llvm;
 
 namespace {
-class XtensaObjectWriter : public MCELFObjectTargetWriter {
+class TritonObjectWriter : public MCELFObjectTargetWriter {
 public:
-  XtensaObjectWriter(uint8_t OSABI);
+  TritonObjectWriter(uint8_t OSABI);
 
-  virtual ~XtensaObjectWriter();
+  virtual ~TritonObjectWriter();
 
 protected:
   unsigned getRelocType(const MCFixup &, const MCValue &,
@@ -37,28 +37,27 @@ protected:
 };
 } // namespace
 
-XtensaObjectWriter::XtensaObjectWriter(uint8_t OSABI)
-    : MCELFObjectTargetWriter(false, OSABI, ELF::EM_XTENSA,
+TritonObjectWriter::TritonObjectWriter(uint8_t OSABI)
+    : MCELFObjectTargetWriter(false, OSABI, ELF::EM_TRITON,
                               /*HasRelocationAddend=*/true) {}
 
-XtensaObjectWriter::~XtensaObjectWriter() {}
+TritonObjectWriter::~TritonObjectWriter() {}
 
-unsigned XtensaObjectWriter::getRelocType(const MCFixup &Fixup,
+unsigned TritonObjectWriter::getRelocType(const MCFixup &Fixup,
                                           const MCValue &Target,
                                           bool IsPCRel) const {
   uint8_t Specifier = Target.getSpecifier();
 
   switch ((unsigned)Fixup.getKind()) {
   case FK_Data_4:
-    return Specifier == Xtensa::S_TPOFF ? ELF::R_XTENSA_TLS_TPOFF
-                                        : ELF::R_XTENSA_32;
+    llvm_unreachable("Unexpected fixup kind!");
   default:
-    return ELF::R_XTENSA_SLOT0_OP;
+    return ELF::R_TRITON_NONE;
   }
 }
 
 std::unique_ptr<MCObjectTargetWriter>
-llvm::createTritonMCObjectWriter(uint8_t OSABI, bool IsLittleEndian) {
+llvm::createTritonObjectWriter(uint8_t OSABI, bool IsLittleEndian) {
   return std::make_unique<TritonObjectWriter>(OSABI);
 }
 

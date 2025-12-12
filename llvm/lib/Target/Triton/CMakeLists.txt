@@ -4,6 +4,7 @@ set(LLVM_TARGET_DEFINITIONS Triton.td)
 
 tablegen(LLVM TritonGenRegisterInfo.inc -gen-register-info)
 tablegen(LLVM TritonGenInstrInfo.inc -gen-instr-info)
+tablegen(LLVM TritonGenMCCodeEmitter.inc -gen-emitter)
 
 add_public_tablegen_target(TritonCommonTableGen)
 
