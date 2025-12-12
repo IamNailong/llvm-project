@@ -4,6 +4,7 @@ add_llvm_component_library(LLVMTritonDesc
   TritonELFObjectWriter.cpp
   TritonMCCodeEmitter.cpp
   TritonAsmBackend.cpp
+  TritonInstPrinter.cpp
 
   LINK_COMPONENTS
   MC

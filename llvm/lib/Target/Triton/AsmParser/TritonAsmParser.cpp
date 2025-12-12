@@ -447,7 +447,8 @@ bool TritonAsmParser::parseInstruction(ParseInstructionInfo &Info,
 }
 
 ParseStatus TritonAsmParser::parseDirective(AsmToken DirectiveID) {
-  return ParseStatus::Success;
+  // Let the base class handle common directives like .align, .text, etc.
+  return ParseStatus::NoMatch;
 }
 
 // Force static initialization.

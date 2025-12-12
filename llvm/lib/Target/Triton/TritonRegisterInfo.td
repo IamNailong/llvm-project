@@ -19,6 +19,7 @@ let Namespace = "Triton" in {
     let AltNames = alt;
   }
 
+  let FallbackRegAltNameIndex = NoRegAltName in
   def ABIRegAltName : RegAltNameIndex;
 }
 

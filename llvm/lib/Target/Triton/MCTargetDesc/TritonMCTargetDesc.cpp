@@ -9,6 +9,7 @@
 //===----------------------------------------------------------------------===//
 #include "TritonMCTargetDesc.h"
 #include "TargetInfo/TritonTargetInfo.h"
+#include "TritonInstPrinter.h"
 #include "TritonMCAsmInfo.h"
 #include "TritonMCTargetDesc.h"
 #include "llvm/ADT/STLExtras.h"
@@ -46,7 +47,15 @@ static MCInstrInfo *createTritonMCInstrInfo() {
   return X;
 }
 
-static MCRegisterInfo *createXtensaMCRegisterInfo(const Triple &TT) {
+static MCInstPrinter *createTritonMCInstPrinter(const Triple &TT,
+                                                unsigned SyntaxVariant,
+                                                const MCAsmInfo &MAI,
+                                                const MCInstrInfo &MII,
+                                                const MCRegisterInfo &MRI) {
+  return new TritonInstPrinter(MAI, MII, MRI);
+}
+
+static MCRegisterInfo *createTritonMCRegisterInfo(const Triple &TT) {
   MCRegisterInfo *X = new MCRegisterInfo();
   InitTritonMCRegisterInfo(X, Triton::X0);
   return X;
@@ -70,9 +79,11 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeTritonTargetMC() {
   TargetRegistry::RegisterMCInstrInfo(getTheTritonTarget(),
                                       createTritonMCInstrInfo);
 
+  TargetRegistry::RegisterMCInstPrinter(getTheTritonTarget(),
+                                        createTritonMCInstPrinter);
   // Register the MCRegisterInfo.
   TargetRegistry::RegisterMCRegInfo(getTheTritonTarget(),
-                                    createXtensaMCRegisterInfo);
+                                    createTritonMCRegisterInfo);
 
   // Register the MCSubtargetInfo.
   TargetRegistry::RegisterMCSubtargetInfo(getTheTritonTarget(),

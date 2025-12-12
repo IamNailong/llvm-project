@@ -31,6 +31,10 @@ def TritonAsmParser : AsmParser {
   let ShouldEmitMatchRegisterAltName = 1;
 }
 
+def TritonInstPrinter : AsmWriter {
+  string AsmWriterClassName  = "InstPrinter";
+}
+
 
 //===----------------------------------------------------------------------===//
 // Target Declaration
@@ -39,4 +43,5 @@ def TritonAsmParser : AsmParser {
 def Triton : Target {
   let InstructionSet = TritonInstrInfo;
   let AssemblyParsers = [TritonAsmParser];
+  let AssemblyWriters = [TritonInstPrinter];
 }
