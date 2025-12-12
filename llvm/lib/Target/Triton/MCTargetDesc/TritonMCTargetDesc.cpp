@@ -13,6 +13,7 @@
 #include "TritonMCTargetDesc.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/MC/MCAsmInfo.h"
+#include "llvm/MC/MCInstPrinter.h"
 #include "llvm/MC/MCInstrInfo.h"
 #include "llvm/MC/MCRegisterInfo.h"
 #include "llvm/MC/MCStreamer.h"
@@ -26,6 +27,9 @@
 
 #define GET_REGINFO_MC_DESC
 #include "TritonGenRegisterInfo.inc"
+
+#define GET_SUBTARGETINFO_MC_DESC
+#include "TritonGenSubtargetInfo.inc"
 
 using namespace llvm;
 
@@ -48,6 +52,11 @@ static MCRegisterInfo *createXtensaMCRegisterInfo(const Triple &TT) {
   return X;
 }
 
+static MCSubtargetInfo *
+createTritonMCSubtargetInfo(const Triple &TT, StringRef CPU, StringRef FS) {
+  return createTritonMCSubtargetInfoImpl(TT, CPU, CPU, FS);
+}
+
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeTritonTargetMC() {
   // Register the MCAsmInfo.
   TargetRegistry::RegisterMCAsmInfo(getTheTritonTarget(),
@@ -64,6 +73,10 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeTritonTargetMC() {
   // Register the MCRegisterInfo.
   TargetRegistry::RegisterMCRegInfo(getTheTritonTarget(),
                                     createXtensaMCRegisterInfo);
+
+  // Register the MCSubtargetInfo.
+  TargetRegistry::RegisterMCSubtargetInfo(getTheTritonTarget(),
+                                          createTritonMCSubtargetInfo);
 
   // Register the MCAsmBackend.
   TargetRegistry::RegisterMCAsmBackend(getTheTritonTarget(),

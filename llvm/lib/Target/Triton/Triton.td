@@ -27,10 +27,16 @@ include "TritonInstrInfo.td"
 
 def TritonInstrInfo : InstrInfo;
 
+def TritonAsmParser : AsmParser {
+  let ShouldEmitMatchRegisterAltName = 1;
+}
+
+
 //===----------------------------------------------------------------------===//
 // Target Declaration
 //===----------------------------------------------------------------------===//
 
 def Triton : Target {
   let InstructionSet = TritonInstrInfo;
+  let AssemblyParsers = [TritonAsmParser];
 }

@@ -56,4 +56,7 @@ createTritonObjectWriter(uint8_t OSABI, bool IsLittleEndian);
 #define GET_INSTRINFO_ENUM
 #include "TritonGenInstrInfo.inc"
 
+#define GET_SUBTARGETINFO_ENUM
+#include "TritonGenSubtargetInfo.inc"
+
 #endif // LLVM_LIB_TARGET_TRITON_MCTARGETDESC_TRITONMCTARGETDESC_H
