@@ -1,4 +1,4 @@
-//===- TritonInstPrinter.cpp - Convert Triton MCInst to asm syntax --------===//
+//===-- TritonInstPrinter.cpp - Convert Triton MCInst to asm syntax -----===//
 //
 //                     The LLVM Compiler Infrastructure
 //
@@ -14,47 +14,21 @@
 
 #include "TritonInstPrinter.h"
 #include "TritonMCTargetDesc.h"
-#include "llvm/CodeGen/MachineOperand.h"
+#include "llvm/MC/MCAsmInfo.h"
 #include "llvm/MC/MCExpr.h"
-#include "llvm/MC/MCInstrInfo.h"
+#include "llvm/MC/MCInst.h"
 #include "llvm/MC/MCSymbol.h"
-#include "llvm/Support/Casting.h"
+#include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/Support/Format.h"
 
 using namespace llvm;
 
 #define DEBUG_TYPE "asm-printer"
 
+// Include the auto-generated portion of the assembly writer.
+#define PRINT_ALIAS_INSTR
 #include "TritonGenAsmWriter.inc"
-
-static void printExpr(const MCExpr *Expr, raw_ostream &OS) {
-  int Offset = 0;
-  const MCSymbolRefExpr *SRE;
-
-  if (!(SRE = cast<MCSymbolRefExpr>(Expr)))
-    assert(false && "Unexpected MCExpr type.");
-
-  assert(SRE->getSpecifier() == 0);
-
-  OS << SRE->getSymbol();
-
-  if (Offset) {
-    if (Offset > 0)
-      OS << '+';
-    OS << Offset;
-  }
-}
-
-void TritonInstPrinter::printOperand(const MCOperand &MC, raw_ostream &O) {
-  if (MC.isReg())
-    O << getRegisterName(MC.getReg(), Triton::NoRegAltName);
-  else if (MC.isImm())
-    O << MC.getImm();
-  else if (MC.isExpr())
-    printExpr(MC.getExpr(), O);
-  else
-    report_fatal_error("Invalid operand");
-}
 
 void TritonInstPrinter::printInst(const MCInst *MI, uint64_t Address,
                                   StringRef Annot, const MCSubtargetInfo &STI,
@@ -64,11 +38,37 @@ void TritonInstPrinter::printInst(const MCInst *MI, uint64_t Address,
 }
 
 void TritonInstPrinter::printRegName(raw_ostream &O, MCRegister Reg) {
-  O << getRegisterName(Reg, Triton::NoRegAltName);
+  O << getRegisterName(Reg);
 }
 
-void TritonInstPrinter::printOperand(const MCInst *MI, int OpNum,
-                                     raw_ostream &O) {
-  printOperand(MI->getOperand(OpNum), O);
+void TritonInstPrinter::printOperand(const MCInst *MI, unsigned OpNo,
+                                     raw_ostream &O,
+                                     const char *Modifier) {
+  assert((Modifier == 0 || Modifier[0] == 0) && "No modifiers supported");
+  const MCOperand &MO = MI->getOperand(OpNo);
+
+  if (MO.isReg()) {
+    printRegName(O, MO.getReg());
+    return;
+  }
+
+  if (MO.isImm()) {
+    O << MO.getImm();
+    return;
+  }
+
+  assert(MO.isExpr() && "Unknown operand kind in printOperand");
+  MAI.printExpr(O, *MO.getExpr());
 }
 
+void TritonInstPrinter::printBranchOperand(const MCInst *MI, uint64_t Address,
+                                           unsigned OpNo, raw_ostream &O) {
+  const MCOperand &MO = MI->getOperand(OpNo);
+  if (MO.isImm()) {
+    int64_t Imm = MO.getImm();
+    O << formatHex(Address + Imm);
+  } else {
+    assert(MO.isExpr() && "Unknown branch operand kind in printBranchOperand");
+    MAI.printExpr(O, *MO.getExpr());
+  }
+}

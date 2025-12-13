@@ -8,11 +8,18 @@ tablegen(LLVM TritonGenRegisterInfo.inc -gen-register-info)
 tablegen(LLVM TritonGenInstrInfo.inc -gen-instr-info)
 tablegen(LLVM TritonGenMCCodeEmitter.inc -gen-emitter)
 tablegen(LLVM TritonGenSubtargetInfo.inc -gen-subtarget)
+tablegen(LLVM TritonGenCallingConv.inc -gen-callingconv)
 
 add_public_tablegen_target(TritonCommonTableGen)
 
 add_llvm_target(TritonCodeGen
   TritonTargetMachine.cpp
+  TritonSubtarget.cpp
+  TritonInstrInfo.cpp
+  TritonISelLowering.cpp
+  TritonFrameLowering.cpp
+  TritonRegisterInfo.cpp
+  TritonMachineFunctionInfo.cpp
 
   LINK_COMPONENTS
   AsmPrinter

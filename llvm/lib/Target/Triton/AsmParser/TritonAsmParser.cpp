@@ -145,6 +145,18 @@ public:
            ((dyn_cast<MCConstantExpr>(getImm())->getValue() & 0xFF) == 0);
   }
 
+  bool isUImm5() const { return isImm(0, 31); }
+  bool isUImm20() const { return isImm(0, 1048575); }
+  bool isSImm12() const { return isImm(-2048, 2047); }
+  bool isSImm13Lsb0() const {
+    return isImm(-4096, 4094) &&
+           ((dyn_cast<MCConstantExpr>(getImm())->getValue() & 1) == 0);
+  }
+  bool isSImm21Lsb0() const {
+    return isImm(-1048576, 1048574) &&
+           ((dyn_cast<MCConstantExpr>(getImm())->getValue() & 1) == 0);
+  }
+
   /// getStartLoc - Gets location of the first token of this operand
   SMLoc getStartLoc() const override { return StartLoc; }
   /// getEndLoc - Gets location of the last token of this operand

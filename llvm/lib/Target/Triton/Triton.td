@@ -20,10 +20,12 @@ include "llvm/Target/Target.td"
 class Proc<string Name, list<SubtargetFeature> Features>
     : Processor<Name, NoItineraries, Features>;
 
-def : Proc<"generic", []>;
-
 include "TritonRegisterInfo.td"
+include "TritonCallingConv.td"
 include "TritonInstrInfo.td"
+include "TritonSchedule.td"
+
+def : ProcessorModel<"generic", TritonModel, []>;
 
 def TritonInstrInfo : InstrInfo;
 

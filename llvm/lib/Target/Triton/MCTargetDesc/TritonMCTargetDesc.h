@@ -54,6 +54,7 @@ createTritonObjectWriter(uint8_t OSABI, bool IsLittleEndian);
 
 // Defines symbolic names for the Triton instructions.
 #define GET_INSTRINFO_ENUM
+#define GET_INSTRINFO_MC_HELPER_DECLS
 #include "TritonGenInstrInfo.inc"
 
 #define GET_SUBTARGETINFO_ENUM

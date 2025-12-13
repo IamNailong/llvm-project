@@ -1,4 +1,4 @@
-//===-- XtensaMCAsmInfo.cpp - Xtensa Asm Properties -----------------------===//
+//===-- TritonMCAsmInfo.cpp - Triton Asm Properties -----------------------===//
 //
 //                     The LLVM Compiler Infrastructure
 //
@@ -8,7 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// This file contains the declarations of the XtensaMCAsmInfo properties.
+// This file contains the declarations of the TritonMCAsmInfo properties.
 //
 //===----------------------------------------------------------------------===//
 

@@ -12,6 +12,19 @@
 //  Declarations that describe the Triton instruction formats
 //===----------------------------------------------------------------------===//
 
+// Format specifies the encoding used by the instruction.
+class InstFormat<bits<5> val> {
+  bits<5> Value = val;
+}
+def InstFormatPseudo : InstFormat<0>;
+def InstFormatR      : InstFormat<1>;
+def InstFormatI      : InstFormat<2>;
+def InstFormatS      : InstFormat<3>;
+def InstFormatB      : InstFormat<4>;
+def InstFormatU      : InstFormat<5>;
+def InstFormatJ      : InstFormat<6>;
+def InstFormatOther  : InstFormat<31>;
+
 class TritonOpcode<bits<7> val> {
   bits<7> Value = val;
 }
@@ -39,7 +52,7 @@ def OPC_JAL       : TritonOpcode<0b1101111>;
 def OPC_SYSTEM    : TritonOpcode<0b1110011>;
 
 class TritonInst<dag outs, dag ins, string opcodestr, string argstr,
-             list<dag> pattern>
+             list<dag> pattern, InstFormat format>
     : Instruction {
   field bits<32> Inst;
   let Size = 4;
@@ -52,13 +65,15 @@ class TritonInst<dag outs, dag ins, string opcodestr, string argstr,
 
   dag OutOperandList = outs;
   dag InOperandList = ins;
-  let AsmString = opcodestr # "\t" # argstr;
+  let AsmString = opcodestr # !if(!empty(argstr), "", "\t" # argstr);
   let Pattern = pattern;
+
+  let TSFlags{4-0} = format.Value;
 }
 
 // Pseudo instructions
 class Pseudo<dag outs, dag ins, list<dag> pattern>
-    : TritonInst<outs, ins, "", "", pattern> {
+    : TritonInst<outs, ins, "", "", pattern, InstFormatPseudo> {
   let isPseudo = 1;
   let isCodeGenOnly = 1;
 }
@@ -69,7 +84,7 @@ class Pseudo<dag outs, dag ins, list<dag> pattern>
 
 class TritonInstR<bits<7> funct7, bits<3> funct3, TritonOpcode opcode, dag outs,
               dag ins, string opcodestr, string argstr>
-    : TritonInst<outs, ins, opcodestr, argstr, []> {
+    : TritonInst<outs, ins, opcodestr, argstr, [], InstFormatR> {
   bits<5> rs2;
   bits<5> rs1;
   bits<5> rd;
@@ -84,7 +99,7 @@ class TritonInstR<bits<7> funct7, bits<3> funct3, TritonOpcode opcode, dag outs,
 
 class TritonInstI<bits<3> funct3, TritonOpcode opcode, dag outs, dag ins,
               string opcodestr, string argstr>
-    : TritonInst<outs, ins, opcodestr, argstr, []> {
+    : TritonInst<outs, ins, opcodestr, argstr, [], InstFormatI> {
   bits<12> imm12;
   bits<5> rs1;
   bits<5> rd;
@@ -98,7 +113,7 @@ class TritonInstI<bits<3> funct3, TritonOpcode opcode, dag outs, dag ins,
 
 class TritonInstIShift<bit arithshift, bits<3> funct3, TritonOpcode opcode,
                    dag outs, dag ins, string opcodestr, string argstr>
-    : TritonInst<outs, ins, opcodestr, argstr, []> {
+    : TritonInst<outs, ins, opcodestr, argstr, [], InstFormatI> {
   bits<5> shamt;
   bits<5> rs1;
   bits<5> rd;
@@ -115,7 +130,7 @@ class TritonInstIShift<bit arithshift, bits<3> funct3, TritonOpcode opcode,
 
 class TritonInstS<bits<3> funct3, TritonOpcode opcode, dag outs, dag ins,
               string opcodestr, string argstr>
-    : TritonInst<outs, ins, opcodestr, argstr, []> {
+    : TritonInst<outs, ins, opcodestr, argstr, [], InstFormatS> {
   bits<12> imm12;
   bits<5> rs2;
   bits<5> rs1;
@@ -130,7 +145,7 @@ class TritonInstS<bits<3> funct3, TritonOpcode opcode, dag outs, dag ins,
 
 class TritonInstB<bits<3> funct3, TritonOpcode opcode, dag outs, dag ins,
               string opcodestr, string argstr>
-    : TritonInst<outs, ins, opcodestr, argstr, []> {
+    : TritonInst<outs, ins, opcodestr, argstr, [], InstFormatB> {
   bits<12> imm12;
   bits<5> rs2;
   bits<5> rs1;
@@ -147,7 +162,7 @@ class TritonInstB<bits<3> funct3, TritonOpcode opcode, dag outs, dag ins,
 
 class TritonInstU<TritonOpcode opcode, dag outs, dag ins, string opcodestr,
               string argstr>
-    : TritonInst<outs, ins, opcodestr, argstr, []> {
+    : TritonInst<outs, ins, opcodestr, argstr, [], InstFormatU> {
   bits<20> imm20;
   bits<5> rd;
 
@@ -158,7 +173,7 @@ class TritonInstU<TritonOpcode opcode, dag outs, dag ins, string opcodestr,
 
 class TritonInstJ<TritonOpcode opcode, dag outs, dag ins, string opcodestr,
               string argstr>
-    : TritonInst<outs, ins, opcodestr, argstr, []> {
+    : TritonInst<outs, ins, opcodestr, argstr, [], InstFormatJ> {
   bits<20> imm20;
   bits<5> rd;
 
