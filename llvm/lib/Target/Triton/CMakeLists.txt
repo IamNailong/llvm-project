@@ -9,6 +9,7 @@ tablegen(LLVM TritonGenInstrInfo.inc -gen-instr-info)
 tablegen(LLVM TritonGenMCCodeEmitter.inc -gen-emitter)
 tablegen(LLVM TritonGenSubtargetInfo.inc -gen-subtarget)
 tablegen(LLVM TritonGenCallingConv.inc -gen-callingconv)
+tablegen(LLVM TritonGenDAGISel.inc -gen-dag-isel)
 
 add_public_tablegen_target(TritonCommonTableGen)
 
@@ -17,15 +18,19 @@ add_llvm_target(TritonCodeGen
   TritonSubtarget.cpp
   TritonInstrInfo.cpp
   TritonISelLowering.cpp
+  TritonISelDAGToDAG.cpp
   TritonFrameLowering.cpp
   TritonRegisterInfo.cpp
   TritonMachineFunctionInfo.cpp
+  TritonAsmPrinter.cpp
+  TritonMCInstLower.cpp
 
   LINK_COMPONENTS
   AsmPrinter
   CodeGen
   Core
   MC
+  SelectionDAG
   Support
   Target
   TritonDesc

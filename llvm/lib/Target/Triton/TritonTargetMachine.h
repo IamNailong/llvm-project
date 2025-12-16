@@ -15,8 +15,11 @@
 #ifndef LLVM_LIB_TARGET_TRITON_TRITONTARGETMACHINE_H
 #define LLVM_LIB_TARGET_TRITON_TRITONTARGETMACHINE_H
 
-#include "llvm/Target/TargetMachine.h"
+#include "TritonSubtarget.h"
+#include "llvm/ADT/StringMap.h"
 #include "llvm/CodeGen/CodeGenTargetMachineImpl.h"
+#include "llvm/Support/Allocator.h"
+#include "llvm/Target/TargetMachine.h"
 #include <optional>
 
 namespace llvm {
@@ -24,6 +27,8 @@ extern Target TheTritonTarget;
 
 class TritonTargetMachine : public CodeGenTargetMachineImpl {
   std::unique_ptr<TargetLoweringObjectFile> TLOF;
+  mutable StringMap<std::unique_ptr<TritonSubtarget>> SubtargetMap;
+
 public:
   TritonTargetMachine(const Target &T, const Triple &TT, StringRef CPU,
                       StringRef FS, const TargetOptions &Options,
@@ -41,6 +46,12 @@ public:
   TargetLoweringObjectFile *getObjFileLowering() const override {
     return TLOF.get();
   }
+
+  const TritonSubtarget *getSubtargetImpl(const Function &F) const override;
+
+  MachineFunctionInfo *
+  createMachineFunctionInfo(BumpPtrAllocator &Allocator, const Function &F,
+                            const TargetSubtargetInfo *STI) const override;
 };
 } // end namespace llvm
 

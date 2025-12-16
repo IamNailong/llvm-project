@@ -116,6 +116,10 @@ def GPRMem : RegisterOperand<GPR> {
   let OperandType = "OPERAND_MEMORY";
 }
 
+// Complex addressing mode pattern for load/store instructions
+// Matches base+offset addressing patterns via SelectAddr method
+def addr : ComplexPattern<iPTR, 2, "SelectAddr", [frameindex], []>;
+
 //===----------------------------------------------------------------------===//
 // Instruction Class Templates
 //===----------------------------------------------------------------------===//
@@ -317,7 +321,7 @@ def : Pat<(setcc GPR:$lhs, GPR:$rhs, SETULT), (SLTU GPR:$lhs, GPR:$rhs)>;
 def : Pat<(setcc GPR:$lhs, simm12:$rhs, SETLT), (SLTI GPR:$lhs, simm12:$rhs)>;
 def : Pat<(setcc GPR:$lhs, simm12:$rhs, SETULT), (SLTIU GPR:$lhs, simm12:$rhs)>;
 
-// Load patterns
+// Load patterns with base+offset addressing
 def : Pat<(i32 (sextloadi8 (add GPR:$rs1, simm12:$imm12))),
           (LB GPR:$rs1, simm12:$imm12)>;
 def : Pat<(i32 (sextloadi16 (add GPR:$rs1, simm12:$imm12))),
@@ -329,13 +333,45 @@ def : Pat<(i32 (zextloadi8 (add GPR:$rs1, simm12:$imm12))),
 def : Pat<(i32 (zextloadi16 (add GPR:$rs1, simm12:$imm12))),
           (LHU GPR:$rs1, simm12:$imm12)>;
 
-// Store patterns
+// Load patterns with register-only addressing (offset = 0)
+def : Pat<(i32 (sextloadi8 GPR:$rs1)), (LB GPR:$rs1, 0)>;
+def : Pat<(i32 (sextloadi16 GPR:$rs1)), (LH GPR:$rs1, 0)>;
+def : Pat<(i32 (load GPR:$rs1)), (LW GPR:$rs1, 0)>;
+def : Pat<(i32 (zextloadi8 GPR:$rs1)), (LBU GPR:$rs1, 0)>;
+def : Pat<(i32 (zextloadi16 GPR:$rs1)), (LHU GPR:$rs1, 0)>;
+
+// Load patterns with triton_add_lo (for global address access)
+def : Pat<(i32 (load (triton_add_lo GPR:$hi, tglobaladdr:$lo))),
+          (LW GPR:$hi, tglobaladdr:$lo)>;
+def : Pat<(i32 (sextloadi8 (triton_add_lo GPR:$hi, tglobaladdr:$lo))),
+          (LB GPR:$hi, tglobaladdr:$lo)>;
+def : Pat<(i32 (sextloadi16 (triton_add_lo GPR:$hi, tglobaladdr:$lo))),
+          (LH GPR:$hi, tglobaladdr:$lo)>;
+def : Pat<(i32 (zextloadi8 (triton_add_lo GPR:$hi, tglobaladdr:$lo))),
+          (LBU GPR:$hi, tglobaladdr:$lo)>;
+def : Pat<(i32 (zextloadi16 (triton_add_lo GPR:$hi, tglobaladdr:$lo))),
+          (LHU GPR:$hi, tglobaladdr:$lo)>;
+
+// Store patterns with base+offset addressing
 def : Pat<(truncstorei8 GPR:$rs2, (add GPR:$rs1, simm12:$imm12)),
           (SB GPR:$rs2, GPR:$rs1, simm12:$imm12)>;
 def : Pat<(truncstorei16 GPR:$rs2, (add GPR:$rs1, simm12:$imm12)),
           (SH GPR:$rs2, GPR:$rs1, simm12:$imm12)>;
 def : Pat<(store GPR:$rs2, (add GPR:$rs1, simm12:$imm12)),
           (SW GPR:$rs2, GPR:$rs1, simm12:$imm12)>;
+
+// Store patterns with register-only addressing (offset = 0)
+def : Pat<(truncstorei8 GPR:$rs2, GPR:$rs1), (SB GPR:$rs2, GPR:$rs1, 0)>;
+def : Pat<(truncstorei16 GPR:$rs2, GPR:$rs1), (SH GPR:$rs2, GPR:$rs1, 0)>;
+def : Pat<(store GPR:$rs2, GPR:$rs1), (SW GPR:$rs2, GPR:$rs1, 0)>;
+
+// Store patterns with triton_add_lo (for global address access)
+def : Pat<(store GPR:$rs2, (triton_add_lo GPR:$hi, tglobaladdr:$lo)),
+          (SW GPR:$rs2, GPR:$hi, tglobaladdr:$lo)>;
+def : Pat<(truncstorei8 GPR:$rs2, (triton_add_lo GPR:$hi, tglobaladdr:$lo)),
+          (SB GPR:$rs2, GPR:$hi, tglobaladdr:$lo)>;
+def : Pat<(truncstorei16 GPR:$rs2, (triton_add_lo GPR:$hi, tglobaladdr:$lo)),
+          (SH GPR:$rs2, GPR:$hi, tglobaladdr:$lo)>;
 
 // Immediate loading patterns
 def : Pat<(triton_hi tglobaladdr:$in), (LUI tglobaladdr:$in)>;

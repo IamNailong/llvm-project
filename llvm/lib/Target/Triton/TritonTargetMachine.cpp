@@ -14,10 +14,15 @@
 
 #include "TritonTargetMachine.h"
 #include "TargetInfo/TritonTargetInfo.h"
+#include "Triton.h"
+#include "TritonMachineFunctionInfo.h"
+#include "TritonSubtarget.h"
 #include "llvm/CodeGen/CodeGenTargetMachineImpl.h"
 #include "llvm/CodeGen/Passes.h"
 #include "llvm/CodeGen/TargetLoweringObjectFileImpl.h"
 #include "llvm/CodeGen/TargetPassConfig.h"
+#include "llvm/IR/Attributes.h"
+#include "llvm/IR/Function.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/MC/TargetRegistry.h"
 #include "llvm/Transforms/Scalar.h"
@@ -67,6 +72,56 @@ TritonTargetMachine::TritonTargetMachine(const Target &T, const Triple &TT,
                                          CodeGenOptLevel OL, bool JIT)
     : TritonTargetMachine(T, TT, CPU, FS, Options, RM, CM, OL, JIT, true) {}
 
+namespace {
+class TritonPassConfig : public TargetPassConfig {
+public:
+  TritonPassConfig(TritonTargetMachine &TM, PassManagerBase &PM)
+      : TargetPassConfig(TM, PM) {}
+
+  TritonTargetMachine &getTritonTargetMachine() const {
+    return getTM<TritonTargetMachine>();
+  }
+
+  bool addInstSelector() override {
+    addPass(createTritonISelDag(getTritonTargetMachine(), getOptLevel()));
+    return false;
+  }
+};
+} // end anonymous namespace
+
+const TritonSubtarget *
+TritonTargetMachine::getSubtargetImpl(const Function &F) const {
+  Attribute CPUAttr = F.getFnAttribute("target-cpu");
+  Attribute TuneAttr = F.getFnAttribute("tune-cpu");
+  Attribute FSAttr = F.getFnAttribute("target-features");
+
+  std::string CPU =
+      CPUAttr.isValid() ? CPUAttr.getValueAsString().str() : TargetCPU;
+  std::string TuneCPU =
+      TuneAttr.isValid() ? TuneAttr.getValueAsString().str() : CPU;
+  std::string FS =
+      FSAttr.isValid() ? FSAttr.getValueAsString().str() : TargetFS;
+
+  std::string Key = CPU + TuneCPU + FS;
+  auto &I = SubtargetMap[Key];
+  if (!I) {
+    // This needs to be done before we create a new subtarget since any
+    // creation will depend on the TM and the code generation flags on the
+    // function that reside in TargetOptions.
+    resetTargetOptions(F);
+    I = std::make_unique<TritonSubtarget>(TargetTriple, CPU, TuneCPU, FS,
+                                          /*ABIName=*/"", *this);
+  }
+  return I.get();
+}
+
 TargetPassConfig *TritonTargetMachine::createPassConfig(PassManagerBase &PM) {
-  return new TargetPassConfig(*this, PM);
+  return new TritonPassConfig(*this, PM);
+}
+
+MachineFunctionInfo *TritonTargetMachine::createMachineFunctionInfo(
+    BumpPtrAllocator &Allocator, const Function &F,
+    const TargetSubtargetInfo *STI) const {
+  return TritonMachineFunctionInfo::create<TritonMachineFunctionInfo>(Allocator,
+                                                                      F, STI);
 }
