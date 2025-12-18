@@ -18,6 +18,7 @@
 #include "TritonSubtarget.h"
 #include "llvm/ADT/StringMap.h"
 #include "llvm/CodeGen/CodeGenTargetMachineImpl.h"
+#include "llvm/CodeGen/MachineScheduler.h"
 #include "llvm/Support/Allocator.h"
 #include "llvm/Target/TargetMachine.h"
 #include <optional>
@@ -48,6 +49,11 @@ public:
   }
 
   const TritonSubtarget *getSubtargetImpl(const Function &F) const override;
+
+  /// Create the custom Triton machine scheduler.
+  /// This returns a ScheduleDAGMILive configured with TritonPreRASchedStrategy.
+  ScheduleDAGInstrs *
+  createMachineScheduler(MachineSchedContext *C) const override;
 
   MachineFunctionInfo *
   createMachineFunctionInfo(BumpPtrAllocator &Allocator, const Function &F,

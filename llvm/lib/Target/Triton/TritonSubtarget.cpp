@@ -18,6 +18,7 @@
 #include "TritonISelLowering.h"
 #include "TritonInstrInfo.h"
 #include "TritonTargetMachine.h"
+#include "llvm/CodeGen/MachineScheduler.h"
 #include "llvm/MC/TargetRegistry.h"
 #include "llvm/TargetParser/TargetParser.h"
 
@@ -40,4 +41,22 @@ TritonSubtarget::TritonSubtarget(const Triple &TT, StringRef CPU,
 
   // Parse features string and set the CPU.
   ParseSubtargetFeatures(CPU, TuneCPU, FS);
+}
+
+void TritonSubtarget::overrideSchedPolicy(MachineSchedPolicy &Policy,
+                                          unsigned NumRegionInstrs) const {
+  // Enable bidirectional scheduling for better scheduling quality.
+  // This allows the scheduler to work from both top and bottom of the
+  // scheduling region, converging in the middle for optimal results.
+  Policy.OnlyTopDown = false;
+  Policy.OnlyBottomUp = false;
+
+  // Enable register pressure tracking to help the scheduler make
+  // decisions that minimize spilling. This is important for Triton
+  // as register pressure can significantly impact performance.
+  Policy.ShouldTrackPressure = true;
+
+  LLVM_DEBUG(dbgs() << "Triton scheduling policy: bidirectional, "
+                    << "pressure tracking enabled, "
+                    << "region size = " << NumRegionInstrs << "\n");
 }

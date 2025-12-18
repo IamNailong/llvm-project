@@ -22,6 +22,7 @@ add_llvm_target(TritonCodeGen
   TritonFrameLowering.cpp
   TritonRegisterInfo.cpp
   TritonMachineFunctionInfo.cpp
+  TritonMachineScheduler.cpp
   TritonAsmPrinter.cpp
   TritonMCInstLower.cpp
 

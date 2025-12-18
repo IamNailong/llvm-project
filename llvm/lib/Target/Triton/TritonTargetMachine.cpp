@@ -16,6 +16,7 @@
 #include "TargetInfo/TritonTargetInfo.h"
 #include "Triton.h"
 #include "TritonMachineFunctionInfo.h"
+#include "TritonMachineScheduler.h"
 #include "TritonSubtarget.h"
 #include "llvm/CodeGen/CodeGenTargetMachineImpl.h"
 #include "llvm/CodeGen/Passes.h"
@@ -124,4 +125,10 @@ MachineFunctionInfo *TritonTargetMachine::createMachineFunctionInfo(
     const TargetSubtargetInfo *STI) const {
   return TritonMachineFunctionInfo::create<TritonMachineFunctionInfo>(Allocator,
                                                                       F, STI);
+}
+
+ScheduleDAGInstrs *
+TritonTargetMachine::createMachineScheduler(MachineSchedContext *C) const {
+  // Use the Triton-specific scheduler factory function
+  return createTritonMachineScheduler(C);
 }

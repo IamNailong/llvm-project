@@ -66,6 +66,17 @@ bool TritonAsmPrinter::emitPseudoExpansionLowering(MCStreamer &OutStreamer,
   switch (MI->getOpcode()) {
   default:
     return false;
+  case Triton::PseudoLI:
+    // Expand PseudoLI to ADDI rd, x0, imm (for 12-bit signed immediates)
+    {
+      MCInst TmpInst;
+      TmpInst.setOpcode(Triton::ADDI);
+      TmpInst.addOperand(MCOperand::createReg(MI->getOperand(0).getReg()));
+      TmpInst.addOperand(MCOperand::createReg(Triton::X0));
+      TmpInst.addOperand(MCOperand::createImm(MI->getOperand(1).getImm()));
+      EmitToStreamer(OutStreamer, TmpInst);
+      return true;
+    }
   case Triton::PseudoRET:
     // Expand PseudoRET to JALR x0, x1, 0
     {
