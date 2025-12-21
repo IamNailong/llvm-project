@@ -61,10 +61,9 @@ void TritonPreRASchedStrategy::dumpPolicy() const {
          << RegionPolicy.DisableLatencyHeuristic << "\n";
 }
 
-
 bool TritonPreRASchedStrategy::biasMemoryCluster(SchedCandidate &Cand,
-                                                  SchedCandidate &TryCand,
-                                                  SchedBoundary &Zone) const {
+                                                 SchedCandidate &TryCand,
+                                                 SchedBoundary &Zone) const {
   // Check if either candidate is a memory operation
   const MachineInstr *CandMI = Cand.SU ? Cand.SU->getInstr() : nullptr;
   const MachineInstr *TryCandMI = TryCand.SU ? TryCand.SU->getInstr() : nullptr;
@@ -97,8 +96,8 @@ bool TritonPreRASchedStrategy::biasMemoryCluster(SchedCandidate &Cand,
 }
 
 bool TritonPreRASchedStrategy::biasHighLatency(SchedCandidate &Cand,
-                                                SchedCandidate &TryCand,
-                                                SchedBoundary &Zone) const {
+                                               SchedCandidate &TryCand,
+                                               SchedBoundary &Zone) const {
   // This heuristic is primarily useful for bottom-up scheduling
   // where we want to schedule high-latency instructions early
   // to hide their latency
@@ -131,32 +130,36 @@ bool TritonPreRASchedStrategy::tryCandidate(SchedCandidate &Cand,
   // First, apply all standard GenericScheduler heuristics
   // The base class handles: PhysReg, RegExcess, RegCritical, Stall,
   // Cluster, Weak, RegMax, ResourceReduce, ResourceDemand, latency, etc.
-  
+
   // Initialize the candidate if needed (from GenericScheduler)
-  if (!Cand.isValid()) {
-    TryCand.Reason = NodeOrder;
-    return true;
+  // If Cand is invalid, TryCand is the first valid candidate, but we still
+  // want to apply Triton-specific heuristics to potentially improve the reason
+  bool CandWasInvalid = !Cand.isValid();
+  if (CandWasInvalid) {
+    TryCand.Reason = FirstValid;
+    // Skip all comparison-based heuristics when Cand is invalid, but still
+    // apply Triton-specific heuristics at the end
+  } else {
+    // Bias PhysReg Defs and copies to their uses and defined respectively.
+    if (tryGreater(biasPhysReg(TryCand.SU, TryCand.AtTop),
+                   biasPhysReg(Cand.SU, Cand.AtTop), TryCand, Cand, PhysReg))
+      return TryCand.Reason != NoCand;
+
+    // Avoid exceeding the target's limit.
+    if (DAG->isTrackingPressure() &&
+        tryPressure(TryCand.RPDelta.Excess, Cand.RPDelta.Excess, TryCand, Cand,
+                    RegExcess, TRI, DAG->MF))
+      return TryCand.Reason != NoCand;
+
+    // Avoid increasing the max critical pressure in the scheduled region.
+    if (DAG->isTrackingPressure() &&
+        tryPressure(TryCand.RPDelta.CriticalMax, Cand.RPDelta.CriticalMax,
+                    TryCand, Cand, RegCritical, TRI, DAG->MF))
+      return TryCand.Reason != NoCand;
   }
 
-  // Bias PhysReg Defs and copies to their uses and defined respectively.
-  if (tryGreater(biasPhysReg(TryCand.SU, TryCand.AtTop),
-                 biasPhysReg(Cand.SU, Cand.AtTop), TryCand, Cand, PhysReg))
-    return TryCand.Reason != NoCand;
-
-  // Avoid exceeding the target's limit.
-  if (DAG->isTrackingPressure() &&
-      tryPressure(TryCand.RPDelta.Excess, Cand.RPDelta.Excess, TryCand, Cand,
-                  RegExcess, TRI, DAG->MF))
-    return TryCand.Reason != NoCand;
-
-  // Avoid increasing the max critical pressure in the scheduled region.
-  if (DAG->isTrackingPressure() &&
-      tryPressure(TryCand.RPDelta.CriticalMax, Cand.RPDelta.CriticalMax,
-                  TryCand, Cand, RegCritical, TRI, DAG->MF))
-    return TryCand.Reason != NoCand;
-
   bool SameBoundary = Zone != nullptr;
-  if (SameBoundary) {
+  if (SameBoundary && !CandWasInvalid) {
     // For loops that are acyclic path limited, aggressively schedule for
     // latency.
     if (Rem.IsAcyclicLatencyLimited && !Zone->getCurrMOps() &&
@@ -169,29 +172,33 @@ bool TritonPreRASchedStrategy::tryCandidate(SchedCandidate &Cand,
       return TryCand.Reason != NoCand;
   }
 
-  // Keep clustered nodes together to encourage downstream peephole
-  // optimizations which may reduce resource requirements.
-  const ClusterInfo *CandCluster = Cand.AtTop ? TopCluster : BotCluster;
-  const ClusterInfo *TryCandCluster = TryCand.AtTop ? TopCluster : BotCluster;
-  if (tryGreater(TryCandCluster && TryCandCluster->contains(TryCand.SU),
-                 CandCluster && CandCluster->contains(Cand.SU), TryCand, Cand,
-                 Cluster))
-    return TryCand.Reason != NoCand;
+  if (!CandWasInvalid) {
+    // Keep clustered nodes together to encourage downstream peephole
+    // optimizations which may reduce resource requirements.
+    const ClusterInfo *CandCluster = Cand.AtTop ? TopCluster : BotCluster;
+    const ClusterInfo *TryCandCluster = TryCand.AtTop ? TopCluster : BotCluster;
+    if (tryGreater(TryCandCluster && TryCandCluster->contains(TryCand.SU),
+                   CandCluster && CandCluster->contains(Cand.SU), TryCand, Cand,
+                   Cluster))
+      return TryCand.Reason != NoCand;
+  }
 
-  if (SameBoundary) {
+  if (SameBoundary && !CandWasInvalid) {
     // Weak edges are for clustering and other constraints.
     if (tryLess(getWeakLeft(TryCand.SU, TryCand.AtTop),
                 getWeakLeft(Cand.SU, Cand.AtTop), TryCand, Cand, Weak))
       return TryCand.Reason != NoCand;
   }
 
-  // Avoid increasing the max pressure of the entire region.
-  if (DAG->isTrackingPressure() &&
-      tryPressure(TryCand.RPDelta.CurrentMax, Cand.RPDelta.CurrentMax, TryCand,
-                  Cand, RegMax, TRI, DAG->MF))
-    return TryCand.Reason != NoCand;
+  if (!CandWasInvalid) {
+    // Avoid increasing the max pressure of the entire region.
+    if (DAG->isTrackingPressure() &&
+        tryPressure(TryCand.RPDelta.CurrentMax, Cand.RPDelta.CurrentMax, TryCand,
+                    Cand, RegMax, TRI, DAG->MF))
+      return TryCand.Reason != NoCand;
+  }
 
-  if (SameBoundary) {
+  if (SameBoundary && !CandWasInvalid) {
     // Avoid critical resource consumption and balance the schedule.
     TryCand.initResourceDelta(DAG, SchedModel);
     if (tryLess(TryCand.ResDelta.CritResources, Cand.ResDelta.CritResources,
@@ -214,6 +221,24 @@ bool TritonPreRASchedStrategy::tryCandidate(SchedCandidate &Cand,
     }
   }
 
+  // If Cand was invalid, TryCand is the first valid candidate and should be
+  // accepted. But we still apply Triton-specific heuristics to potentially
+  // improve the reason.
+  if (CandWasInvalid) {
+    // Apply Triton-specific heuristics even for the first valid candidate
+    if (SameBoundary) {
+      // For the first candidate, we can't compare with Cand, but we can still
+      // mark it with appropriate reasons based on Triton heuristics
+      const MachineInstr *TryCandMI = TryCand.SU ? TryCand.SU->getInstr() : nullptr;
+      if (TryCandMI && (TryCandMI->mayLoad() || TryCandMI->mayStore())) {
+        // If it's a memory operation, prefer it for clustering
+        TryCand.Reason = Cluster;
+        LLVM_DEBUG(dbgs() << "  Triton: first valid candidate is memory op\n");
+      }
+    }
+    return true;
+  }
+
   // If standard heuristics didn't make a decision, apply Triton-specific ones
   if (TryCand.Reason != NodeOrder && TryCand.Reason != NoCand)
     return true;
@@ -228,7 +253,6 @@ bool TritonPreRASchedStrategy::tryCandidate(SchedCandidate &Cand,
 
   return TryCand.Reason != NoCand;
 }
-
 
 //===----------------------------------------------------------------------===//
 // TritonDAGMutation Implementation
@@ -246,7 +270,8 @@ void TritonDAGMutation::apply(ScheduleDAGInstrs *DAG) {
 
 void TritonDAGMutation::addWeakEdges(ScheduleDAGInstrs *DAG) {
   // This method adds weak (artificial) edges between related instructions
-  // to help the scheduler keep them together without creating hard dependencies.
+  // to help the scheduler keep them together without creating hard
+  // dependencies.
   //
   // Example use cases:
   // 1. Address computation followed by memory access
@@ -309,6 +334,6 @@ ScheduleDAGInstrs *llvm::createTritonMachineScheduler(MachineSchedContext *C) {
 
 // Register the Triton scheduler with the MachineSchedRegistry
 // This allows users to select it via -misched=triton
-static MachineSchedRegistry TritonSchedRegistry(
-    "triton", "Triton custom pre-RA scheduler",
-    createTritonMachineScheduler);
+static MachineSchedRegistry
+    TritonSchedRegistry("triton", "Triton custom pre-RA scheduler",
+                        createTritonMachineScheduler);
